@@ -1,0 +1,20 @@
+{
+    "name": "oxygen/crud",
+    "description": "",
+    "authors": [
+        {
+            "name": "Chris Chamberlain",
+            "email": "neon64bit@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Oxygen\\Crud\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
