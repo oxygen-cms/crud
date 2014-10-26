@@ -1,10 +1,16 @@
 {
     "name": "oxygen/crud",
-    "description": "",
+    "description": "Create, Read, Update and Delete Scaffolding for Oxygen",
+    "license": "MIT",
+    "keywords": [
+        "cms",
+        "framework",
+        "OxygenExtension"
+    ],
     "authors": [
         {
             "name": "Chris Chamberlain",
-            "email": "neon64bit@gmail.com"
+            "email": "c.chamberlain@iinet.net.au"
         }
     ],
     "require": {
@@ -16,5 +22,18 @@
             "Oxygen\\Crud\\": "src/"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+        "title": "Oxygen CRUD",
+        "readme": "oxygen.md",
+        "changes": "changes.md",
+        "icon": "icon.png",
+        "providers": [
+            {
+                "name": "CRUD",
+                "class": "Oxygen\\Crud\\CrudServiceProvider",
+                "description": "Exposes CRUD Resources"
+            }
+        ]
+    }
 }
