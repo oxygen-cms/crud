@@ -15,14 +15,14 @@
         echo Form::model(
             $item,
             [
-                'route' => [$blueprint->getRouteName('putUpdate'), $item->getKey()],
+                'route' => [$blueprint->getRouteName('putUpdate'), $item->getId()],
                 'method' => 'PUT',
                 'class' => 'Form--sendAjax Form--warnBeforeExit Form--submitOnKeydown'
             ]
         );
 
         foreach($blueprint->getFields() as $field) {
-            $field = EditableField::fromModel($field, $item);
+            $field = EditableField::fromEntity($field, $item);
             echo $field->render();
         }
 
@@ -35,7 +35,7 @@
         if(!isset($footer)) {
             $footer = new Footer([
                 [
-                    'route' => $item->softDeletes() && $item->trashed() ? $blueprint->getRouteName('getTrash') : $blueprint->getRouteName('getList'),
+                    'route' => method_exists($item, 'isDeleted') && $item->isDeleted() ? $blueprint->getRouteName('getTrash') : $blueprint->getRouteName('getList'),
                     'label' => Lang::get('oxygen/crud::ui.close')
                 ],
                 [

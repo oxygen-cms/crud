@@ -24,7 +24,6 @@ return [
         'created'             => ':resource Created',
         'updated'             => ':resource Updated',
         'deleted'             => ':resource Deleted',
-        'deleteFailed'        => ':resource Could Not Be Deleted',
     ],
 
     /*
@@ -37,9 +36,7 @@ return [
 
     'softDelete' => [
         'restored'            => ':resource Restored',
-        'restoreFailed'       => 'Restore Failed',
         'forceDeleted'        => ':resource Deleted Forever',
-        'forceDeleteFailed'   => 'Force Deleted Failed',
     ],
 
     /*
@@ -52,12 +49,24 @@ return [
 
     'versionable' => [
         'madeVersion'          => 'A New Version Was Created',
-        'makeVersionFailed'    => 'A New Version Could Not Be Created',
         'clearedVersions'      => 'All Old Versions Were Cleared',
-        'clearVersionsFailed'  => 'All Old Versions Could Not Be Cleared',
         'alreadyHead'          => 'That :resource Is Already The Head Version',
         'madeHead'             => 'That :resource is Now The Head Version',
-        'makeHeadFailed'       => 'Could Not Make That Version the Head'
+    ],
+
+    /*
+    | ---------------
+    | Publishable
+    | ---------------
+    |
+    | Messages related to publishable entities.
+    */
+
+    'publishable' => [
+        'published' => ':resource Published',
+        'unpublished' => ':resource Unpublished',
+        'publishedSoMadeDraft' => 'You are now editing the draft version.',
+        'alreadyDraft' => 'The :resource is already a draft.'
     ]
 
 ];

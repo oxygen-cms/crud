@@ -18,10 +18,10 @@
              INFO
      ===================== -->
 
-<div class="Block Block--padded">
+<div class="Block">
     <?php
         foreach($blueprint->getFields() as $field):
-            $field = StaticField::fromModel($field, $item);
+            $field = StaticField::fromEntity($field, $item);
             echo $field->render();
         endforeach;
     ?>

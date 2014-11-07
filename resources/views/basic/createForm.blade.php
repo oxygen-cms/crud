@@ -27,7 +27,7 @@
 
         $footer = new Footer([
             [
-                'route' => $item->softDeletes() && $item->trashed() ? $blueprint->getRouteName('getTrash') : $blueprint->getRouteName('getList'),
+                'route' => method_exists($item, 'isDeleted') && $item->isDeleted() ? $blueprint->getRouteName('getTrash') : $blueprint->getRouteName('getList'),
                 'label' => Lang::get('oxygen/crud::ui.close')
             ],
             [

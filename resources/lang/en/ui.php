@@ -20,6 +20,7 @@ return [
     'noItems'                   => 'No Items',
     'versions'                  => 'Versions',
     'noVersions'                => 'No Versions',
+    'thisVersion'               => '(this version)',
     'latestVersion'             => '(latest version)',
     'fromDate'                  => 'from :date',
 

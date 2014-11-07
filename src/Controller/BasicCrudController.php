@@ -2,6 +2,8 @@
 
 namespace Oxygen\Crud\Controller;
 
+use Exception;
+use Oxygen\Data\Exception\InvalidEntityException;
 use View;
 use Input;
 use Lang;
@@ -9,36 +11,36 @@ use URL;
 use Response;
 
 use Oxygen\Core\Controller\ResourceController;
-use Oxygen\Core\Repository\ResourceRepository;
 use Oxygen\Core\Blueprint\Manager as BlueprintManager;
 use Oxygen\Core\Http\Notification;
-
-use Oxygen\Core\Model\Validating\InvalidModelException;
+use Oxygen\Data\Repository\RepositoryInterface;
 
 class BasicCrudController extends ResourceController {
 
     /**
      * Constructs a BasicCrudController.
      *
-     * @param BlueprintManager  $manager        BlueprintManager instance
-     * @param string            $modelName      Name of the corresponding model
-     * @param string            $blueprintName  Name of the corresponding Blueprint
+     * @param RepositoryInterface $repository
+     * @param BlueprintManager    $manager       BlueprintManager instance
+     * @param string              $blueprintName Name of the corresponding Blueprint
      */
 
-    public function __construct(BlueprintManager $manager, $blueprintName = null, $modelName = null) {
-        parent::__construct($manager, $blueprintName, $modelName);
+    public function __construct(RepositoryInterface $repository, BlueprintManager $manager, $blueprintName = null) {
+        parent::__construct($repository, $manager, $blueprintName);
 
         Lang::when('oxygen/crud::messages', ['resource' => $this->blueprint->getDisplayName()]);
+        Lang::when('oxygen/crud::dialogs', ['resource' => $this->blueprint->getDisplayName()]);
     }
 
     /**
      * List all items.
      *
+     * @param array $scopes
      * @return Response
      */
 
-    public function getList() {
-        $items = $this->model->paginate(25);
+    public function getList($scopes = []) {
+        $items = $this->repository->paginate(25, $scopes);
 
         // render the view
         return View::make('oxygen/crud::basic.list', [
@@ -70,7 +72,7 @@ class BasicCrudController extends ResourceController {
 
     public function getCreate() {
         return View::make('oxygen/crud::basic.create', [
-            'item' => $this->model->newInstance()
+            'item' => $this->repository->make()
         ]);
     }
 
@@ -97,15 +99,15 @@ class BasicCrudController extends ResourceController {
 
     public function postCreate() {
         try {
-            $item = $this->model->newInstance();
-            $item->fill(Input::except(['_method', '_token']));
-            $item->save();
+            $item = $this->repository->make();
+            $item->fromArray(Input::except(['_method', '_token']));
+            $this->repository->persist($item);
 
             return Response::notification(
                 new Notification(Lang::get('oxygen/crud::messages.basic.created')),
                 ['redirect' => $this->blueprint->getRouteName('getList')]
             );
-        } catch(InvalidModelException $e) {
+        } catch(InvalidEntityException $e) {
             return Response::notification(
                 new Notification($e->getErrors()->first(), Notification::FAILED),
                 ['input' => true]
@@ -123,13 +125,13 @@ class BasicCrudController extends ResourceController {
     public function putUpdate($item) {
         try {
             $item = $this->getItem($item);
-            $item->fill(Input::except(['_method', '_token']));
-            $item->save();
+            $item->fromArray(Input::except(['_method', '_token']));
+            $this->repository->persist($item);
 
             return Response::notification(
                 new Notification(Lang::get('oxygen/crud::messages.basic.updated'))
             );
-        } catch(InvalidModelException $e) {
+        } catch(InvalidEntityException $e) {
             return Response::notification(
                 new Notification($e->getErrors()->first(), Notification::FAILED),
                 ['input' => true]
@@ -145,19 +147,13 @@ class BasicCrudController extends ResourceController {
      */
 
     public function deleteDelete($item) {
-        try {
-            $item = $this->getItem($item);
-            $item->delete();
+        $item = $this->getItem($item);
+        $this->repository->delete($item);
 
-            return Response::notification(
-                new Notification(Lang::get('oxygen/crud::messages.basic.deleted')),
-                ['redirect' => $this->blueprint->getRouteName('getList')]
-            );
-        } catch(Exception $e) {
-            return Response::notification(
-                new Notification(Lang::get('oxygen/crud::messages.basic.deleteFailed'))
-            );
-        }
+        return Response::notification(
+            new Notification(Lang::get('oxygen/crud::messages.basic.deleted')),
+            ['redirect' => $this->blueprint->getRouteName('getList')]
+        );
     }
 
 }

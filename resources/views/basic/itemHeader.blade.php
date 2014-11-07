@@ -8,12 +8,18 @@
     );
 
     $sectionHeader->setBackLink(URL::route(
-        $item->trashed()
+        $item->isDeleted()
             ? $blueprint->getRouteName('getTrash')
             : $blueprint->getRouteName('getList')
     ));
 
     $itemHeader = Header::fromBlueprint($blueprint, null, ['model' => $item], Header::TYPE_NORMAL, 'item');
+
+    $blockClasses = ['Block'];
+    if(isset($seamless) && $seamless == true) {
+        $blockClasses[] = 'Block--noBorder';
+        $blockClasses[] = 'Block--noMargin';
+    }
 
 ?>
 
@@ -21,7 +27,7 @@
             HEADER
      ===================== -->
 
-<div class="Block">
+<div class="{{ implode(' ', $blockClasses) }}">
     {{ $sectionHeader->render() }}
     {{ $itemHeader->render() }}
 </div>

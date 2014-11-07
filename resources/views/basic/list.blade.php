@@ -38,22 +38,26 @@
 
 <div class="Block">
 
-    <?php if($items->isEmpty()): ?>
+    @if($items->isEmpty())
         <h2 class="heading-gamma margin-large">
             @lang('oxygen/crud::ui.noItems')
         </h2>
-    <?php endif; ?>
+    @endif
 
     <?php
         foreach($items->reverse() as $item):
             $itemHeader = Header::fromBlueprint($blueprint, null, ['model' => $item], Header::TYPE_NORMAL, 'item');
+
+            if(method_exists($item, 'isPublished')) {
+                $icon = $item->isPublished() ? 'globe' : 'pencil-square';
+                $itemHeader->setIcon($icon);
+            }
+
             echo $itemHeader->render();
         endforeach;
     ?>
 
-    <?php
-        echo $items->links();
-    ?>
+    {{ $items->links() }}
 
 </div>
 

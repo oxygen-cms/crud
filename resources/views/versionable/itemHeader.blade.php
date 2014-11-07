@@ -3,11 +3,15 @@
     use Oxygen\Core\Html\Header\Header;
 
     if(!function_exists('getSubtitleForItem')) {
-        function getSubtitleForItem($item) {
-            if($item->isHead()) {
-                return '(latest version)';
+        function getSubtitleForItem($version, $item = null) {
+            if($version === $item) {
+                return Lang::get('oxygen/crud::ui.thisVersion');
+            } else if($version->isHead()) {
+                return Lang::get('oxygen/crud::ui.latestVersion');
             } else {
-                return 'from ' . $item->updated_at->diffForHumans();
+                return Lang::get('oxygen/crud::ui.fromDate', [
+                    'date' => $version->getUpdatedAt()->diffForHumans()
+                ]);
             }
         }
     }
@@ -18,8 +22,8 @@
     );
 
     if(!$item->isHead()) {
-        $backLink = URL::route($blueprint->getRouteName('getUpdate'), $item->getHeadKey());
-    } else if($item->trashed()) {
+        $backLink = URL::route($blueprint->getRouteName('getUpdate'), $item->getHeadId());
+    } else if($item->isDeleted()) {
         $backLink = URL::route($blueprint->getRouteName('getTrash'));
     } else {
         $backLink = URL::route($blueprint->getRouteName('getList'));
@@ -32,13 +36,24 @@
         $itemHeader->setSubtitle(getSubtitleForItem($item));
     }
 
+    if(method_exists($item, 'isPublished')) {
+        $icon = $item->isPublished() ? 'globe' : 'pencil-square';
+        $itemHeader->setIcon($icon);
+    }
+
+    $blockClasses = ['Block'];
+    if(isset($seamless) && $seamless == true) {
+        $blockClasses[] = 'Block--noBorder';
+        $blockClasses[] = 'Block--noMargin';
+    }
+
 ?>
 
 <!-- =====================
             HEADER
      ===================== -->
 
-<div class="Block">
+<div class="{{ implode(' ', $blockClasses) }}">
     {{ $sectionHeader->render() }}
     {{ $itemHeader->render() }}
 </div>

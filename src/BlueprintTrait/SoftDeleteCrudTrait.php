@@ -39,7 +39,7 @@ class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterf
                 ->shouldRenderCallback = function(ActionToolbarItem $item, array $arguments) {
                     return
                         $item->shouldRenderBasic($arguments) &&
-                        !$arguments['model']->trashed();
+                        !$arguments['model']->isDeleted();
                 };
         }
 
@@ -56,7 +56,7 @@ class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterf
                 'shouldRenderCallback' => function(ActionToolbarItem $item, array $arguments) {
                     return
                         $item->shouldRenderBasic($arguments) &&
-                        $arguments['model']->trashed();
+                        $arguments['model']->isDeleted();
                 }
             ]);
         }
@@ -75,7 +75,7 @@ class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterf
                 'shouldRenderCallback' => function(ActionToolbarItem $item, array $arguments) {
                     return
                         $item->shouldRenderBasic($arguments) &&
-                        $arguments['model']->trashed();
+                        $arguments['model']->isDeleted();
                 }
             ]);
         }

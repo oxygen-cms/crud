@@ -4,6 +4,7 @@ namespace Oxygen\Crud\Controller;
 
 use Exception;
 
+use Input;
 use View;
 use Lang;
 use Response;
@@ -13,13 +14,25 @@ use Oxygen\Core\Http\Notification;
 class SoftDeleteCrudController extends BasicCrudController {
 
     /**
-     * List all deleted Resources.
+     * List all entities.
      *
+     * @param array $scopes
      * @return Response
      */
 
-    public function getTrash() {
-        $items = $this->model->onlyTrashed()->paginate(25);
+    public function getList($scopes = ['excludeTrashed']) {
+        return parent::getList($scopes);
+    }
+
+    /**
+     * List all deleted entities.
+     *
+     * @param array $scopes
+     * @return Response
+     */
+
+    public function getTrash($scopes = ['onlyTrashed']) {
+        $items = $this->repository->paginate(25, $scopes);
 
         return View::make('oxygen/crud::basic.list', [
             'items' => $items,
@@ -28,85 +41,58 @@ class SoftDeleteCrudController extends BasicCrudController {
     }
 
     /**
-     * Restores a deleted Resource.
-     *
-     * @param mixed $item the item
-     * @return Response
-     */
-
-    public function postRestore($item) {
-        try {
-            $item = $this->getItem($item);
-            $item->restore();
-
-            return Response::notification(
-                new Notification(Lang::get('oxygen/crud::messages.softDelete.restored')),
-                ['refresh' => true]
-            );
-        } catch(Exception $e) {
-            return Response::notification(
-                new Notification(Lang::get('oxygen/crud::messages.softDelete.restoreFailed'), Notification::FAILED)
-            );
-        }
-    }
-
-    /**
-     * Deletes a Resource.
+     * Deletes an entity.
      *
      * @param mixed $item the item
      * @return Response
      */
 
     public function deleteDelete($item) {
-        try {
-            $item = $this->getItem($item);
-            $item->delete();
+        $item = $this->getItem($item);
+        $item->delete();
+        $this->repository->persist($item);
 
-            return Response::notification(
-                new Notification(Lang::get('oxygen/crud::messages.basic.deleted')),
-                ['refresh' => true]
-            );
-        } catch(Exception $e) {
-            return Response::notification(
-                new Notification(Lang::get('oxygen/crud::messages.basic.deleteFailed'))
-            );
-        }
+        return Response::notification(
+            new Notification(Lang::get('oxygen/crud::messages.basic.deleted')),
+            ['refresh' => true]
+        );
     }
 
     /**
-     * Deletes a Resource permanently.
+     * Restores a deleted entity.
+     *
+     * @param mixed $item the item
+     * @return Response
+     */
+
+    public function postRestore($item) {
+        $item = $this->getItem($item);
+        $item->restore();
+        $this->repository->persist($item);
+
+        return Response::notification(
+            new Notification(Lang::get('oxygen/crud::messages.softDelete.restored')),
+            ['refresh' => true]
+        );
+    }
+
+
+
+    /**
+     * Deletes an entity permanently.
      *
      * @param mixed $item the item
      * @return Response
      */
 
     public function deleteForce($item) {
-        try {
-            $item = $this->getItem($item);
-            $item->forceDelete();
+        $item = $this->getItem($item);
+        $this->repository->delete($item);
 
-            return Response::notification(
-                new Notification(Lang::get('oxygen/crud::messages.softDelete.forceDeleted')),
-                ['redirect' => $this->blueprint->getRouteName('getList')]
-            );
-        } catch(Exception $e) {
-            dd($e);
-            return Response::notification(
-                new Notification(Lang::get('oxygen/crud::messages.softDelete.forceDeleteFailed'), Notification::FAILED)
-            );
-        }
-    }
-
-    /**
-     * Returns a QueryBuilder that will
-     * include all special models such
-     * as soft-deleted models & non-head-versions.
-     *
-     * @return QueryBuilder
-     */
-
-    protected function queryAll() {
-        return $this->model->newQuery()->withTrashed();
+        return Response::notification(
+            new Notification(Lang::get('oxygen/crud::messages.softDelete.forceDeleted')),
+            ['redirect' => $this->blueprint->getRouteName('getList')]
+        );
     }
 
 }

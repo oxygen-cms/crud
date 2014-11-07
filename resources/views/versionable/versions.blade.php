@@ -1,5 +1,5 @@
 <?php
-    use Oxygen\Core\Html\Header\Header;
+    use Doctrine\Common\Collections\ArrayCollection;use Oxygen\Core\Html\Header\Header;
 ?>
 
 @if(Auth::user()->hasPermissions($blueprint->getRouteName() . '.versions'))
@@ -7,12 +7,14 @@
 <?php
 
     if(!function_exists('getSubtitleForItem')) {
-        function getSubtitleForItem($item) {
-            if($item->isHead()) {
+        function getSubtitleForItem($version, $item = null) {
+            if($version === $item) {
+                return Lang::get('oxygen/crud::ui.thisVersion');
+            } else if($version->isHead()) {
                 return Lang::get('oxygen/crud::ui.latestVersion');
             } else {
                 return Lang::get('oxygen/crud::ui.fromDate', [
-                    'date' => $item->updated_at->diffForHumans()
+                    'date' => $version->getUpdatedAt()->diffForHumans()
                 ]);
             }
         }
@@ -35,8 +37,11 @@
 <div class="Block">
 
     <?php
-        $versions = $item->versions()->orderBy('updated_at', 'DESC')->get();
-        $versions->prepend($item->getHead());
+        $versions = $item->getVersions();
+        $versions = new ArrayCollection(array_merge(
+            [$item->getHead()],
+            $versions->toArray()
+        ));
 
         if($versions->isEmpty()):
     ?>
@@ -46,16 +51,21 @@
     <?php
         endif;
 
-        foreach($versions as $item):
+        foreach($versions as $version):
             $itemHeader = Header::fromBlueprint(
                 $blueprint,
                 null,
-                ['model' => $item],
+                ['model' => $version],
                 Header::TYPE_SMALL,
                 'item'
             );
 
-            $itemHeader->setSubtitle(getSubtitleForItem($item));
+            $itemHeader->setSubtitle(getSubtitleForItem($version, $item));
+
+            if(method_exists($version, 'isPublished')) {
+                $icon = $version->isPublished() ? 'globe' : 'pencil-square';
+                $itemHeader->setIcon($icon);
+            }
 
             echo $itemHeader->render();
         endforeach;
