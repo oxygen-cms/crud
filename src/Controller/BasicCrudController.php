@@ -100,7 +100,7 @@ class BasicCrudController extends ResourceController {
     public function postCreate() {
         try {
             $item = $this->repository->make();
-            $item->fromArray(Input::except(['_method', '_token']));
+            $item->fromArray($this->transformInput(Input::except(['_method', '_token'])));
             $this->repository->persist($item);
 
             return Response::notification(
@@ -125,7 +125,7 @@ class BasicCrudController extends ResourceController {
     public function putUpdate($item) {
         try {
             $item = $this->getItem($item);
-            $item->fromArray(Input::except(['_method', '_token']));
+            $item->fromArray($this->transformInput(Input::except(['_method', '_token'])));
             $this->repository->persist($item);
 
             return Response::notification(
@@ -154,6 +154,17 @@ class BasicCrudController extends ResourceController {
             new Notification(Lang::get('oxygen/crud::messages.basic.deleted')),
             ['redirect' => $this->blueprint->getRouteName('getList')]
         );
+    }
+
+    /**
+     * Transforms user input into data that can be applied to the model.
+     *
+     * @param array $input
+     * @return array
+     */
+
+    public function transformInput($input) {
+        return $input;
     }
 
 }
