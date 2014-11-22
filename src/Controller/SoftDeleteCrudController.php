@@ -36,6 +36,7 @@ class SoftDeleteCrudController extends BasicCrudController {
 
         return View::make('oxygen/crud::basic.list', [
             'items' => $items,
+            'title' => Lang::get('oxygen/crud::ui.resource.trash'),
             'isTrash' => true
         ]);
     }

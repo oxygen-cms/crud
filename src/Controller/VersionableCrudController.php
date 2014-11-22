@@ -47,7 +47,8 @@ class VersionableCrudController extends SoftDeleteCrudController {
         $item = $this->getItem($item);
 
         return View::make('oxygen/crud::versionable.show', [
-            'item' => $item
+            'item' => $item,
+            'title' => Lang::get('oxygen/crud::ui.resource.show')
         ]);
     }
 
@@ -62,7 +63,8 @@ class VersionableCrudController extends SoftDeleteCrudController {
         $item = $this->getItem($item);
 
         return View::make('oxygen/crud::versionable.update', [
-            'item' => $item
+            'item' => $item,
+            'title' => Lang::get('oxygen/crud::ui.resource.update')
         ]);
     }
 

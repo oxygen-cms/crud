@@ -2,6 +2,7 @@
 
 namespace Oxygen\Crud\Controller;
 
+use Blueprint;
 use Exception;
 use Oxygen\Data\Exception\InvalidEntityException;
 use View;
@@ -30,6 +31,7 @@ class BasicCrudController extends ResourceController {
 
         Lang::when('oxygen/crud::messages', ['resource' => $this->blueprint->getDisplayName()]);
         Lang::when('oxygen/crud::dialogs', ['resource' => $this->blueprint->getDisplayName()]);
+        Lang::when('oxygen/crud::ui', ['resource' => $this->blueprint->getDisplayName(), 'pluralResource' => $this->blueprint->getDisplayName(Blueprint::PLURAL)]);
     }
 
     /**
@@ -45,7 +47,8 @@ class BasicCrudController extends ResourceController {
         // render the view
         return View::make('oxygen/crud::basic.list', [
             'items' => $items,
-            'isTrash' => false
+            'isTrash' => false,
+            'title' => Lang::get('oxygen/crud::ui.resource.list')
         ]);
     }
 
@@ -60,7 +63,8 @@ class BasicCrudController extends ResourceController {
         $item = $this->getItem($item);
 
         return View::make('oxygen/crud::basic.show', [
-            'item' => $item
+            'item' => $item,
+            'title' => Lang::get('oxygen/crud::ui.resource.show')
         ]);
     }
 
@@ -72,7 +76,8 @@ class BasicCrudController extends ResourceController {
 
     public function getCreate() {
         return View::make('oxygen/crud::basic.create', [
-            'item' => $this->repository->make()
+            'item' => $this->repository->make(),
+            'title' => Lang::get('oxygen/crud::ui.resource.create')
         ]);
     }
 
@@ -87,7 +92,8 @@ class BasicCrudController extends ResourceController {
         $item = $this->getItem($item);
 
         return View::make('oxygen/crud::basic.update', [
-            'item' => $item
+            'item' => $item,
+            'title' => Lang::get('oxygen/crud::ui.resource.update')
         ]);
     }
 

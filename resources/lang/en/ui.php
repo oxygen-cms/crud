@@ -25,8 +25,8 @@ return [
     'fromDate'                  => 'from :date',
 
     'resource' => [
-        'list'          => ':resources',
-        'listTrash'     => 'Trashed :resources',
+        'list'          => ':pluralResource',
+        'listTrash'     => 'Trashed :pluralResource',
         'create'        => 'Create :resource',
         'show'          => 'Show :resource',
         'update'        => 'Update :resource'
