@@ -86,4 +86,20 @@ trait Publishable {
         return parent::getUpdate($item);
     }
 
+    /**
+     * Transforms user input into data that can be applied to the model.
+     *
+     * @param array $input
+     * @return array
+     */
+
+    public function transformInput($input) {
+        foreach($input as $key => &$value) {
+            if($key === 'stage') {
+                $value = (int) $value;
+            }
+        }
+        return $input;
+    }
+
 }
