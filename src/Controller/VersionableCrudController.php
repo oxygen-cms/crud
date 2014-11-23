@@ -78,7 +78,7 @@ class VersionableCrudController extends SoftDeleteCrudController {
     public function putUpdate($item) {
         try {
             $item = $this->getItem($item);
-            $item->fromArray(Input::except(['_method', '_token', 'version']));
+            $item->fromArray($this->transformInput(Input::except(['_method', '_token', 'version'])));
             $this->repository->persist($item, Input::get('version', 'guess'));
 
             $options = Input::get('version') === 'new' ? ['refresh' => true] : [];

@@ -170,6 +170,12 @@ class BasicCrudController extends ResourceController {
      */
 
     public function transformInput($input) {
+        foreach($input as $key => $value) {
+            if($this->blueprint->hasField($key)) {
+                $field = $this->blueprint->getField($key);
+                $input[$key] = $field->transformInput($value);
+            }
+        }
         return $input;
     }
 

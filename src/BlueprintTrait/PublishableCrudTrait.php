@@ -43,6 +43,15 @@ class PublishableCrudTrait implements BlueprintTraitInterface {
             'label'         => 'Make Draft',
             'icon'          => 'pencil',
         ]);
+
+        $blueprint->makeField([
+            'name'      => 'stage',
+            'type'      => 'select',
+            'editable'  => true,
+            'inputTransformer' => function($value) {
+                return (int) $value;
+            }
+        ]);
     }
 
 }
