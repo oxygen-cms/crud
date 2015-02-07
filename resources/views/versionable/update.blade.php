@@ -13,20 +13,23 @@
 
 <?php
 
-    use Oxygen\Core\Form\Field;
+    use Oxygen\Core\Form\FieldMetadata;
     use Oxygen\Core\Html\Form\EditableField;
+    use Oxygen\Core\Html\Form\Label;
+    use Oxygen\Core\Html\Form\Row;
 
-    $versionFieldMeta = new Field('version', Field::TYPE_SELECT, true);
+    $versionFieldMeta = new FieldMetadata('version', 'select', true);
     $versionFieldMeta->options = [
         'new' => 'Save as New Version',
         'overwrite' => 'Overwrite Existing Version',
         'guess' => 'Create a New Version if Needed'
     ];
     $versionField = new EditableField($versionFieldMeta, 'guess');
+    $versionRow = new Row([new Label($versionField->getMeta()), $versionField]);
 
 ?>
 
-@include('oxygen/crud::basic.updateForm', ['blueprint' => $blueprint, 'item' => $item, 'extraFields' => [$versionField]])
+@include('oxygen/crud::basic.updateForm', ['blueprint' => $blueprint, 'item' => $item, 'extraFields' => [$versionRow]])
 
 @include('oxygen/crud::versionable.versions', ['item' => $item])
 

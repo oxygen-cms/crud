@@ -5,7 +5,9 @@
 @include('oxygen/crud::versionable.itemHeader', ['blueprint' => $blueprint, 'item' => $item, 'title' => 'Show ' . $blueprint->getDisplayName()])
 
 <?php
+    use Oxygen\Core\Html\Form\Label;
     use Oxygen\Core\Html\Form\StaticField;
+    use Oxygen\Core\Html\Form\Row;
 ?>
 
 <!-- =====================
@@ -14,10 +16,12 @@
 
 <div class="Block">
     <?php
-        foreach($blueprint->getFields() as $field):
-            $field = StaticField::fromEntity($field, $item);
-            echo $field->render();
-        endforeach;
+    foreach($blueprint->getFields() as $field):
+        $field = StaticField::fromEntity($field, $item);
+        $label = new Label($field->getMeta());
+        $row = new Row([$label, $field]);
+        echo $row->render();
+    endforeach;
     ?>
 </div>
 

@@ -4,7 +4,7 @@
 
 <?php
 
-    use Oxygen\Core\Html\Form\StaticField;
+use Oxygen\Core\Html\Form\Label;use Oxygen\Core\Html\Form\Row;use Oxygen\Core\Html\Form\StaticField;
 
     $title = Lang::get('oxygen/crud::ui.resource.show', [
         'resource' => $blueprint->getDisplayName()
@@ -22,7 +22,9 @@
     <?php
         foreach($blueprint->getFields() as $field):
             $field = StaticField::fromEntity($field, $item);
-            echo $field->render();
+            $label = new Label($field->getMeta());
+            $row = new Row([$label, $field]);
+            echo $row->render();
         endforeach;
     ?>
 </div>

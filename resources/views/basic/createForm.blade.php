@@ -1,7 +1,7 @@
 <?php
 
     use Oxygen\Core\Html\Form\EditableField;
-    use Oxygen\Core\Html\Form\Footer;
+    use Oxygen\Core\Html\Form\Footer;use Oxygen\Core\Html\Form\Label;use Oxygen\Core\Html\Form\Row;
 
 ?>
 
@@ -21,8 +21,13 @@
         );
 
         foreach($blueprint->getFields() as $field):
+            if(!$field->editable) {
+                continue;
+            }
             $field = new EditableField($field);
-            echo $field->render();
+            $label = new Label($field->getMeta());
+            $row = new Row([$label, $field]);
+            echo $row->render();
         endforeach;
 
         $footer = new Footer([

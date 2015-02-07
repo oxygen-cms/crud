@@ -173,7 +173,7 @@ class BasicCrudController extends ResourceController {
         foreach($input as $key => $value) {
             if($this->blueprint->hasField($key)) {
                 $field = $this->blueprint->getField($key);
-                $input[$key] = $field->transformInput($value);
+                $input[$key] = $field->getType()->transformInput($field, $value);
             }
         }
         return $input;

@@ -1,7 +1,7 @@
 <?php
 
     use Oxygen\Core\Html\Form\EditableField;
-    use Oxygen\Core\Html\Form\Footer;
+    use Oxygen\Core\Html\Form\Footer;use Oxygen\Core\Html\Form\Label;use Oxygen\Core\Html\Form\Row;
 
 ?>
 
@@ -22,8 +22,13 @@
         );
 
         foreach($blueprint->getFields() as $field) {
+            if(!$field->editable) {
+                continue;
+            }
             $field = EditableField::fromEntity($field, $item);
-            echo $field->render();
+            $label = new Label($field->getMeta());
+            $row = new Row([$label, $field]);
+            echo $row->render();
         }
 
         if(isset($extraFields)) {

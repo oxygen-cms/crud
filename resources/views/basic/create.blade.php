@@ -4,9 +4,7 @@
 
 <?php
 
-    use Oxygen\Core\Action\Action;
     use Oxygen\Core\Html\Header\Header;
-    use Oxygen\Core\Html\Form\EditableField;
 
     $title = Lang::get('oxygen/crud::ui.resource.create', [
         'resource' => $blueprint->getDisplayName()
