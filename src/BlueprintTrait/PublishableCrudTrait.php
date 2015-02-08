@@ -47,7 +47,7 @@ class PublishableCrudTrait implements BlueprintTraitInterface {
         $blueprint->makeField([
             'name'      => 'stage',
             'type'      => 'select',
-            'editable'  => true,
+            'editable'  => true
         ]);
     }
 
