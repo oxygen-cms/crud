@@ -48,9 +48,6 @@ class PublishableCrudTrait implements BlueprintTraitInterface {
             'name'      => 'stage',
             'type'      => 'select',
             'editable'  => true,
-            'inputTransformer' => function($value) {
-                return (int) $value;
-            }
         ]);
     }
 
