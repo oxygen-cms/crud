@@ -79,12 +79,11 @@ class VersionableCrudController extends SoftDeleteCrudController {
         try {
             $item = $this->getItem($item);
             $item->fromArray($this->transformInput(Input::except(['_method', '_token', 'version'])));
-            $this->repository->persist($item, Input::get('version', 'guess'));
+            $madeNewVersion = $this->repository->persist($item, Input::get('version', 'guess'));
 
-            $options = Input::get('version') === 'new' ? ['refresh' => true] : [];
             return Response::notification(
                 new Notification(Lang::get('oxygen/crud::messages.basic.updated')),
-                $options
+                ['refresh' => $madeNewVersion]
             );
         } catch(InvalidEntityException $e) {
             return Response::notification(
