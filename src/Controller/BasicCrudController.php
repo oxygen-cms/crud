@@ -105,7 +105,7 @@ class BasicCrudController extends ResourceController {
 
     public function postCreate() {
         try {
-            $item = $this->repository->make();
+            $item = $this->getItem($this->repository->make());
             $item->fromArray($this->transformInput(Input::except(['_method', '_token'])));
             $this->repository->persist($item);
 
