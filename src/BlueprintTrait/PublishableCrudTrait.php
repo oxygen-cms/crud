@@ -15,7 +15,6 @@ class PublishableCrudTrait implements BlueprintTraitInterface {
      *
      * @param Blueprint $blueprint
      */
-
     public function applyTrait(Blueprint $blueprint) {
         $blueprint->makeAction([
             'name'      => 'postPublish',

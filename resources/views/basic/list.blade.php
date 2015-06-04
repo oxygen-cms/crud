@@ -45,7 +45,7 @@
     @endif
 
     <?php
-        foreach($items->reverse() as $item):
+        foreach($items as $item):
             $itemHeader = Header::fromBlueprint($blueprint, null, ['model' => $item], Header::TYPE_NORMAL, 'item');
 
             if(method_exists($item, 'isPublished')) {

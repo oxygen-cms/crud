@@ -16,7 +16,6 @@ class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterf
      *
      * @param array $options Extra options to be supplied to the trait.
      */
-
     public function __construct(array $options = []) {
         parent::__construct($options);
     }
@@ -28,7 +27,6 @@ class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterf
      *
      * @param Blueprint $blueprint
      */
-
     public function applyTrait(Blueprint $blueprint) {
         parent::applyTrait($blueprint);
 

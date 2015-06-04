@@ -5,6 +5,7 @@ namespace Oxygen\Crud\Controller;
 use Blueprint;
 use Exception;
 use Oxygen\Data\Exception\InvalidEntityException;
+use Oxygen\Data\Repository\QueryParameters;
 use View;
 use Input;
 use Lang;
@@ -25,7 +26,6 @@ class BasicCrudController extends ResourceController {
      * @param BlueprintManager    $manager       BlueprintManager instance
      * @param string              $blueprintName Name of the corresponding Blueprint
      */
-
     public function __construct(RepositoryInterface $repository, BlueprintManager $manager, $blueprintName = null) {
         parent::__construct($repository, $manager, $blueprintName);
 
@@ -37,12 +37,11 @@ class BasicCrudController extends ResourceController {
     /**
      * List all items.
      *
-     * @param array $scopes
+     * @param QueryParameters $queryParameters
      * @return Response
      */
-
-    public function getList($scopes = []) {
-        $items = $this->repository->paginate(25, $scopes);
+    public function getList(QueryParameters $queryParameters = null) {
+        $items = $this->repository->paginate(25, $queryParameters == null ? new QueryParameters([], 'id', QueryParameters::DESCENDING) : $queryParameters);
 
         // render the view
         return View::make('oxygen/crud::basic.list', [
@@ -58,7 +57,6 @@ class BasicCrudController extends ResourceController {
      * @param mixed $item the item
      * @return Response
      */
-
     public function getInfo($item) {
         $item = $this->getItem($item);
 
@@ -73,7 +71,6 @@ class BasicCrudController extends ResourceController {
      *
      * @return Response
      */
-
     public function getCreate() {
         return View::make('oxygen/crud::basic.create', [
             'item' => $this->repository->make(),
@@ -87,7 +84,6 @@ class BasicCrudController extends ResourceController {
      * @param mixed $item the item
      * @return Response
      */
-
     public function getUpdate($item) {
         $item = $this->getItem($item);
 
@@ -102,7 +98,6 @@ class BasicCrudController extends ResourceController {
      *
      * @return Response
      */
-
     public function postCreate() {
         try {
             $item = $this->getItem($this->repository->make());
@@ -127,7 +122,6 @@ class BasicCrudController extends ResourceController {
      * @param mixed $item the item
      * @return Response
      */
-
     public function putUpdate($item) {
         try {
             $item = $this->getItem($item);
@@ -151,7 +145,6 @@ class BasicCrudController extends ResourceController {
      * @param mixed $item the item
      * @return Response
      */
-
     public function deleteDelete($item) {
         $item = $this->getItem($item);
         $this->repository->delete($item);
@@ -168,7 +161,6 @@ class BasicCrudController extends ResourceController {
      * @param array $input
      * @return array
      */
-
     public function transformInput($input) {
         foreach($input as $key => $value) {
             if($this->blueprint->hasField($key)) {

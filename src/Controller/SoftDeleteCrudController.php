@@ -5,6 +5,7 @@ namespace Oxygen\Crud\Controller;
 use Exception;
 
 use Input;
+use Oxygen\Data\Repository\QueryParameters;
 use View;
 use Lang;
 use Response;
@@ -16,23 +17,22 @@ class SoftDeleteCrudController extends BasicCrudController {
     /**
      * List all entities.
      *
-     * @param array $scopes
+     * @param QueryParameters $queryParameters
      * @return Response
      */
-
-    public function getList($scopes = ['excludeTrashed']) {
-        return parent::getList($scopes);
+    public function getList(QueryParameters $queryParameters = null) {
+        if($queryParameters == null) { $queryParameters = new QueryParameters(['excludeTrashed'], 'id', QueryParameters::DESCENDING); }
+        return parent::getList($queryParameters);
     }
 
     /**
      * List all deleted entities.
      *
-     * @param array $scopes
+     * @param QueryParameters $queryParameters
      * @return Response
      */
-
-    public function getTrash($scopes = ['onlyTrashed']) {
-        $items = $this->repository->paginate(25, $scopes);
+    public function getTrash(QueryParameters $queryParameters = null) {
+        $items = $this->repository->paginate(25, $queryParameters == null ? new QueryParameters(['onlyTrashed'], 'id', QueryParameters::DESCENDING) : $queryParameters);
 
         return View::make('oxygen/crud::basic.list', [
             'items' => $items,
@@ -47,7 +47,6 @@ class SoftDeleteCrudController extends BasicCrudController {
      * @param mixed $item the item
      * @return Response
      */
-
     public function deleteDelete($item) {
         $item = $this->getItem($item);
         $item->delete();
@@ -65,7 +64,6 @@ class SoftDeleteCrudController extends BasicCrudController {
      * @param mixed $item the item
      * @return Response
      */
-
     public function postRestore($item) {
         $item = $this->getItem($item);
         $item->restore();
@@ -85,7 +83,6 @@ class SoftDeleteCrudController extends BasicCrudController {
      * @param mixed $item the item
      * @return Response
      */
-
     public function deleteForce($item) {
         $item = $this->getItem($item);
         $this->repository->delete($item);

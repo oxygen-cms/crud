@@ -2,6 +2,7 @@
 
 namespace Oxygen\Crud\Controller;
 
+use Oxygen\Data\Repository\QueryParameters;
 use View;
 use Response;
 use Lang;
@@ -17,23 +18,24 @@ class VersionableCrudController extends SoftDeleteCrudController {
     /**
      * List all entities.
      *
-     * @param array $scopes
+     * @param QueryParameters $queryParameters
      * @return Response
      */
+    public function getList(QueryParameters $queryParameters = null) {
+        if($queryParameters == null) { $queryParameters = new QueryParameters(['excludeTrashed', 'excludeVersions'], 'id', QueryParameters::DESCENDING); }
 
-    public function getList($scopes = ['excludeTrashed', 'excludeVersions']) {
-        return parent::getList($scopes);
+        return parent::getList($queryParameters);
     }
 
     /**
      * List all deleted entities.
      *
-     * @param array $scopes
+     * @param QueryParameters $queryParameters
      * @return Response
      */
-
-    public function getTrash($scopes = ['onlyTrashed', 'excludeVersions']) {
-        return parent::getTrash($scopes);
+    public function getTrash(QueryParameters $queryParameters = null) {
+        if($queryParameters == null) { $queryParameters = new QueryParameters(['onlyTrashed', 'excludeVersions'], 'id', QueryParameters::DESCENDING); }
+        return parent::getTrash($queryParameters);
     }
 
     /**
@@ -42,7 +44,6 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param mixed $item the item
      * @return Response
      */
-
     public function getInfo($item) {
         $item = $this->getItem($item);
 
@@ -58,7 +59,6 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param mixed $item the item
      * @return Response
      */
-
     public function getUpdate($item) {
         $item = $this->getItem($item);
 
@@ -74,7 +74,6 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param mixed $item the item
      * @return Response
      */
-
     public function putUpdate($item) {
         try {
             $item = $this->getItem($item);
@@ -99,7 +98,6 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param mixed $item the item
      * @return Response
      */
-
     public function postNewVersion($item) {
         $item = $this->getItem($item);
         $this->repository->makeNewVersion($item);
@@ -116,7 +114,6 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param mixed $item the item
      * @return Response
      */
-
     public function postMakeHeadVersion($item) {
         $item = $this->getItem($item);
 
@@ -140,7 +137,6 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param mixed $item the item
      * @return Response
      */
-
     public function deleteVersions($item) {
         $item = $this->getItem($item);
         $entity = $this->repository->clearVersions($item);

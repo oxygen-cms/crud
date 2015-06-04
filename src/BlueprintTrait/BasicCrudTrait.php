@@ -16,7 +16,6 @@ class BasicCrudTrait implements BlueprintTraitInterface {
      *
      * @param array $options Extra options to be supplied to the trait.
      */
-
     public function __construct(array $options = []) {
         $this->options = $options;
     }
@@ -27,7 +26,6 @@ class BasicCrudTrait implements BlueprintTraitInterface {
      *
      * @param Blueprint $blueprint
      */
-
     public function applyTrait(Blueprint $blueprint) {
         $displayName = $blueprint->getDisplayName();
 

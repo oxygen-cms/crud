@@ -20,7 +20,6 @@ trait Publishable {
      * @param mixed $item the item
      * @return Response
      */
-
     public function postPublish($item) {
         try {
             $item = $this->getItem($item);
@@ -46,7 +45,6 @@ trait Publishable {
      * @param mixed $item the item
      * @return Response
      */
-
     public function postMakeDraft($item) {
         $item = $this->getItem($item);
 
@@ -73,7 +71,6 @@ trait Publishable {
      * @param mixed $item the item
      * @return Response
      */
-
     public function getUpdate($item) {
         $item = $this->getItem($item);
 
