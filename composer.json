@@ -14,10 +14,10 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "oxygen/core": "~0.2.0",
-        "oxygen/data": "~0.3.0",
-        "illuminate/support": "4.2.*"
+        "php": ">=5.5.9",
+        "oxygen/core": "dev-master",
+        "oxygen/data": "dev-master",
+        "illuminate/support": "~5.1.0"
     },
     "autoload": {
         "psr-4": {
