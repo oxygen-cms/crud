@@ -13,7 +13,7 @@ use URL;
 use Response;
 
 use Oxygen\Core\Controller\ResourceController;
-use Oxygen\Core\Blueprint\Manager as BlueprintManager;
+use Oxygen\Core\Blueprint\BlueprintManager as BlueprintManager;
 use Oxygen\Core\Http\Notification;
 use Oxygen\Data\Repository\RepositoryInterface;
 
