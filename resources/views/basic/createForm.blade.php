@@ -1,6 +1,6 @@
 <?php
 
-    use Oxygen\Core\Html\Form\EditableField;
+use Oxygen\Core\Form\Form;use Oxygen\Core\Html\Form\EditableField;
     use Oxygen\Core\Html\Form\Footer;use Oxygen\Core\Html\Form\Label;use Oxygen\Core\Html\Form\Row;use Oxygen\Core\Html\Toolbar\ButtonToolbarItem;use Oxygen\Core\Html\Toolbar\SubmitToolbarItem;
 
 ?>
@@ -12,19 +12,14 @@
 <div class="Block">
 
     <?php
-        echo Form::model(
-            $item,
-            array(
-                'route' => $blueprint->getRouteName('postCreate'),
-                'class' => 'Form--sendAjax Form--warnBeforeExit Form--submitOnKeydown'
-            )
-        );
+        $form = new Form($blueprint->getAction('postCreate'));
+        $form->setAsynchronous(true)->setSubmitOnShortcutKey(true)->setWarnBeforeExit(true);
 
         foreach($blueprint->getFields() as $field):
             if(!$field->editable) {
                 continue;
             }
-            $field = new EditableField($field);
+            $field = new EditableField($field, app('input'));
             $label = new Label($field->getMeta());
             $row = new Row([$label, $field]);
             echo $row->render();
