@@ -1,6 +1,6 @@
 <?php
 
-use Oxygen\Core\Form\Form;use Oxygen\Core\Html\Form\EditableField;
+use Oxygen\Core\Html\Form\Form;use Oxygen\Core\Html\Form\EditableField;
     use Oxygen\Core\Html\Form\Label;
     use Oxygen\Core\Html\Form\Row;
     use Oxygen\Core\Html\Toolbar\ButtonToolbarItem;
