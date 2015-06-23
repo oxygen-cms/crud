@@ -19,7 +19,7 @@ use Oxygen\Core\Html\Form\Form;use Oxygen\Core\Html\Form\EditableField;
             if(!$field->editable) {
                 continue;
             }
-            $field = new EditableField($field, app('input'));
+            $field = new EditableField($field, app('request'));
             $label = new Label($field->getMeta());
             $row = new Row([$label, $field]);
             echo $row->render();

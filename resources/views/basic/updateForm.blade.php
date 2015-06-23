@@ -23,7 +23,7 @@ use Oxygen\Core\Html\Form\Form;use Oxygen\Core\Html\Form\EditableField;
             if(!$field->editable) {
                 continue;
             }
-            $field = EditableField::fromEntity($field, $item, app('input'));
+            $field = EditableField::fromEntity($field, $item, app('request'));
             $label = new Label($field->getMeta());
             $row = new Row([$label, $field]);
             $form->addContent($row);
