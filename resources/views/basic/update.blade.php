@@ -10,8 +10,8 @@
 
 ?>
 
-@include('oxygen/crud::basic.itemHeader', ['blueprint' => $blueprint, 'item' => $item, 'title' => $title])
+@include('oxygen/crud::basic.itemHeader', ['blueprint' => $blueprint, 'fields' => $fields, 'item' => $item, 'title' => $title])
 
-@include('oxygen/crud::basic.updateForm', ['blueprint' => $blueprint, 'item' => $item])
+@include('oxygen/crud::basic.updateForm', ['blueprint' => $blueprint, 'fields' => $fields, 'item' => $item])
 
 @stop

@@ -24,9 +24,9 @@
      ===================== -->
 
 <div class="Block">
-    {{ $header->render() }}
+    {!! $header->render() !!}
 </div>
 
-@include('oxygen/crud::basic.createForm', ['blueprint' => $blueprint, 'item' => $item])
+@include('oxygen/crud::basic.createForm', ['blueprint' => $blueprint, 'fields' => $fields, 'item' => $item])
 
 @stop

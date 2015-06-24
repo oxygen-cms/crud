@@ -29,7 +29,7 @@
      ===================== -->
 
 <div class="Block">
-    {{ $sectionHeader->render() }}
+    {!! $sectionHeader->render() !!}
 </div>
 
 <!-- =====================
@@ -46,7 +46,7 @@
 
     <?php
         foreach($items as $item):
-            $itemHeader = Header::fromBlueprint($blueprint, null, ['model' => $item], Header::TYPE_NORMAL, 'item');
+            $itemHeader = Header::fromBlueprint($blueprint, $fields, ['model' => $item], Header::TYPE_NORMAL, 'item');
 
             if(method_exists($item, 'isPublished')) {
                 $icon = $item->isPublished() ? 'globe' : 'pencil-square';
@@ -57,7 +57,7 @@
         endforeach;
     ?>
 
-    {{ $items->links() }}
+    {!! $items->render() !!}
 
 </div>
 

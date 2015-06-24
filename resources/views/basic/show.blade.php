@@ -4,7 +4,9 @@
 
 <?php
 
-use Oxygen\Core\Html\Form\Label;use Oxygen\Core\Html\Form\Row;use Oxygen\Core\Html\Form\StaticField;
+    use Oxygen\Core\Html\Form\Label;
+    use Oxygen\Core\Html\Form\Row;
+    use Oxygen\Core\Html\Form\StaticField;
 
     $title = Lang::get('oxygen/crud::ui.resource.show', [
         'resource' => $blueprint->getDisplayName()
@@ -12,7 +14,7 @@ use Oxygen\Core\Html\Form\Label;use Oxygen\Core\Html\Form\Row;use Oxygen\Core\Ht
 
 ?>
 
-@include('oxygen/crud::basic.itemHeader', ['blueprint' => $blueprint, 'item' => $item, 'title' => $title])
+@include('oxygen/crud::basic.itemHeader', ['blueprint' => $blueprint, 'fields' => $fields, 'item' => $item, 'title' => $title])
 
 <!-- =====================
              INFO

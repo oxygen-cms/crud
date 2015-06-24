@@ -13,7 +13,7 @@
             : $blueprint->getRouteName('getList')
     ));
 
-    $itemHeader = Header::fromBlueprint($blueprint, null, ['model' => $item], Header::TYPE_NORMAL, 'item');
+    $itemHeader = Header::fromBlueprint($blueprint, $fields, ['model' => $item], Header::TYPE_NORMAL, 'item');
 
     $blockClasses = ['Block'];
     if(isset($seamless) && $seamless == true) {
@@ -27,7 +27,7 @@
             HEADER
      ===================== -->
 
-<div class="{{ implode(' ', $blockClasses) }}">
-    {{ $sectionHeader->render() }}
-    {{ $itemHeader->render() }}
+<div class="{{{ implode(' ', $blockClasses) }}}">
+    {!! $sectionHeader->render() !!}
+    {!! $itemHeader->render() !!}
 </div>

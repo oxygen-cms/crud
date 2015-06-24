@@ -15,19 +15,19 @@ use Oxygen\Core\Html\Form\Form;use Oxygen\Core\Html\Form\EditableField;
         $form = new Form($blueprint->getAction('postCreate'));
         $form->setAsynchronous(true)->setSubmitOnShortcutKey(true)->setWarnBeforeExit(true);
 
-        foreach($blueprint->getFields() as $field):
+        foreach($fields->getFields() as $field):
             if(!$field->editable) {
                 continue;
             }
             $field = new EditableField($field, app('request'));
             $label = new Label($field->getMeta());
             $row = new Row([$label, $field]);
-            echo $row->render();
+            $form->addContent($row);
         endforeach;
 
         if(isset($extraFields)) {
             foreach($extraFields as $field) {
-                echo $field->render();
+                $form->addContent($field);
             }
         }
 
@@ -36,10 +36,9 @@ use Oxygen\Core\Html\Form\Form;use Oxygen\Core\Html\Form\EditableField;
             new SubmitToolbarItem(Lang::get('oxygen/crud::ui.create'))
         ]);
         $footer->isFooter = true;
+        $form->addContent($footer);
 
-        echo $footer->render();
-
-        echo Form::close();
+        echo $form->render();
     ?>
 
 </div>

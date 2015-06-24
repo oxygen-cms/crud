@@ -2,8 +2,9 @@
 
 namespace Oxygen\Crud\Controller;
 
-use Blueprint;
 use Exception;
+use Oxygen\Core\Blueprint\Blueprint;
+use Oxygen\Core\Form\FieldSet;
 use Oxygen\Data\Exception\InvalidEntityException;
 use Oxygen\Data\Repository\QueryParameters;
 use View;
@@ -20,14 +21,22 @@ use Oxygen\Data\Repository\RepositoryInterface;
 class BasicCrudController extends ResourceController {
 
     /**
+     * Form fields used in the Create/Read/Update/Delete actions
+     *
+     * @var \Oxygen\Core\Form\FieldSet
+     */
+    protected $crudFields;
+
+    /**
      * Constructs a BasicCrudController.
      *
-     * @param RepositoryInterface $repository
-     * @param BlueprintManager    $manager       BlueprintManager instance
-     * @param string              $blueprintName Name of the corresponding Blueprint
+     * @param RepositoryInterface         $repository
+     * @param Blueprint|BlueprintManager  $blueprint Blueprint or BlueprintManager
      */
-    public function __construct(RepositoryInterface $repository, BlueprintManager $manager, $blueprintName = null) {
-        parent::__construct($repository, $manager, $blueprintName);
+    public function __construct(RepositoryInterface $repository, $blueprint, FieldSet $crudFields) {
+        parent::__construct($repository, $blueprint);
+
+        $this->crudFields = $crudFields;
 
         Lang::when('oxygen/crud::messages', ['resource' => $this->blueprint->getDisplayName()]);
         Lang::when('oxygen/crud::dialogs', ['resource' => $this->blueprint->getDisplayName()]);
@@ -47,6 +56,7 @@ class BasicCrudController extends ResourceController {
         return View::make('oxygen/crud::basic.list', [
             'items' => $items,
             'isTrash' => false,
+            'fields' => $this->crudFields,
             'title' => Lang::get('oxygen/crud::ui.resource.list')
         ]);
     }
@@ -62,6 +72,7 @@ class BasicCrudController extends ResourceController {
 
         return View::make('oxygen/crud::basic.show', [
             'item' => $item,
+            'fields' => $this->crudFields,
             'title' => Lang::get('oxygen/crud::ui.resource.show')
         ]);
     }
@@ -74,6 +85,7 @@ class BasicCrudController extends ResourceController {
     public function getCreate() {
         return View::make('oxygen/crud::basic.create', [
             'item' => $this->repository->make(),
+            'fields' => $this->crudFields,
             'title' => Lang::get('oxygen/crud::ui.resource.create')
         ]);
     }
@@ -89,6 +101,7 @@ class BasicCrudController extends ResourceController {
 
         return View::make('oxygen/crud::basic.update', [
             'item' => $item,
+            'fields' => $this->crudFields,
             'title' => Lang::get('oxygen/crud::ui.resource.update')
         ]);
     }
@@ -163,8 +176,8 @@ class BasicCrudController extends ResourceController {
      */
     public function transformInput($input) {
         foreach($input as $key => $value) {
-            if($this->blueprint->hasField($key)) {
-                $field = $this->blueprint->getField($key);
+            if($this->crudFields->hasField($key)) {
+                $field = $this->crudFields->getField($key);
                 $input[$key] = $field->getType()->transformInput($field, $value);
             }
         }

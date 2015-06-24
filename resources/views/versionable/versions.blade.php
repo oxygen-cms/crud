@@ -31,7 +31,7 @@
 ?>
 
 <div class="Block">
-    {{ $header->render() }}
+    {!! $header->render() !!}
 </div>
 
 <div class="Block">

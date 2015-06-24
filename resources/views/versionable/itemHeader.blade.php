@@ -53,7 +53,7 @@
             HEADER
      ===================== -->
 
-<div class="{{ implode(' ', $blockClasses) }}">
-    {{ $sectionHeader->render() }}
-    {{ $itemHeader->render() }}
+<div class="{{{ implode(' ', $blockClasses) }}}">
+    {!! $sectionHeader->render() !!}
+    {!! $itemHeader->render() !!}
 </div>

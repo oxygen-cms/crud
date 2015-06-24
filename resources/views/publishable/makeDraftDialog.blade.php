@@ -14,7 +14,7 @@
     ];
 ?>
 
-<form {{ Html::attributes($formAttributes) }}>
+<form {!! html_attributes($formAttributes) !!}>
     {{ Form::token(); }}
-    <button {{ Html::attributes($buttonAttributes) }}>Submit</button>
+    <button {!! html_attributes($buttonAttributes) !!}>Submit</button>
 </form>
