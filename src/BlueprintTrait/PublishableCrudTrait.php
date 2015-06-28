@@ -5,6 +5,7 @@ namespace Oxygen\Crud\BlueprintTrait;
 use Oxygen\Core\Html\Toolbar\ActionToolbarItem;
 use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Blueprint\Blueprint;
+use Oxygen\Core\Http\Method;
 
 class PublishableCrudTrait implements BlueprintTraitInterface {
 
@@ -19,7 +20,7 @@ class PublishableCrudTrait implements BlueprintTraitInterface {
         $blueprint->makeAction([
             'name'      => 'postPublish',
             'pattern'   => '{id}/publish',
-            'method'    => 'POST'
+            'method'    => Method::POST
         ]);
         $blueprint->makeToolbarItem([
             'action'        => 'postPublish',
@@ -35,18 +36,12 @@ class PublishableCrudTrait implements BlueprintTraitInterface {
         $blueprint->makeAction([
             'name'      => 'postMakeDraft',
             'pattern'   => '{id}/makeDraft',
-            'method'    => 'POST'
+            'method'    => Method::POST
         ]);
         $blueprint->makeToolbarItem([
             'action'        => 'postMakeDraft',
             'label'         => 'Make Draft',
             'icon'          => 'pencil',
-        ]);
-
-        $blueprint->makeField([
-            'name'      => 'stage',
-            'type'      => 'select',
-            'editable'  => true
         ]);
     }
 

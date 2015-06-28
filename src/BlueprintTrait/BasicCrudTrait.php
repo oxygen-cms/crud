@@ -8,6 +8,7 @@ use Oxygen\Core\Html\Toolbar\ActionToolbarItem;
 use Oxygen\Core\Html\Dialog\Dialog;
 use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Blueprint\Blueprint;
+use Oxygen\Core\Http\Method;
 
 class BasicCrudTrait implements BlueprintTraitInterface {
 
@@ -62,7 +63,7 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             $blueprint->makeAction([
                 'name'      => 'postCreate',
                 'pattern'   => '/',
-                'method'    => 'POST'
+                'method'    => Method::POST
             ]);
         }
 
@@ -95,7 +96,7 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             $blueprint->makeAction([
                 'name'      => 'putUpdate',
                 'pattern'   => '{id}',
-                'method'    => 'PUT'
+                'method'    => Method::PUT
             ]);
         }
 
@@ -115,7 +116,7 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             $blueprint->makeAction([
                 'name'      => 'deleteDelete',
                 'pattern'   => '{id}',
-                'method'    => 'DELETE'
+                'method'    => Method::DELETE
             ]);
             $blueprint->makeToolbarItem([
                 'action'    => 'deleteDelete',

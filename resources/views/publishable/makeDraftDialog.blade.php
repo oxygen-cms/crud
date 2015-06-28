@@ -1,5 +1,6 @@
 <?php
     use Oxygen\Core\Html\Dialog\Dialog;
+    use Oxygen\Core\Http\Method;
 
     $dialog = new Dialog(Lang::get('oxygen/crud::dialogs.publishable.makeDraft'));
     $buttonAttributes = array_merge(
@@ -8,7 +9,7 @@
     );
     $formAttributes = [
         'class' => 'Form--sendAjax Form--autoSubmit',
-        'method' => 'POST',
+        'method' => Method::POST,
         'style'  => 'display: none;',
         'action' => URL::route($blueprint->getRouteName('postMakeDraft'), $item->getId())
     ];

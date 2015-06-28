@@ -8,6 +8,7 @@ use Oxygen\Core\Html\Toolbar\ActionToolbarItem;
 use Oxygen\Core\Html\Dialog\Dialog;
 use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Blueprint\Blueprint;
+use Oxygen\Core\Http\Method;
 
 class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTraitInterface {
 
@@ -36,7 +37,7 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
             $blueprint->makeAction([
                 'name'      => 'postNewVersion',
                 'pattern'   => '{id}/newVersion',
-                'method'    => 'POST'
+                'method'    => Method::POST
             ]);
             $blueprint->makeToolbarItem([
                 'action'        => 'postNewVersion',
@@ -49,7 +50,7 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
             $blueprint->makeAction([
                 'name'      => 'postMakeHeadVersion',
                 'pattern'   => '{id}/makeHead',
-                'method'    => 'POST'
+                'method'    => Method::POST
             ]);
             $blueprint->makeToolbarItem([
                 'action'        => 'postMakeHeadVersion',
@@ -67,7 +68,7 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
             $blueprint->makeAction([
                 'name'      => 'deleteVersions',
                 'pattern'   => '{id}/versions',
-                'method'    => 'DELETE'
+                'method'    => Method::POST
             ]);
             $blueprint->makeToolbarItem([
                 'action'        => 'deleteVersions',

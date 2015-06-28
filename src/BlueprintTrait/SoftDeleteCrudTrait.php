@@ -8,6 +8,7 @@ use Oxygen\Core\Html\Toolbar\ActionToolbarItem;
 use Oxygen\Core\Html\Dialog\Dialog;
 use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Blueprint\Blueprint;
+use Oxygen\Core\Http\Method;
 
 class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterface {
 
@@ -45,7 +46,7 @@ class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterf
             $blueprint->makeAction([
                 'name'      => 'postRestore',
                 'pattern'   => '{id}/restore',
-                'method'    => 'POST'
+                'method'    => Method::POST
             ]);
             $blueprint->makeToolbarItem([
                 'action'    => 'postRestore',
@@ -63,7 +64,7 @@ class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterf
             $blueprint->makeAction([
                 'name'      => 'deleteForce',
                 'pattern'   => '{id}/force',
-                'method'    => 'DELETE'
+                'method'    => Method::DELETE
             ]);
             $blueprint->makeToolbarItem([
                 'action'    => 'deleteForce',
