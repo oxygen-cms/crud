@@ -76,7 +76,7 @@ trait Publishable {
 
         if($item->isPublished()) {
             Event::listen('oxygen.layout.page.after', function() use($item) {
-                echo View::make('oxygen/crud::publishable.makeDraftDialog', ['item' => $item])->render();
+                echo view('oxygen/crud::publishable.makeDraftDialog', ['item' => $item])->render();
             });
         }
 

@@ -3,6 +3,9 @@
 namespace Oxygen\Crud\Controller;
 
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Oxygen\Core\Contracts\Routing\ResponseFactory;
 use Oxygen\Core\Blueprint\Blueprint;
 use Oxygen\Core\Form\FieldSet;
 use Oxygen\Data\Exception\InvalidEntityException;
@@ -11,7 +14,6 @@ use View;
 use Input;
 use Lang;
 use URL;
-use Response;
 
 use Oxygen\Core\Controller\ResourceController;
 use Oxygen\Core\Blueprint\BlueprintManager as BlueprintManager;
@@ -70,7 +72,7 @@ class BasicCrudController extends ResourceController {
     public function getInfo($item) {
         $item = $this->getItem($item);
 
-        return View::make('oxygen/crud::basic.show', [
+        return view('oxygen/crud::basic.show', [
             'item' => $item,
             'fields' => $this->crudFields,
             'title' => Lang::get('oxygen/crud::ui.resource.show')
@@ -83,7 +85,7 @@ class BasicCrudController extends ResourceController {
      * @return Response
      */
     public function getCreate() {
-        return View::make('oxygen/crud::basic.create', [
+        return view('oxygen/crud::basic.create', [
             'item' => $this->repository->make(),
             'fields' => $this->crudFields,
             'title' => Lang::get('oxygen/crud::ui.resource.create')
@@ -99,7 +101,7 @@ class BasicCrudController extends ResourceController {
     public function getUpdate($item) {
         $item = $this->getItem($item);
 
-        return View::make('oxygen/crud::basic.update', [
+        return view('oxygen/crud::basic.update', [
             'item' => $item,
             'fields' => $this->crudFields,
             'title' => Lang::get('oxygen/crud::ui.resource.update')
@@ -111,10 +113,10 @@ class BasicCrudController extends ResourceController {
      *
      * @return Response
      */
-    public function postCreate() {
+    public function postCreate(Request $input) {
         try {
             $item = $this->getItem($this->repository->make());
-            $item->fromArray($this->transformInput(Input::except(['_method', '_token'])));
+            $item->fromArray($this->transformInput($input->except(['_method', '_token'])));
             $this->repository->persist($item);
 
             return Response::notification(
@@ -135,17 +137,17 @@ class BasicCrudController extends ResourceController {
      * @param mixed $item the item
      * @return Response
      */
-    public function putUpdate($item) {
+    public function putUpdate($item, ResponseFactory $response) {
         try {
             $item = $this->getItem($item);
             $item->fromArray($this->transformInput(Input::except(['_method', '_token'])));
             $this->repository->persist($item);
 
-            return Response::notification(
+            return $response->notification(
                 new Notification(Lang::get('oxygen/crud::messages.basic.updated'))
             );
         } catch(InvalidEntityException $e) {
-            return Response::notification(
+            return $response->notification(
                 new Notification($e->getErrors()->first(), Notification::FAILED),
                 ['input' => true]
             );
