@@ -4,7 +4,6 @@ namespace Oxygen\Crud\Controller;
 
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Oxygen\Core\Contracts\Routing\ResponseFactory;
 use Oxygen\Core\Blueprint\Blueprint;
 use Oxygen\Core\Form\FieldSet;
@@ -14,6 +13,7 @@ use View;
 use Input;
 use Lang;
 use URL;
+use Response;
 
 use Oxygen\Core\Controller\ResourceController;
 use Oxygen\Core\Blueprint\BlueprintManager as BlueprintManager;
@@ -49,7 +49,7 @@ class BasicCrudController extends ResourceController {
      * List all items.
      *
      * @param QueryParameters $queryParameters
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function getList(QueryParameters $queryParameters = null) {
         $items = $this->repository->paginate(25, $queryParameters == null ? new QueryParameters([], 'id', QueryParameters::DESCENDING) : $queryParameters);
@@ -67,7 +67,7 @@ class BasicCrudController extends ResourceController {
      * Shows info about a Resource.
      *
      * @param mixed $item the item
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function getInfo($item) {
         $item = $this->getItem($item);
@@ -82,7 +82,7 @@ class BasicCrudController extends ResourceController {
     /**
      * Shows the create form.
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function getCreate() {
         return view('oxygen/crud::basic.create', [
@@ -96,7 +96,7 @@ class BasicCrudController extends ResourceController {
      * Shows the update form.
      *
      * @param mixed $item the item
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function getUpdate($item) {
         $item = $this->getItem($item);
@@ -111,7 +111,7 @@ class BasicCrudController extends ResourceController {
     /**
      * Creates a new Resource.
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function postCreate(Request $input) {
         try {
@@ -135,7 +135,7 @@ class BasicCrudController extends ResourceController {
      * Updates a Resource.
      *
      * @param mixed $item the item
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function putUpdate($item, ResponseFactory $response) {
         try {
@@ -158,7 +158,7 @@ class BasicCrudController extends ResourceController {
      * Deletes a Resource.
      *
      * @param mixed $item the item
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function deleteDelete($item) {
         $item = $this->getItem($item);
