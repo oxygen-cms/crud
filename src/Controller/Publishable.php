@@ -86,7 +86,7 @@ trait Publishable {
                 $form->setAsynchronous(true);
                 $form->addClass('Form--autoSubmit');
                 $form->addClass('Form--hidden');
-                $form->setRouteParameters(['model' => $item]);
+                $form->setRouteParameterArguments(['model' => $item]);
 
                 $form->addContent('<button ' . html_attributes($buttonAttributes) . '>Submit</button>');
                 echo $form->render();
