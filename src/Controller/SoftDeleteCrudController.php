@@ -18,9 +18,9 @@ class SoftDeleteCrudController extends BasicCrudController {
      * List all entities.
      *
      * @param QueryParameters $queryParameters
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
-    public function getList(QueryParameters $queryParameters = null) {
+    public function getList($queryParameters = null) {
         if($queryParameters == null) { $queryParameters = new QueryParameters(['excludeTrashed'], 'id', QueryParameters::DESCENDING); }
         return parent::getList($queryParameters);
     }
@@ -29,9 +29,9 @@ class SoftDeleteCrudController extends BasicCrudController {
      * List all deleted entities.
      *
      * @param QueryParameters $queryParameters
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
-    public function getTrash(QueryParameters $queryParameters = null) {
+    public function getTrash($queryParameters = null) {
         $items = $this->repository->paginate(25, $queryParameters == null ? new QueryParameters(['onlyTrashed'], 'id', QueryParameters::DESCENDING) : $queryParameters);
 
         return View::make('oxygen/crud::basic.list', [

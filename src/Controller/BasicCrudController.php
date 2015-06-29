@@ -51,7 +51,7 @@ class BasicCrudController extends ResourceController {
      * @param QueryParameters $queryParameters
      * @return \Illuminate\Http\Response
      */
-    public function getList(QueryParameters $queryParameters = null) {
+    public function getList($queryParameters = null) {
         $items = $this->repository->paginate(25, $queryParameters == null ? new QueryParameters([], 'id', QueryParameters::DESCENDING) : $queryParameters);
 
         // render the view

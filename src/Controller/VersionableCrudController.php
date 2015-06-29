@@ -21,7 +21,7 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param QueryParameters $queryParameters
      * @return Response
      */
-    public function getList(QueryParameters $queryParameters = null) {
+    public function getList($queryParameters = null) {
         if($queryParameters == null) { $queryParameters = new QueryParameters(['excludeTrashed', 'excludeVersions'], 'id', QueryParameters::DESCENDING); }
 
         return parent::getList($queryParameters);
@@ -33,7 +33,7 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param QueryParameters $queryParameters
      * @return Response
      */
-    public function getTrash(QueryParameters $queryParameters = null) {
+    public function getTrash($queryParameters = null) {
         if($queryParameters == null) { $queryParameters = new QueryParameters(['onlyTrashed', 'excludeVersions'], 'id', QueryParameters::DESCENDING); }
         return parent::getTrash($queryParameters);
     }
