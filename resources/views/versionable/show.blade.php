@@ -16,7 +16,7 @@
 
 <div class="Block">
     <?php
-    foreach($blueprint->getFields() as $field):
+    foreach($fields->getFields() as $field):
         $field = StaticField::fromEntity($field, $item);
         $label = new Label($field->getMeta());
         $row = new Row([$label, $field]);
