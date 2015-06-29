@@ -30,7 +30,7 @@
     }
     $sectionHeader->setBackLink($backLink);
 
-    $itemHeader = Header::fromBlueprint($blueprint, null, ['model' => $item], Header::TYPE_NORMAL, 'item');
+    $itemHeader = Header::fromBlueprint($blueprint, $fields, ['model' => $item], Header::TYPE_NORMAL, 'item');
 
     if(Auth::user()->hasPermissions($blueprint->getRouteName() . '.versions')) {
         $itemHeader->setSubtitle(getSubtitleForItem($item));

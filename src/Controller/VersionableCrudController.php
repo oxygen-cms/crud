@@ -2,9 +2,9 @@
 
 namespace Oxygen\Crud\Controller;
 
+use Illuminate\Http\Response;
+use Oxygen\Core\Contracts\Routing\ResponseFactory;
 use Oxygen\Data\Repository\QueryParameters;
-use View;
-use Response;
 use Lang;
 use Input;
 
@@ -47,8 +47,9 @@ class VersionableCrudController extends SoftDeleteCrudController {
     public function getInfo($item) {
         $item = $this->getItem($item);
 
-        return View::make('oxygen/crud::versionable.show', [
+        return view('oxygen/crud::versionable.show', [
             'item' => $item,
+            'fields' => $this->crudFields,
             'title' => Lang::get('oxygen/crud::ui.resource.show')
         ]);
     }
@@ -62,8 +63,9 @@ class VersionableCrudController extends SoftDeleteCrudController {
     public function getUpdate($item) {
         $item = $this->getItem($item);
 
-        return View::make('oxygen/crud::versionable.update', [
+        return view('oxygen/crud::versionable.update', [
             'item' => $item,
+            'fields' => $this->crudFields,
             'title' => Lang::get('oxygen/crud::ui.resource.update')
         ]);
     }
@@ -74,18 +76,18 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param mixed $item the item
      * @return Response
      */
-    public function putUpdate($item) {
+    public function putUpdate($item, ResponseFactory $response) {
         try {
             $item = $this->getItem($item);
             $item->fromArray($this->transformInput(Input::except(['_method', '_token', 'version'])));
             $madeNewVersion = $this->repository->persist($item, Input::get('version', 'guess'));
 
-            return Response::notification(
+            return $response->notification(
                 new Notification(Lang::get('oxygen/crud::messages.basic.updated')),
                 ['refresh' => $madeNewVersion]
             );
         } catch(InvalidEntityException $e) {
-            return Response::notification(
+            return $response->notification(
                 new Notification($e->getErrors()->first(), Notification::FAILED),
                 ['input' => true]
             );
@@ -98,11 +100,11 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param mixed $item the item
      * @return Response
      */
-    public function postNewVersion($item) {
+    public function postNewVersion($item, ResponseFactory $response) {
         $item = $this->getItem($item);
         $this->repository->makeNewVersion($item);
 
-        return Response::notification(
+        return $response->notification(
             new Notification(Lang::get('oxygen/crud::messages.versionable.madeVersion')),
             ['refresh' => true]
         );
@@ -114,18 +116,18 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param mixed $item the item
      * @return Response
      */
-    public function postMakeHeadVersion($item) {
+    public function postMakeHeadVersion($item, ResponseFactory $response) {
         $item = $this->getItem($item);
 
         if($item->isHead()) {
-            return Response::notification(
+            return $response->notification(
                 new Notification(Lang::get('oxygen/crud::messages.versionable.alreadyHead'), Notification::FAILED)
             );
         }
 
         $this->repository->makeHeadVersion($item);
 
-        return Response::notification(
+        return $response->notification(
             new Notification(Lang::get('oxygen/crud::messages.versionable.madeHead')),
             ['refresh' => true]
         );
@@ -137,12 +139,12 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param mixed $item the item
      * @return Response
      */
-    public function deleteVersions($item) {
+    public function deleteVersions($item, ResponseFactory $response) {
         $item = $this->getItem($item);
         $entity = $this->repository->clearVersions($item);
 
         $options = ['redirect' => [$this->blueprint->getRouteName('getUpdate'), $entity->getId()]];
-        return Response::notification(
+        return $response->notification(
             new Notification(Lang::get('oxygen/crud::messages.versionable.clearedVersions')),
             $options
         );

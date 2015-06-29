@@ -2,7 +2,7 @@
 
 @section('content')
 
-@include('oxygen/crud::versionable.itemHeader', ['blueprint' => $blueprint, 'item' => $item, 'title' => 'Show ' . $blueprint->getDisplayName()])
+@include('oxygen/crud::versionable.itemHeader', ['blueprint' => $blueprint, 'fields' => $fields, 'item' => $item, 'title' => 'Show ' . $blueprint->getDisplayName()])
 
 <?php
     use Oxygen\Core\Html\Form\Label;

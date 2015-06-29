@@ -54,7 +54,7 @@
         foreach($versions as $version):
             $itemHeader = Header::fromBlueprint(
                 $blueprint,
-                null,
+                $fields,
                 ['model' => $version],
                 Header::TYPE_SMALL,
                 'item'

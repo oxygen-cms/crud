@@ -9,7 +9,7 @@
     ]);
 ?>
 
-@include('oxygen/crud::versionable.itemHeader', ['blueprint' => $blueprint, 'item' => $item, 'title' => $title])
+@include('oxygen/crud::versionable.itemHeader', ['blueprint' => $blueprint, 'fields' => $fields, 'item' => $item, 'title' => $title])
 
 <?php
 
@@ -29,7 +29,7 @@
 
 ?>
 
-@include('oxygen/crud::basic.updateForm', ['blueprint' => $blueprint, 'item' => $item, 'extraFields' => [$versionRow]])
+@include('oxygen/crud::basic.updateForm', ['blueprint' => $blueprint, 'fields' => $fields, 'item' => $item, 'extraFields' => [$versionRow]])
 
 @include('oxygen/crud::versionable.versions', ['item' => $item])
 
