@@ -3,9 +3,10 @@
 namespace Oxygen\Crud\Controller;
 
 use Event;
-use Form;
 use Lang;
 use Oxygen\Core\Html\Dialog\Dialog;
+use Oxygen\Core\Html\Form\Form;
+use Oxygen\Core\Http\Method;
 use Oxygen\Data\Exception\InvalidEntityException;
 use Response;
 use Oxygen\Core\Http\Notification;
@@ -76,7 +77,19 @@ trait Publishable {
 
         if($item->isPublished()) {
             Event::listen('oxygen.layout.page.after', function() use($item) {
-                echo view('oxygen/crud::publishable.makeDraftDialog', ['item' => $item])->render();
+                $dialog = new Dialog(Lang::get('oxygen/crud::dialogs.publishable.makeDraft'));
+                $buttonAttributes = array_merge(
+                    ['type' => 'submit'],
+                    $dialog->render()
+                );
+                $form = new Form($this->blueprint->getAction('postMakeDraft'));
+                $form->setAsynchronous(true);
+                $form->addClass('Form--autoSubmit');
+                $form->addClass('Form--hidden');
+                $form->setRouteParameters(['model' => $item]);
+
+                $form->addContent('<button ' . html_attributes($buttonAttributes) . '>Submit</button>');
+                echo $form->render();
             });
         }
 
