@@ -18,6 +18,7 @@ use Oxygen\Core\Html\Form\Form;use Oxygen\Core\Html\Form\EditableField;
     <?php
         $form = new Form($blueprint->getAction('putUpdate'));
         $form->setAsynchronous(true)->setWarnBeforeExit(true)->setSubmitOnShortcutKey(true);
+        $form->setRouteParameterArguments(['model' => $item]);
 
         foreach($fields->getFields() as $field) {
             if(!$field->editable) {
