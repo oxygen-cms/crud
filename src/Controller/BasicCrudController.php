@@ -42,7 +42,7 @@ class BasicCrudController extends ResourceController {
 
         Lang::when('oxygen/crud::messages', ['resource' => $this->blueprint->getDisplayName()]);
         Lang::when('oxygen/crud::dialogs', ['resource' => $this->blueprint->getDisplayName()]);
-        Lang::when('oxygen/crud::ui', ['resource' => $this->blueprint->getDisplayName(), 'pluralResource' => $this->blueprint->getDisplayName(Blueprint::PLURAL)]);
+        Lang::when('oxygen/crud::ui', ['resource' => $this->blueprint->getDisplayName(), 'pluralResource' => $this->blueprint->getPluralDisplayName()]);
     }
 
     /**

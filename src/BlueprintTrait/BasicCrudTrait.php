@@ -28,8 +28,6 @@ class BasicCrudTrait implements BlueprintTraitInterface {
      * @param Blueprint $blueprint
      */
     public function applyTrait(Blueprint $blueprint) {
-        $displayName = $blueprint->getDisplayName();
-
         $noFilter = !isset($options['only']);
 
         if($noFilter || in_array('getList', $options['only'])) {
@@ -39,7 +37,7 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             ]);
             $blueprint->makeToolbarItem([
                 'action'    => 'getList',
-                'label'     => $blueprint->getDisplayName(Blueprint::PLURAL),
+                'label'     => $blueprint->getPluralDisplayName(),
                 'icon'      => $blueprint->getIcon(),
                 'color'     => 'green'
             ]);
@@ -53,7 +51,7 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             ]);
             $blueprint->makeToolbarItem([
                 'action'    => 'getCreate',
-                'label'     => 'Create ' . $displayName,
+                'label'     => 'Create ' . $blueprint->getDisplayName(),
                 'icon'      => 'edit',
                 'color'     => 'green'
             ]);
