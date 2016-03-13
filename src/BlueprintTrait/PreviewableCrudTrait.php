@@ -26,6 +26,11 @@ class PreviewableCrudTrait implements BlueprintTraitInterface {
             'label'         => 'View',
             'icon'          => 'eye'
         ]);
+
+        $blueprint->makeAction([
+            'name'      => 'getContent',
+            'pattern'   => '{id}/content'
+        ]);
     }
 
 }
