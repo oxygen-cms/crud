@@ -2,20 +2,14 @@
 
 @section('content')
 
-<?php
-    $title = Lang::get('oxygen/crud::ui.resource.preview', [
-            'resource' => $blueprint->getDisplayName()
-    ]);
-?>
+    @include('oxygen/crud::versionable.itemHeader', ['blueprint' => $blueprint, 'fields' => $fields, 'item' => $item, 'title' => $title])
 
-@include('oxygen/crud::versionable.itemHeader', ['blueprint' => $blueprint, 'fields' => $fields, 'item' => $item, 'title' => $title])
+    <div class="Block Block--noPadding">
 
-<div class="Block Block--noPadding">
+        @include('oxygen/crud::content.previewBox')
 
-@include('oxygen/crud::content.previewBox')
+    </div>
 
-</div>
-
-@include('oxygen/crud::versionable.versions', ['item' => $item])
+    @include('oxygen/crud::versionable.versions', ['item' => $item])
 
 @stop

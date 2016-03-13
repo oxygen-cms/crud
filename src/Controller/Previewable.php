@@ -2,6 +2,9 @@
     
 namespace Oxygen\Crud\Controller;
 
+use View;
+use Lang;
+
 /**
  * The Previewable trait extends a Versionable resource,
  * and adds a page that shows some 'content' of the resource rendered as HTML.
@@ -26,6 +29,18 @@ trait Previewable {
                 'name' => $item->getAttribute($this->crudFields->getTitleFieldName())
             ])
         ]);
+    }
+
+    /**
+     * Renders the content for this resource as HTML.
+     *
+     * @param $item
+     * @return Response
+     */
+    public function getContent($item) {
+        $item = $this->getItem($item);
+
+        return View::model($item, $this->crudFields->getContentFieldName());
     }
     
 }
