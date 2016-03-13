@@ -75,7 +75,7 @@ class BasicCrudController extends ResourceController {
         return view('oxygen/crud::basic.show', [
             'item' => $item,
             'fields' => $this->crudFields,
-            'title' => Lang::get('oxygen/crud::ui.resource.show')
+            'title' => Lang::get('oxygen/crud::ui.resource.show', ['name' => $item->getAttribute($this->crudFields->getTitleFieldName())])
         ]);
     }
 
@@ -104,7 +104,9 @@ class BasicCrudController extends ResourceController {
         return view('oxygen/crud::basic.update', [
             'item' => $item,
             'fields' => $this->crudFields,
-            'title' => Lang::get('oxygen/crud::ui.resource.update')
+            'title' => Lang::get('oxygen/crud::ui.resource.update', [
+                'name' => $item->getAttribute($this->crudFields->getTitleFieldName())
+            ])
         ]);
     }
 

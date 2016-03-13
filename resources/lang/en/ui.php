@@ -23,13 +23,14 @@ return [
     'thisVersion'               => '(this version)',
     'latestVersion'             => '(latest version)',
     'fromDate'                  => 'from :date',
-
+    
     'resource' => [
         'list'          => ':pluralResource',
         'listTrash'     => 'Trashed :pluralResource',
         'create'        => 'Create :resource',
-        'show'          => 'Show :resource',
-        'update'        => 'Update :resource'
+        'show'          => 'Show :name',
+        'update'        => 'Update :name',
+        'preview'       => 'View :name'
     ]
 
 ];

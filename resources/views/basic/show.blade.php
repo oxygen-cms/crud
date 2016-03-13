@@ -8,10 +8,6 @@
     use Oxygen\Core\Html\Form\Row;
     use Oxygen\Core\Html\Form\StaticField;
 
-    $title = Lang::get('oxygen/crud::ui.resource.show', [
-        'resource' => $blueprint->getDisplayName()
-    ]);
-
 ?>
 
 @include('oxygen/crud::basic.itemHeader', ['blueprint' => $blueprint, 'fields' => $fields, 'item' => $item, 'title' => $title])
