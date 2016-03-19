@@ -47,11 +47,8 @@ class VersionableCrudController extends SoftDeleteCrudController {
     public function getInfo($item) {
         $item = $this->getItem($item);
 
-        return view('oxygen/crud::versionable.show', [
-            'item' => $item,
-            'fields' => $this->crudFields,
-            'title' => Lang::get('oxygen/crud::ui.resource.show', ['name' => $item->getTitle()])
-        ]);
+        return view('oxygen/crud::versionable.show')
+            ->with('item', $item);
     }
 
     /**
@@ -63,11 +60,8 @@ class VersionableCrudController extends SoftDeleteCrudController {
     public function getUpdate($item) {
         $item = $this->getItem($item);
 
-        return view('oxygen/crud::versionable.update', [
-            'item' => $item,
-            'fields' => $this->crudFields,
-            'title' => Lang::get('oxygen/crud::ui.resource.update', ['name' => $item->getTitle()])
-        ]);
+        return view('oxygen/crud::versionable.update')
+            ->with('item', $item);
     }
 
     /**

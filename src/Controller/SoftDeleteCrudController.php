@@ -34,10 +34,8 @@ class SoftDeleteCrudController extends BasicCrudController {
     public function getTrash($queryParameters = null) {
         $items = $this->repository->paginate(25, $queryParameters == null ? new QueryParameters(['onlyTrashed'], 'id', QueryParameters::DESCENDING) : $queryParameters);
 
-        return View::make('oxygen/crud::basic.list', [
+        return view('oxygen/crud::basic.list', [
             'items' => $items,
-            'fields' => $this->crudFields,
-            'title' => Lang::get('oxygen/crud::ui.resource.trash'),
             'isTrash' => true
         ]);
     }

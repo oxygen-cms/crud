@@ -1,9 +1,9 @@
 <?php
-    
+
 namespace Oxygen\Crud\Controller;
 
-use View;
 use Lang;
+use Input;
 
 /**
  * The Previewable trait extends a Versionable resource,
@@ -22,13 +22,8 @@ trait Previewable {
     public function getPreview($item) {
         $item = $this->getItem($item);
 
-        return View::make('oxygen/crud::content.preview', [
-            'item' => $item,
-            'fields' => $this->crudFields,
-            'title' => Lang::get('oxygen/crud::ui.resource.preview', [
-                'name' => $item->getAttribute($this->crudFields->getTitleFieldName())
-            ])
-        ]);
+        return view('oxygen/crud::content.preview')
+            ->with('item', $item);
     }
 
     /**
@@ -40,7 +35,14 @@ trait Previewable {
     public function getContent($item) {
         $item = $this->getItem($item);
 
-        return View::model($item, $this->crudFields->getContentFieldName());
+        // override the content
+        if(Input::has('content')) {
+            $content = Input::get('content');
+            $path = view()->pathFromModel(get_class($item), $item->getId(), $this->crudFields->getContentFieldName());
+            return view()->string($content, $path, 0);
+        }
+
+        return view()->model($item, $this->crudFields->getContentFieldName());
     }
-    
+
 }

@@ -27,6 +27,6 @@
     {!! $header->render() !!}
 </div>
 
-@include('oxygen/crud::basic.createForm', ['blueprint' => $blueprint, 'fields' => $fields, 'item' => $item])
+@include('oxygen/crud::basic.createForm', ['blueprint' => $blueprint, 'fields' => $crudFields, 'item' => $item])
 
 @stop

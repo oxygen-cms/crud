@@ -40,6 +40,9 @@ class BasicCrudController extends ResourceController {
 
         $this->crudFields = $crudFields;
 
+        // automatically insert the crud fields to all views
+        view()->share('crudFields', $this->crudFields);
+
         Lang::when('oxygen/crud::messages', ['resource' => $this->blueprint->getDisplayName()]);
         Lang::when('oxygen/crud::dialogs', ['resource' => $this->blueprint->getDisplayName()]);
         Lang::when('oxygen/crud::ui', ['resource' => $this->blueprint->getDisplayName(), 'pluralResource' => $this->blueprint->getPluralDisplayName()]);
@@ -54,13 +57,12 @@ class BasicCrudController extends ResourceController {
     public function getList($queryParameters = null) {
         $items = $this->repository->paginate(25, $queryParameters == null ? new QueryParameters([], 'id', QueryParameters::DESCENDING) : $queryParameters);
 
-        // render the view
-        return View::make('oxygen/crud::basic.list', [
-            'items' => $items,
-            'isTrash' => false,
-            'fields' => $this->crudFields,
-            'title' => Lang::get('oxygen/crud::ui.resource.list')
-        ]);
+        // render the list
+        return view('oxygen/crud::basic.list')
+            ->with([
+                'items' => $items,
+                'isTrash' => false
+            ]);
     }
 
     /**
@@ -72,11 +74,8 @@ class BasicCrudController extends ResourceController {
     public function getInfo($item) {
         $item = $this->getItem($item);
 
-        return view('oxygen/crud::basic.show', [
-            'item' => $item,
-            'fields' => $this->crudFields,
-            'title' => Lang::get('oxygen/crud::ui.resource.show', ['name' => $item->getAttribute($this->crudFields->getTitleFieldName())])
-        ]);
+        return view('oxygen/crud::basic.show')
+            ->with('item', $item);
     }
 
     /**
@@ -85,11 +84,8 @@ class BasicCrudController extends ResourceController {
      * @return \Illuminate\Http\Response
      */
     public function getCreate() {
-        return view('oxygen/crud::basic.create', [
-            'item' => $this->repository->make(),
-            'fields' => $this->crudFields,
-            'title' => Lang::get('oxygen/crud::ui.resource.create')
-        ]);
+        return view('oxygen/crud::basic.create')
+            ->with('item', $this->repository->make());
     }
 
     /**
@@ -101,13 +97,8 @@ class BasicCrudController extends ResourceController {
     public function getUpdate($item) {
         $item = $this->getItem($item);
 
-        return view('oxygen/crud::basic.update', [
-            'item' => $item,
-            'fields' => $this->crudFields,
-            'title' => Lang::get('oxygen/crud::ui.resource.update', [
-                'name' => $item->getAttribute($this->crudFields->getTitleFieldName())
-            ])
-        ]);
+        return view('oxygen/crud::basic.update')
+            ->with('item', $item);
     }
 
     /**
