@@ -31,6 +31,11 @@ class PreviewableCrudTrait implements BlueprintTraitInterface {
             'name'      => 'getContent',
             'pattern'   => '{id}/content'
         ]);
+        $blueprint->makeAction([
+            'name'      => 'getContentGlobal',
+            'uses'      => $blueprint->getController() . '@getContent',
+            'pattern'   => 'content'
+        ]);
     }
 
 }

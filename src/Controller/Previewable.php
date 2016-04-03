@@ -32,17 +32,24 @@ trait Previewable {
      * @param $item
      * @return Response
      */
-    public function getContent($item) {
-        $item = $this->getItem($item);
-
-        // override the content
-        if(Input::has('content')) {
-            $content = Input::get('content');
-            $path = view()->pathFromModel(get_class($item), $item->getId(), $this->crudFields->getContentFieldName());
-            return view()->string($content, $path, 0);
+    public function getContent($item = null) {
+        if($item != null) {
+            $item = $this->getItem($item);
         }
 
-        return view()->model($item, $this->crudFields->getContentFieldName());
+        // override the content
+        if(Input::has('content') || $item == null) {
+            $content = Input::has('content') ? Input::get('content') : '';
+            $class = $item == null ? 'unknown' : get_class($item);
+            $id = $item == null ? 0 : $item->getId();
+
+            $path = view()->pathFromModel($class, $id, $this->crudFields->getContentFieldName());
+            return view()->string($content, $path, 0);
+        } else {
+            return view()->model($item, $this->crudFields->getContentFieldName());
+        }
+
+
     }
 
 }
