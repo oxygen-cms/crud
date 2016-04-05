@@ -11,32 +11,32 @@
 
 return [
 
-    'create'                    => 'Create',
-    'save'                      => 'Save',
-    'overwriteExistingVersion'  => 'Overwrite',
-    'saveNewVersion'            => 'Save New Version',
-    'close'                     => 'Close',
-    'done'                      => 'Done',
-    'noItems'                   => 'No Items',
-    'versions'                  => 'Versions',
-    'noVersions'                => 'No Versions',
-    'thisVersion'               => '(this version)',
-    'latestVersion'             => '(latest version)',
-    'fromDate'                  => 'from :date',
+    'create' => 'Create',
+    'save' => 'Save',
+    'overwriteExistingVersion' => 'Overwrite',
+    'saveNewVersion' => 'Save New Version',
+    'close' => 'Close',
+    'done' => 'Done',
+    'noItems' => 'No Items',
+    'versions' => 'Versions',
+    'noVersions' => 'No Versions',
+    'thisVersion' => '(this version)',
+    'latestVersion' => '(latest version)',
+    'fromDate' => 'from :date',
 
     'resource' => [
-        'list'          => ':pluralResource',
-        'listTrash'     => 'Trashed :pluralResource',
-        'create'        => 'Create :resource',
-        'show'          => 'Show :resource',
-        'update'        => 'Update :resource',
-        'preview'       => 'View :resource'
+        'list' => ':pluralResource',
+        'listTrash' => 'Trashed :pluralResource',
+        'create' => 'Create :resource',
+        'show' => 'Show :resource',
+        'update' => 'Update :resource',
+        'preview' => 'View :resource'
     ],
 
     'namedResource' => [
-        'show'          => 'Show :name',
-        'update'        => 'Update :name',
-        'preview'       => 'View :name'
+        'show' => 'Show :name',
+        'update' => 'Update :name',
+        'preview' => 'View :name'
     ]
 
 ];

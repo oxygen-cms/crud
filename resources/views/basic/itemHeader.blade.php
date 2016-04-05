@@ -1,29 +1,29 @@
 <?php
 
-    use Oxygen\Core\Html\Header\Header;
+use Oxygen\Core\Html\Header\Header;
 
-    $sectionHeader = Header::fromBlueprint(
+$sectionHeader = Header::fromBlueprint(
         $blueprint,
         $title
-    );
+);
 
-    $sectionHeader->setBackLink(URL::route(
+$sectionHeader->setBackLink(URL::route(
         $item->isDeleted()
-            ? $blueprint->getRouteName('getTrash')
-            : $blueprint->getRouteName('getList')
-    ));
+                ? $blueprint->getRouteName('getTrash')
+                : $blueprint->getRouteName('getList')
+));
 
-    $itemHeader = Header::fromBlueprint($blueprint, $fields, ['model' => $item], Header::TYPE_NORMAL, 'item');
+$itemHeader = Header::fromBlueprint($blueprint, $fields, ['model' => $item], Header::TYPE_NORMAL, 'item');
 
-    $blockClasses = ['Block'];
-    if(isset($seamless) && $seamless == true) {
-        $blockClasses[] = 'Block--noBorder';
-        $blockClasses[] = 'Block--noMargin';
-    }
+$blockClasses = ['Block'];
+if(isset($seamless) && $seamless == true) {
+    $blockClasses[] = 'Block--noBorder';
+    $blockClasses[] = 'Block--noMargin';
+}
 
 ?>
 
-<!-- =====================
+        <!-- =====================
             HEADER
      ===================== -->
 

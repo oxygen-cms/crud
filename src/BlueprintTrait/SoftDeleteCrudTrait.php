@@ -3,11 +3,10 @@
 namespace Oxygen\Crud\BlueprintTrait;
 
 use Lang;
-
-use Oxygen\Core\Html\Toolbar\ActionToolbarItem;
-use Oxygen\Core\Html\Dialog\Dialog;
-use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Blueprint\Blueprint;
+use Oxygen\Core\Blueprint\BlueprintTraitInterface;
+use Oxygen\Core\Html\Dialog\Dialog;
+use Oxygen\Core\Html\Toolbar\ActionToolbarItem;
 use Oxygen\Core\Http\Method;
 
 class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterface {
@@ -35,24 +34,24 @@ class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterf
 
         if($noFilter || in_array('deleteDelete', $options['only'])) {
             $blueprint->getToolbarItem('deleteDelete')
-                ->shouldRenderCallback = function(ActionToolbarItem $item, array $arguments) {
-                    return
-                        $item->shouldRenderBasic($arguments) &&
-                        !$arguments['model']->isDeleted();
-                };
+                ->shouldRenderCallback = function (ActionToolbarItem $item, array $arguments) {
+                return
+                    $item->shouldRenderBasic($arguments) &&
+                    !$arguments['model']->isDeleted();
+            };
         }
 
         if($noFilter || in_array('postRestore', $options['only'])) {
             $blueprint->makeAction([
-                'name'      => 'postRestore',
-                'pattern'   => '{id}/restore',
-                'method'    => Method::POST
+                'name' => 'postRestore',
+                'pattern' => '{id}/restore',
+                'method' => Method::POST
             ]);
             $blueprint->makeToolbarItem([
-                'action'    => 'postRestore',
-                'label'     => 'Restore',
-                'icon'      => 'undo',
-                'shouldRenderCallback' => function(ActionToolbarItem $item, array $arguments) {
+                'action' => 'postRestore',
+                'label' => 'Restore',
+                'icon' => 'undo',
+                'shouldRenderCallback' => function (ActionToolbarItem $item, array $arguments) {
                     return
                         $item->shouldRenderBasic($arguments) &&
                         $arguments['model']->isDeleted();
@@ -62,16 +61,16 @@ class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterf
 
         if($noFilter || in_array('deleteForce', $options['only'])) {
             $blueprint->makeAction([
-                'name'      => 'deleteForce',
-                'pattern'   => '{id}/force',
-                'method'    => Method::DELETE
+                'name' => 'deleteForce',
+                'pattern' => '{id}/force',
+                'method' => Method::DELETE
             ]);
             $blueprint->makeToolbarItem([
-                'action'    => 'deleteForce',
-                'label'     => 'Force Delete',
-                'icon'      => 'trash-o',
-                'dialog'    => new Dialog(Lang::get('oxygen/crud::dialogs.softDelete.forceDelete')),
-                'shouldRenderCallback' => function(ActionToolbarItem $item, array $arguments) {
+                'action' => 'deleteForce',
+                'label' => 'Force Delete',
+                'icon' => 'trash-o',
+                'dialog' => new Dialog(Lang::get('oxygen/crud::dialogs.softDelete.forceDelete')),
+                'shouldRenderCallback' => function (ActionToolbarItem $item, array $arguments) {
                     return
                         $item->shouldRenderBasic($arguments) &&
                         $arguments['model']->isDeleted();

@@ -21,9 +21,9 @@ return [
     */
 
     'basic' => [
-        'created'             => ':resource Created',
-        'updated'             => ':resource Updated',
-        'deleted'             => ':resource Deleted',
+        'created' => ':resource Created',
+        'updated' => ':resource Updated',
+        'deleted' => ':resource Deleted',
     ],
 
     /*
@@ -35,8 +35,8 @@ return [
     */
 
     'softDelete' => [
-        'restored'            => ':resource Restored',
-        'forceDeleted'        => ':resource Deleted Forever',
+        'restored' => ':resource Restored',
+        'forceDeleted' => ':resource Deleted Forever',
     ],
 
     /*
@@ -48,10 +48,10 @@ return [
     */
 
     'versionable' => [
-        'madeVersion'          => 'A New Version Was Created',
-        'clearedVersions'      => 'All Old Versions Were Cleared',
-        'alreadyHead'          => 'That :resource Is Already The Head Version',
-        'madeHead'             => 'That :resource is Now The Head Version',
+        'madeVersion' => 'A New Version Was Created',
+        'clearedVersions' => 'All Old Versions Were Cleared',
+        'alreadyHead' => 'That :resource Is Already The Head Version',
+        'madeHead' => 'That :resource is Now The Head Version',
     ],
 
     /*
@@ -61,12 +61,25 @@ return [
     |
     | Messages related to publishable entities.
     */
-
     'publishable' => [
         'published' => ':resource Published',
         'unpublished' => ':resource Unpublished',
         'publishedSoMadeDraft' => 'You are now editing the draft version.',
         'alreadyDraft' => 'The :resource is already a draft.'
-    ]
+    ],
+
+    /*
+    | ---------------
+    | Upload
+    | ---------------
+    |
+    | Messages related to file uploads.
+    */
+    'upload' => [
+        'noFiles' => 'Please Select a File First',
+        'tooLarge' => 'Upload too Large',
+        'failed' => 'File Upload Failed',
+        'success' => 'File Uploaded Successfully'
+    ],
 
 ];

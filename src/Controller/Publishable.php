@@ -6,10 +6,9 @@ use Event;
 use Lang;
 use Oxygen\Core\Html\Dialog\Dialog;
 use Oxygen\Core\Html\Form\Form;
-use Oxygen\Core\Http\Method;
+use Oxygen\Core\Http\Notification;
 use Oxygen\Data\Exception\InvalidEntityException;
 use Response;
-use Oxygen\Core\Http\Notification;
 use URL;
 use View;
 
@@ -76,7 +75,7 @@ trait Publishable {
         $item = $this->getItem($item);
 
         if($item->isPublished()) {
-            Event::listen('oxygen.layout.page.after', function() use($item) {
+            Event::listen('oxygen.layout.page.after', function () use ($item) {
                 $dialog = new Dialog(Lang::get('oxygen/crud::dialogs.publishable.makeDraft'));
                 $buttonAttributes = array_merge(
                     ['type' => 'submit'],

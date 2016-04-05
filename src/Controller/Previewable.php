@@ -2,8 +2,8 @@
 
 namespace Oxygen\Crud\Controller;
 
-use Lang;
 use Input;
+use Lang;
 
 /**
  * The Previewable trait extends a Versionable resource,
@@ -44,6 +44,7 @@ trait Previewable {
             $id = $item == null ? 0 : $item->getId();
 
             $path = view()->pathFromModel($class, $id, $this->crudFields->getContentFieldName());
+
             return view()->string($content, $path, 0);
         } else {
             return view()->model($item, $this->crudFields->getContentFieldName());

@@ -3,11 +3,10 @@
 namespace Oxygen\Crud\BlueprintTrait;
 
 use Lang;
-
-use Oxygen\Core\Html\Toolbar\ActionToolbarItem;
-use Oxygen\Core\Html\Dialog\Dialog;
-use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Blueprint\Blueprint;
+use Oxygen\Core\Blueprint\BlueprintTraitInterface;
+use Oxygen\Core\Html\Dialog\Dialog;
+use Oxygen\Core\Html\Toolbar\ActionToolbarItem;
 use Oxygen\Core\Http\Method;
 
 class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTraitInterface {
@@ -35,28 +34,28 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
 
         if($noFilter || in_array('postNewVersion', $options['only'])) {
             $blueprint->makeAction([
-                'name'      => 'postNewVersion',
-                'pattern'   => '{id}/newVersion',
-                'method'    => Method::POST
+                'name' => 'postNewVersion',
+                'pattern' => '{id}/newVersion',
+                'method' => Method::POST
             ]);
             $blueprint->makeToolbarItem([
-                'action'        => 'postNewVersion',
-                'label'         => 'New Version',
-                'icon'          => 'plus'
+                'action' => 'postNewVersion',
+                'label' => 'New Version',
+                'icon' => 'plus'
             ]);
         }
 
         if($noFilter || in_array('postMakeHeadVersion', $options['only'])) {
             $blueprint->makeAction([
-                'name'      => 'postMakeHeadVersion',
-                'pattern'   => '{id}/makeHead',
-                'method'    => Method::POST
+                'name' => 'postMakeHeadVersion',
+                'pattern' => '{id}/makeHead',
+                'method' => Method::POST
             ]);
             $blueprint->makeToolbarItem([
-                'action'        => 'postMakeHeadVersion',
-                'label'         => 'Make Head Version',
-                'icon'          => 'flag',
-                'shouldRenderCallback' => function(ActionToolbarItem $item, array $arguments) {
+                'action' => 'postMakeHeadVersion',
+                'label' => 'Make Head Version',
+                'icon' => 'flag',
+                'shouldRenderCallback' => function (ActionToolbarItem $item, array $arguments) {
                     return
                         $item->shouldRenderBasic($arguments) &&
                         !$arguments['model']->isHead();
@@ -66,16 +65,16 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
 
         if($noFilter || in_array('postMakeHeadVersion', $options['only'])) {
             $blueprint->makeAction([
-                'name'      => 'deleteVersions',
-                'pattern'   => '{id}/versions',
-                'method'    => Method::POST
+                'name' => 'deleteVersions',
+                'pattern' => '{id}/versions',
+                'method' => Method::POST
             ]);
             $blueprint->makeToolbarItem([
-                'action'        => 'deleteVersions',
-                'label'         => 'Clear Versions',
-                'icon'          => 'trash-o',
-                'dialog'        => new Dialog(Lang::get('oxygen/crud::dialogs.versionable.clearVersions')),
-                'shouldRenderCallback' => function(ActionToolbarItem $item, array $arguments) {
+                'action' => 'deleteVersions',
+                'label' => 'Clear Versions',
+                'icon' => 'trash-o',
+                'dialog' => new Dialog(Lang::get('oxygen/crud::dialogs.versionable.clearVersions')),
+                'shouldRenderCallback' => function (ActionToolbarItem $item, array $arguments) {
                     return
                         $item->shouldRenderBasic($arguments) &&
                         $arguments['model']->hasVersions();

@@ -2,15 +2,12 @@
 
 namespace Oxygen\Crud\Controller;
 
-use Exception;
-
 use Input;
-use Oxygen\Data\Repository\QueryParameters;
-use View;
 use Lang;
-use Response;
-
 use Oxygen\Core\Http\Notification;
+use Oxygen\Data\Repository\QueryParameters;
+use Response;
+use View;
 
 class SoftDeleteCrudController extends BasicCrudController {
 
@@ -21,7 +18,10 @@ class SoftDeleteCrudController extends BasicCrudController {
      * @return \Illuminate\Http\Response
      */
     public function getList($queryParameters = null) {
-        if($queryParameters == null) { $queryParameters = new QueryParameters(['excludeTrashed'], 'id', QueryParameters::DESCENDING); }
+        if($queryParameters == null) {
+            $queryParameters = new QueryParameters(['excludeTrashed'], 'id', QueryParameters::DESCENDING);
+        }
+
         return parent::getList($queryParameters);
     }
 
@@ -73,7 +73,6 @@ class SoftDeleteCrudController extends BasicCrudController {
             ['refresh' => true]
         );
     }
-
 
 
     /**

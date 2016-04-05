@@ -4,22 +4,22 @@
 
 <?php
 
-    use Oxygen\Core\Html\Header\Header;
+use Oxygen\Core\Html\Header\Header;
 
-    $title = Lang::get('oxygen/crud::ui.resource.create', [
+$title = Lang::get('oxygen/crud::ui.resource.create', [
         'resource' => $blueprint->getDisplayName()
-    ]);
+]);
 
-    $header = Header::fromBlueprint(
+$header = Header::fromBlueprint(
         $blueprint,
         $title
-    );
+);
 
-    $header->setBackLink(URL::route($blueprint->getRouteName('getList')));
+$header->setBackLink(URL::route($blueprint->getRouteName('getList')));
 
 ?>
 
-<!-- =====================
+        <!-- =====================
             HEADER
      ===================== -->
 

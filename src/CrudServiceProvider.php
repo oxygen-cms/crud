@@ -20,13 +20,13 @@ class CrudServiceProvider extends ServiceProvider {
 	 */
 
 	public function boot() {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'oxygen/crud');
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'oxygen/crud');
+		$this->loadViewsFrom(__DIR__ . '/../resources/views', 'oxygen/crud');
+		$this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'oxygen/crud');
 
-        $this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/oxygen/crud'),
-            __DIR__.'/../resources/lang' => base_path('resources/lang/vendor/oxygen/crud'),
-        ]);
+		$this->publishes([
+			__DIR__ . '/../resources/views' => base_path('resources/views/vendor/oxygen/crud'),
+			__DIR__ . '/../resources/lang' => base_path('resources/lang/vendor/oxygen/crud'),
+		]);
 	}
 
 	/**
@@ -45,9 +45,8 @@ class CrudServiceProvider extends ServiceProvider {
 	 * @return array
 	 */
 
-	public function provides()
-	{
-		return array();
+	public function provides() {
+		return [];
 	}
 
 }

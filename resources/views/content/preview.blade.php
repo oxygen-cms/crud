@@ -3,13 +3,13 @@
 @section('content')
 
     <?php
-        $title = Lang::get('oxygen/crud::ui.namedResource.preview', [
+    $title = Lang::get('oxygen/crud::ui.namedResource.preview', [
             'name' => $item->getAttribute($crudFields->getTitleFieldName())
-        ]);
+    ]);
 
-        $sectionTitle = Lang::get('oxygen/crud::ui.resource.preview', [
+    $sectionTitle = Lang::get('oxygen/crud::ui.resource.preview', [
             'resource' => $blueprint->getDisplayName()
-        ]);
+    ]);
     ?>
 
     @include('oxygen/crud::versionable.itemHeader', ['blueprint' => $blueprint, 'fields' => $crudFields, 'item' => $item, 'title' => $sectionTitle])

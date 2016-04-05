@@ -4,27 +4,25 @@
 
 <?php
 
-    use Oxygen\Core\Blueprint\Blueprint;
-    use Oxygen\Core\Html\Header\Header;
-    use Oxygen\Core\Html\Form\Field;
+use Oxygen\Core\Blueprint\Blueprint;use Oxygen\Core\Html\Header\Header;
 
-    $title = Lang::get(
+$title = Lang::get(
         $isTrash ? 'oxygen/crud::ui.resource.listTrash' : 'oxygen/crud::ui.resource.list',
         ['resources' => $blueprint->getDisplayName(Blueprint::PLURAL)]
-    );
+);
 
-    $sectionHeader = Header::fromBlueprint(
+$sectionHeader = Header::fromBlueprint(
         $blueprint,
         $title
-    );
+);
 
-    if($isTrash) {
-        $sectionHeader->setBackLink(URL::route($blueprint->getRouteName('getList')));
-    }
+if($isTrash) {
+    $sectionHeader->setBackLink(URL::route($blueprint->getRouteName('getList')));
+}
 
 ?>
 
-<!-- =====================
+        <!-- =====================
             HEADER
      ===================== -->
 
@@ -45,16 +43,16 @@
     @endif
 
     <?php
-        foreach($items as $item):
-            $itemHeader = Header::fromBlueprint($blueprint, $crudFields, ['model' => $item], Header::TYPE_NORMAL, 'item');
+    foreach($items as $item):
+        $itemHeader = Header::fromBlueprint($blueprint, $crudFields, ['model' => $item], Header::TYPE_NORMAL, 'item');
 
-            if(method_exists($item, 'isPublished')) {
-                $icon = $item->isPublished() ? 'globe' : 'pencil-square';
-                $itemHeader->setIcon($icon);
-            }
+        if(method_exists($item, 'isPublished')) {
+            $icon = $item->isPublished() ? 'globe' : 'pencil-square';
+            $itemHeader->setIcon($icon);
+        }
 
-            echo $itemHeader->render();
-        endforeach;
+        echo $itemHeader->render();
+    endforeach;
     ?>
 
     {!! $items->render() !!}

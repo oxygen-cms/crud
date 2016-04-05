@@ -2,23 +2,21 @@
 
 namespace Oxygen\Crud\Controller;
 
-use Exception;
 use Illuminate\Http\Request;
-use Oxygen\Core\Contracts\Routing\ResponseFactory;
-use Oxygen\Core\Blueprint\Blueprint;
-use Oxygen\Core\Form\FieldSet;
-use Oxygen\Data\Exception\InvalidEntityException;
-use Oxygen\Data\Repository\QueryParameters;
-use View;
 use Input;
 use Lang;
-use URL;
-use Response;
-
-use Oxygen\Core\Controller\ResourceController;
+use Oxygen\Core\Blueprint\Blueprint;
 use Oxygen\Core\Blueprint\BlueprintManager as BlueprintManager;
+use Oxygen\Core\Contracts\Routing\ResponseFactory;
+use Oxygen\Core\Controller\ResourceController;
+use Oxygen\Core\Form\FieldSet;
 use Oxygen\Core\Http\Notification;
+use Oxygen\Data\Exception\InvalidEntityException;
+use Oxygen\Data\Repository\QueryParameters;
 use Oxygen\Data\Repository\RepositoryInterface;
+use Response;
+use URL;
+use View;
 
 class BasicCrudController extends ResourceController {
 
@@ -32,8 +30,8 @@ class BasicCrudController extends ResourceController {
     /**
      * Constructs a BasicCrudController.
      *
-     * @param RepositoryInterface         $repository
-     * @param Blueprint|BlueprintManager  $blueprint Blueprint or BlueprintManager
+     * @param RepositoryInterface        $repository
+     * @param Blueprint|BlueprintManager $blueprint Blueprint or BlueprintManager
      */
     public function __construct(RepositoryInterface $repository, $blueprint, FieldSet $crudFields) {
         parent::__construct($repository, $blueprint);
@@ -112,12 +110,9 @@ class BasicCrudController extends ResourceController {
             $item->fromArray($this->transformInput($input->except(['_method', '_token'])));
             $this->repository->persist($item);
 
-            return Response::notification(
-                new Notification(Lang::get('oxygen/crud::messages.basic.created')),
-                ['redirect' => $this->blueprint->getRouteName('getList')]
-            );
+            return notify(new Notification(Lang::get('oxygen/crud::messages.basic.created')), ['redirect' => $this->blueprint->getRouteName('getList')]);
         } catch(InvalidEntityException $e) {
-            return Response::notification(
+            return notify(
                 new Notification($e->getErrors()->first(), Notification::FAILED),
                 ['input' => true]
             );
@@ -176,6 +171,7 @@ class BasicCrudController extends ResourceController {
                 $input[$key] = $field->getType()->transformInput($field, $value);
             }
         }
+
         return $input;
     }
 

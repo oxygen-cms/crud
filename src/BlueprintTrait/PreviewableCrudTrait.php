@@ -2,10 +2,8 @@
 
 namespace Oxygen\Crud\BlueprintTrait;
 
-use Oxygen\Core\Html\Toolbar\ActionToolbarItem;
-use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Blueprint\Blueprint;
-use Oxygen\Core\Http\Method;
+use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 
 class PreviewableCrudTrait implements BlueprintTraitInterface {
 
@@ -18,23 +16,23 @@ class PreviewableCrudTrait implements BlueprintTraitInterface {
      */
     public function applyTrait(Blueprint $blueprint) {
         $blueprint->makeAction([
-            'name'      => 'getPreview',
-            'pattern'   => '{id}/preview'
+            'name' => 'getPreview',
+            'pattern' => '{id}/preview'
         ]);
         $blueprint->makeToolbarItem([
-            'action'        => 'getPreview',
-            'label'         => 'View',
-            'icon'          => 'eye'
+            'action' => 'getPreview',
+            'label' => 'View',
+            'icon' => 'eye'
         ]);
 
         $blueprint->makeAction([
-            'name'      => 'getContent',
-            'pattern'   => '{id}/content'
+            'name' => 'getContent',
+            'pattern' => '{id}/content'
         ]);
         $blueprint->makeAction([
-            'name'      => 'getContentGlobal',
-            'uses'      => $blueprint->getController() . '@getContent',
-            'pattern'   => 'content'
+            'name' => 'getContentGlobal',
+            'uses' => $blueprint->getController() . '@getContent',
+            'pattern' => 'content'
         ]);
     }
 

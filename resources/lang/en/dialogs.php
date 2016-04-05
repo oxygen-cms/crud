@@ -20,7 +20,7 @@ return [
     */
 
     'softDelete' => [
-        'forceDelete'  => 'Are you sure you want to delete the item permanently?'
+        'forceDelete' => 'Are you sure you want to delete the item permanently?'
     ],
 
     /*
