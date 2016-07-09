@@ -4,6 +4,7 @@ namespace Oxygen\Crud\BlueprintTrait;
 
 use Oxygen\Core\Blueprint\Blueprint;
 use Oxygen\Core\Blueprint\BlueprintTraitInterface;
+use Oxygen\Core\Http\Method;
 
 class PreviewableCrudTrait implements BlueprintTraitInterface {
 
@@ -30,8 +31,8 @@ class PreviewableCrudTrait implements BlueprintTraitInterface {
             'pattern' => '{id}/content'
         ]);
         $blueprint->makeAction([
-            'name' => 'getContentGlobal',
-            'uses' => $blueprint->getController() . '@getContent',
+            'name' => 'postContent',
+            'method' => Method::POST,
             'pattern' => 'content'
         ]);
     }

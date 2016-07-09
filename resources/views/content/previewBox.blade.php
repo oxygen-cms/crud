@@ -34,12 +34,12 @@
         window.Oxygen.load.push(function () {
             var content = document.getElementById("content");
 
-            $(".Content-refresh").on("click", function () {
-                $(".Content-preview")[0].contentWindow.location.reload();
+            document.querySelector(".Content-refresh").addEventListener("click", function () {
+                document.querySelector(".Content-preview").contentWindow.location.reload();
             });
 
             var toggle = new Toggle(
-                    $(".Content-collapseToggle"),
+                    document.querySelector(".Content-collapseToggle"),
                     function () {
                         content.classList.add("Content-container--fill");
                         window.Oxygen.setBodyScrollable(false);

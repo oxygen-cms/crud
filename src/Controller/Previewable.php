@@ -27,30 +27,31 @@ trait Previewable {
     }
 
     /**
-     * Renders the content for this resource as HTML.
+     * Renders custom content as HTML.
      *
      * @param $item
      * @return Response
      */
-    public function getContent($item = null) {
-        if($item != null) {
-            $item = $this->getItem($item);
-        }
+    public function postContent() {
+        $path = view()->pathFromModel('unkown', 0, $this->crudFields->getContentFieldName());
 
-        // override the content
-        if(Input::has('content') || $item == null) {
-            $content = Input::has('content') ? Input::get('content') : '';
-            $class = $item == null ? 'unknown' : get_class($item);
-            $id = $item == null ? 0 : $item->getId();
-
-            $path = view()->pathFromModel($class, $id, $this->crudFields->getContentFieldName());
-
-            return view()->string($content, $path, 0);
-        } else {
-            return view()->model($item, $this->crudFields->getContentFieldName());
-        }
-
-
+        $content = Input::get('content', '');
+        return $this->decoratePreviewContent(view()->string($content, $path, 0));
     }
 
+    /**
+     * Renders this resource as HTML
+     *
+     * @param $item
+     * @return Response
+     */
+    public function getContent($item) {
+        $item = $this->getItem($item);
+        $content = view()->model($item, $this->crudFields->getContentFieldName());
+        if(method_exists($this, 'decorateContent')) {
+            return $this->decorateContent($content, $item);
+        } else {
+            return $this->decoratePreviewContent($content);
+        }
+    }
 }
