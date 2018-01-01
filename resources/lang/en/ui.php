@@ -29,6 +29,7 @@ return [
         'listTrash' => 'Trashed :pluralResource',
         'create' => 'Create :resource',
         'show' => 'Show :resource',
+        'search' => 'Search :pluralResource',
         'update' => 'Update :resource',
         'preview' => 'View :resource'
     ],

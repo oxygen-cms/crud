@@ -53,7 +53,11 @@ class BasicCrudController extends ResourceController {
      * @return \Illuminate\Http\Response
      */
     public function getList($queryParameters = null) {
-        $items = $this->repository->paginate(25, $queryParameters == null ? new QueryParameters([], 'id', QueryParameters::DESCENDING) : $queryParameters);
+        if($queryParameters = null) {
+            $queryParameters = QueryParameters::make()
+                ->orderBy('id', QueryParameters::DESCENDING);
+        }
+        $items = $this->repository->paginate(25, $queryParameters, null, app('request')->input('q', null));
 
         // render the list
         return view('oxygen/crud::basic.list')
