@@ -53,7 +53,7 @@ class BasicCrudController extends ResourceController {
      * @return \Illuminate\Http\Response
      */
     public function getList($queryParameters = null) {
-        if($queryParameters = null) {
+        if($queryParameters == null) {
             $queryParameters = QueryParameters::make()
                 ->orderBy('id', QueryParameters::DESCENDING);
         }
