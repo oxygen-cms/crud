@@ -2,10 +2,8 @@
 
 namespace Oxygen\Crud\Controller;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Input;
-use Lang;
-use Oxygen\Core\Contracts\Routing\ResponseFactory;
 use Oxygen\Core\Http\Notification;
 use Oxygen\Data\Exception\InvalidEntityException;
 use Oxygen\Data\Repository\QueryParameters;
@@ -16,7 +14,7 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * List all entities.
      *
      * @param QueryParameters $queryParameters
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function getList($queryParameters = null) {
         if($queryParameters == null) {
@@ -33,7 +31,7 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * List all deleted entities.
      *
      * @param QueryParameters $queryParameters
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function getTrash($queryParameters = null) {
         if($queryParameters == null) {
@@ -50,7 +48,7 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * Shows info about an entity.
      *
      * @param mixed $item the item
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function getInfo($item) {
         $item = $this->getItem($item);
@@ -63,7 +61,7 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * Shows the update form.
      *
      * @param mixed $item the item
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function getUpdate($item) {
         $item = $this->getItem($item);
@@ -76,20 +74,21 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * Updates an entity.
      *
      * @param mixed $item the item
+     * @param Request $request
      * @return Response
      */
-    public function putUpdate($item, ResponseFactory $response) {
+    public function putUpdate($item, Request $request) {
         try {
             $item = $this->getItem($item);
-            $item->fromArray($this->transformInput(Input::except(['_method', '_token', 'version'])));
-            $madeNewVersion = $this->repository->persist($item, Input::get('version', 'guess'));
+            $item->fromArray($this->transformInput($request->except(['_method', '_token', 'version'])));
+            $madeNewVersion = $this->repository->persist($item, $request->input('version', 'guess'));
 
-            return $response->notification(
-                new Notification(Lang::get('oxygen/crud::messages.basic.updated')),
+            return notify(
+                new Notification(__('oxygen/crud::messages.basic.updated')),
                 ['refresh' => $madeNewVersion]
             );
         } catch(InvalidEntityException $e) {
-            return $response->notification(
+            return notify(
                 new Notification($e->getErrors()->first(), Notification::FAILED),
                 ['input' => true]
             );
@@ -102,12 +101,12 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param mixed $item the item
      * @return Response
      */
-    public function postNewVersion($item, ResponseFactory $response) {
+    public function postNewVersion($item) {
         $item = $this->getItem($item);
         $this->repository->makeNewVersion($item);
 
-        return $response->notification(
-            new Notification(Lang::get('oxygen/crud::messages.versionable.madeVersion')),
+        return notify(
+            new Notification(__('oxygen/crud::messages.versionable.madeVersion')),
             ['refresh' => true]
         );
     }
@@ -118,19 +117,19 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param mixed $item the item
      * @return Response
      */
-    public function postMakeHeadVersion($item, ResponseFactory $response) {
+    public function postMakeHeadVersion($item) {
         $item = $this->getItem($item);
 
         if($item->isHead()) {
-            return $response->notification(
-                new Notification(Lang::get('oxygen/crud::messages.versionable.alreadyHead'), Notification::FAILED)
+            return notify(
+                new Notification(__('oxygen/crud::messages.versionable.alreadyHead'), Notification::FAILED)
             );
         }
 
         $this->repository->makeHeadVersion($item);
 
-        return $response->notification(
-            new Notification(Lang::get('oxygen/crud::messages.versionable.madeHead')),
+        return notify(
+            new Notification(__('oxygen/crud::messages.versionable.madeHead')),
             ['refresh' => true]
         );
     }
@@ -141,14 +140,14 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param mixed $item the item
      * @return Response
      */
-    public function deleteVersions($item, ResponseFactory $response) {
+    public function deleteVersions($item) {
         $item = $this->getItem($item);
         $entity = $this->repository->clearVersions($item);
 
         $options = ['redirect' => [$this->blueprint->getRouteName('getUpdate'), $entity->getId()]];
 
-        return $response->notification(
-            new Notification(Lang::get('oxygen/crud::messages.versionable.clearedVersions')),
+        return notify(
+            new Notification(__('oxygen/crud::messages.versionable.clearedVersions')),
             $options
         );
     }

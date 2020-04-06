@@ -2,7 +2,7 @@
 
 namespace Oxygen\Crud\BlueprintTrait;
 
-use Lang;
+use Illuminate\Support\Facades\Lang;
 use Oxygen\Core\Blueprint\Blueprint;
 use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Html\Dialog\Dialog;
@@ -30,9 +30,9 @@ class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterf
     public function applyTrait(Blueprint $blueprint) {
         parent::applyTrait($blueprint);
 
-        $noFilter = !isset($options['only']);
+        $noFilter = !isset($this->options['only']);
 
-        if($noFilter || in_array('deleteDelete', $options['only'])) {
+        if($noFilter || in_array('deleteDelete', $this->options['only'])) {
             $blueprint->getToolbarItem('deleteDelete')
                 ->shouldRenderCallback = function (ActionToolbarItem $item, array $arguments) {
                 return
@@ -41,7 +41,7 @@ class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterf
             };
         }
 
-        if($noFilter || in_array('postRestore', $options['only'])) {
+        if($noFilter || in_array('postRestore', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'postRestore',
                 'pattern' => '{id}/restore',
@@ -59,7 +59,7 @@ class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterf
             ]);
         }
 
-        if($noFilter || in_array('deleteForce', $options['only'])) {
+        if($noFilter || in_array('deleteForce', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'deleteForce',
                 'pattern' => '{id}/force',

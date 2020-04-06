@@ -2,7 +2,7 @@
 
 namespace Oxygen\Crud\BlueprintTrait;
 
-use Lang;
+use Illuminate\Support\Facades\Lang;
 use Oxygen\Core\Blueprint\Blueprint;
 use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Html\Dialog\Dialog;
@@ -30,9 +30,9 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
     public function applyTrait(Blueprint $blueprint) {
         parent::applyTrait($blueprint);
 
-        $noFilter = !isset($options['only']);
+        $noFilter = !isset($this->options['only']);
 
-        if($noFilter || in_array('postNewVersion', $options['only'])) {
+        if($noFilter || in_array('postNewVersion', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'postNewVersion',
                 'pattern' => '{id}/newVersion',
@@ -45,7 +45,7 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
             ]);
         }
 
-        if($noFilter || in_array('postMakeHeadVersion', $options['only'])) {
+        if($noFilter || in_array('postMakeHeadVersion', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'postMakeHeadVersion',
                 'pattern' => '{id}/makeHead',
@@ -63,7 +63,7 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
             ]);
         }
 
-        if($noFilter || in_array('postMakeHeadVersion', $options['only'])) {
+        if($noFilter || in_array('postMakeHeadVersion', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'deleteVersions',
                 'pattern' => '{id}/versions',

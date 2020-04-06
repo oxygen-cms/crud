@@ -2,12 +2,11 @@
 
 namespace Oxygen\Crud\Controller;
 
-use Input;
-use Lang;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 use Oxygen\Core\Http\Notification;
+use Oxygen\Data\Exception\InvalidEntityException;
 use Oxygen\Data\Repository\QueryParameters;
-use Response;
-use View;
 
 class SoftDeleteCrudController extends BasicCrudController {
 
@@ -15,7 +14,7 @@ class SoftDeleteCrudController extends BasicCrudController {
      * List all entities.
      *
      * @param QueryParameters $queryParameters
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function getList($queryParameters = null) {
         if($queryParameters == null) {
@@ -31,7 +30,7 @@ class SoftDeleteCrudController extends BasicCrudController {
      * List all deleted entities.
      *
      * @param QueryParameters $queryParameters
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function getTrash($queryParameters = null) {
         if($queryParameters == null) {
@@ -51,15 +50,15 @@ class SoftDeleteCrudController extends BasicCrudController {
      * Deletes an entity.
      *
      * @param mixed $item the item
-     * @return Response
+     * @throws InvalidEntityException
      */
     public function deleteDelete($item) {
         $item = $this->getItem($item);
         $item->delete();
         $this->repository->persist($item);
 
-        return Response::notification(
-            new Notification(Lang::get('oxygen/crud::messages.basic.deleted')),
+        return notify(
+            new Notification(__('oxygen/crud::messages.basic.deleted')),
             ['refresh' => true]
         );
     }
@@ -68,6 +67,7 @@ class SoftDeleteCrudController extends BasicCrudController {
      * Restores a deleted entity.
      *
      * @param mixed $item the item
+     * @throws InvalidEntityException
      * @return Response
      */
     public function postRestore($item) {
@@ -75,8 +75,8 @@ class SoftDeleteCrudController extends BasicCrudController {
         $item->restore();
         $this->repository->persist($item);
 
-        return Response::notification(
-            new Notification(Lang::get('oxygen/crud::messages.softDelete.restored')),
+        return notify(
+            new Notification(__('oxygen/crud::messages.softDelete.restored')),
             ['refresh' => true]
         );
     }
@@ -92,8 +92,8 @@ class SoftDeleteCrudController extends BasicCrudController {
         $item = $this->getItem($item);
         $this->repository->delete($item);
 
-        return Response::notification(
-            new Notification(Lang::get('oxygen/crud::messages.softDelete.forceDeleted')),
+        return notify(
+            new Notification(__('oxygen/crud::messages.softDelete.forceDeleted')),
             ['redirect' => $this->blueprint->getRouteName('getList')]
         );
     }

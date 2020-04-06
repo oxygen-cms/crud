@@ -2,7 +2,7 @@
 
 namespace Oxygen\Crud\BlueprintTrait;
 
-use Lang;
+use Illuminate\Support\Facades\Lang;
 use Oxygen\Core\Blueprint\Blueprint;
 use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Html\Toolbar\Factory\FormToolbarItemFactory;

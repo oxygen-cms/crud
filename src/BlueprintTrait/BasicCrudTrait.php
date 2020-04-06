@@ -2,12 +2,16 @@
 
 namespace Oxygen\Crud\BlueprintTrait;
 
-use Auth;
 use Oxygen\Core\Blueprint\Blueprint;
 use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Http\Method;
 
 class BasicCrudTrait implements BlueprintTraitInterface {
+
+    /**
+     * @var array
+     */
+    protected $options;
 
     /**
      * Constructs the BasicCrudTrait.
@@ -25,9 +29,9 @@ class BasicCrudTrait implements BlueprintTraitInterface {
      * @param Blueprint $blueprint
      */
     public function applyTrait(Blueprint $blueprint) {
-        $noFilter = !isset($options['only']);
+        $noFilter = !isset($this->options['only']);
 
-        if($noFilter || in_array('getList', $options['only'])) {
+        if($noFilter || in_array('getList', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'getList',
                 'pattern' => '/'
@@ -41,7 +45,7 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             $blueprint->setPrimaryToolbarItem('getList');
         }
 
-        if($noFilter || in_array('getCreate', $options['only'])) {
+        if($noFilter || in_array('getCreate', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'getCreate',
                 'pattern' => 'create'
@@ -54,7 +58,7 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             ]);
         }
 
-        if($noFilter || in_array('postCreate', $options['only'])) {
+        if($noFilter || in_array('postCreate', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'postCreate',
                 'pattern' => '/',
@@ -62,7 +66,7 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             ]);
         }
 
-        if($noFilter || in_array('getTrash', $options['only'])) {
+        if($noFilter || in_array('getTrash', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'getTrash',
                 'pattern' => 'trash'
@@ -75,7 +79,7 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             ]);
         }
 
-        if($noFilter || in_array('getUpdate', $options['only'])) {
+        if($noFilter || in_array('getUpdate', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'getUpdate',
                 'pattern' => '{id}/edit'
@@ -87,7 +91,7 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             ]);
         }
 
-        if($noFilter || in_array('putUpdate', $options['only'])) {
+        if($noFilter || in_array('putUpdate', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'putUpdate',
                 'pattern' => '{id}',
@@ -95,7 +99,7 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             ]);
         }
 
-        if($noFilter || in_array('getInfo', $options['only'])) {
+        if($noFilter || in_array('getInfo', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'getInfo',
                 'pattern' => '{id}'
@@ -107,7 +111,7 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             ]);
         }
 
-        if($noFilter || in_array('deleteDelete', $options['only'])) {
+        if($noFilter || in_array('deleteDelete', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'deleteDelete',
                 'pattern' => '{id}',

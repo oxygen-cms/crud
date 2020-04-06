@@ -2,21 +2,17 @@
 
 namespace Oxygen\Crud\Controller;
 
+use Oxygen\Data\Exception\InvalidEntityException;
 use Illuminate\Http\Request;
-use Input;
-use Lang;
+use Illuminate\Support\Facades\Lang;
 use Oxygen\Core\Blueprint\Blueprint;
 use Oxygen\Core\Blueprint\BlueprintManager as BlueprintManager;
 use Oxygen\Core\Contracts\Routing\ResponseFactory;
 use Oxygen\Core\Controller\ResourceController;
 use Oxygen\Core\Form\FieldSet;
 use Oxygen\Core\Http\Notification;
-use Oxygen\Data\Exception\InvalidEntityException;
 use Oxygen\Data\Repository\QueryParameters;
 use Oxygen\Data\Repository\RepositoryInterface;
-use Response;
-use URL;
-use View;
 
 class BasicCrudController extends ResourceController {
 
@@ -50,7 +46,7 @@ class BasicCrudController extends ResourceController {
      * List all items.
      *
      * @param QueryParameters $queryParameters
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function getList($queryParameters = null) {
         if($queryParameters == null) {
@@ -71,7 +67,7 @@ class BasicCrudController extends ResourceController {
      * Shows info about a Resource.
      *
      * @param mixed $item the item
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function getInfo($item) {
         $item = $this->getItem($item);
@@ -83,7 +79,7 @@ class BasicCrudController extends ResourceController {
     /**
      * Shows the create form.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function getCreate() {
         return view('oxygen/crud::basic.create')
@@ -94,7 +90,7 @@ class BasicCrudController extends ResourceController {
      * Shows the update form.
      *
      * @param mixed $item the item
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function getUpdate($item) {
         $item = $this->getItem($item);
@@ -127,19 +123,20 @@ class BasicCrudController extends ResourceController {
      * Updates a Resource.
      *
      * @param mixed $item the item
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function putUpdate($item, ResponseFactory $response) {
+    public function putUpdate($item, Request $request) {
         try {
             $item = $this->getItem($item);
-            $item->fromArray($this->transformInput(Input::except(['_method', '_token'])));
+            $item->fromArray($this->transformInput($request->except(['_method', '_token'])));
             $this->repository->persist($item);
 
-            return $response->notification(
+            return notify(
                 new Notification(Lang::get('oxygen/crud::messages.basic.updated'))
             );
         } catch(InvalidEntityException $e) {
-            return $response->notification(
+            return notify(
                 new Notification($e->getErrors()->first(), Notification::FAILED),
                 ['input' => true]
             );
@@ -156,7 +153,7 @@ class BasicCrudController extends ResourceController {
         $item = $this->getItem($item);
         $this->repository->delete($item);
 
-        return Response::notification(
+        return notify(
             new Notification(Lang::get('oxygen/crud::messages.basic.deleted')),
             ['redirect' => $this->blueprint->getRouteName('getList')]
         );
