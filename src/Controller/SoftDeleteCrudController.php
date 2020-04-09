@@ -50,6 +50,7 @@ class SoftDeleteCrudController extends BasicCrudController {
      * Deletes an entity.
      *
      * @param mixed $item the item
+     * @return Response
      * @throws InvalidEntityException
      */
     public function deleteDelete($item) {

@@ -73,11 +73,11 @@ class VersionableCrudController extends SoftDeleteCrudController {
     /**
      * Updates an entity.
      *
-     * @param mixed $item the item
      * @param Request $request
+     * @param mixed $item the item
      * @return Response
      */
-    public function putUpdate($item, Request $request) {
+    public function putUpdate(Request $request, $item) {
         try {
             $item = $this->getItem($item);
             $item->fromArray($this->transformInput($request->except(['_method', '_token', 'version'])));

@@ -2,15 +2,12 @@
 
 namespace Oxygen\Crud\Controller;
 
-use Event;
-use Lang;
 use Oxygen\Core\Html\Dialog\Dialog;
 use Oxygen\Core\Html\Form\Form;
 use Oxygen\Core\Http\Notification;
 use Oxygen\Data\Exception\InvalidEntityException;
-use Response;
-use URL;
-use View;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Event;
 
 trait Publishable {
 
@@ -18,7 +15,7 @@ trait Publishable {
      * Publish or unpublish an entity.
      *
      * @param mixed $item the item
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function postPublish($item) {
         try {
@@ -26,14 +23,14 @@ trait Publishable {
             $item->isPublished() ? $item->unpublish() : $item->publish();
             $this->repository->persist($item, 'overwrite');
 
-            return Response::notification(
+            return notify(
                 new Notification(
-                    Lang::get($item->isPublished() ? 'oxygen/crud::messages.publishable.published' : 'oxygen/crud::messages.publishable.unpublished')
+                    __($item->isPublished() ? 'oxygen/crud::messages.publishable.published' : 'oxygen/crud::messages.publishable.unpublished')
                 ),
                 ['refresh' => true]
             );
         } catch(InvalidEntityException $e) {
-            return Response::notification(
+            return notify(
                 new Notification($e->getErrors()->first(), Notification::FAILED)
             );
         }
@@ -49,17 +46,17 @@ trait Publishable {
         $item = $this->getItem($item);
 
         if(!$item->isPublished()) {
-            return Response::notification(new Notification(
-                Lang::get('oxygen/crud::messages.publishable.alreadyDraft'),
+            return notify(new Notification(
+                __('oxygen/crud::messages.publishable.alreadyDraft'),
                 Notification::FAILED
             ));
         }
 
         $this->repository->makeDraftOfVersion($item);
 
-        return Response::notification(
+        return notify(
             new Notification(
-                Lang::get('oxygen/crud::messages.publishable.publishedSoMadeDraft')
+                __('oxygen/crud::messages.publishable.publishedSoMadeDraft')
             ),
             ['refresh' => true]
         );
@@ -76,7 +73,7 @@ trait Publishable {
 
         if($item->isPublished()) {
             Event::listen('oxygen.layout.page.after', function () use ($item) {
-                $dialog = new Dialog(Lang::get('oxygen/crud::dialogs.publishable.makeDraft'));
+                $dialog = new Dialog(__('oxygen/crud::dialogs.publishable.makeDraft'));
                 $buttonAttributes = array_merge(
                     ['type' => 'submit'],
                     $dialog->render()

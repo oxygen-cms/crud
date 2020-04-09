@@ -24,9 +24,16 @@ use Oxygen\Core\Html\Toolbar\SubmitToolbarItem;
         if(!$field->editable) {
             continue;
         }
-        $field = EditableField::fromEntity($field, app('request'), $item);
-        $label = new Label($field->getMeta());
-        $row = new Row([$label, $field]);
+
+        if(isset($field->options['fullWidth']) && $field->options['fullWidth'] == true) {
+            $editableField = EditableField::fromEntity($field, $item);
+            $row = new Row([$editableField]);
+            $row->addClass('Row--fullWidth');
+        } else {
+            $editableField = EditableField::fromEntity($field, $item);
+            $label = new Label($editableField->getMeta());
+            $row = new Row([$label, $editableField]);
+        }
         $form->addContent($row);
     }
 

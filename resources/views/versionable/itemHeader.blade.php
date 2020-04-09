@@ -1,6 +1,7 @@
 <?php
 
 use Oxygen\Core\Html\Header\Header;
+use Oxygen\Data\Behaviour\StatusIconInterface;
 
 if(!function_exists('getSubtitleForItem')) {
     function getSubtitleForItem($version, $item = null) {
@@ -34,11 +35,6 @@ $itemHeader = Header::fromBlueprint($blueprint, $fields, ['model' => $item], Hea
 
 if(Auth::user()->hasPermissions($blueprint->getRouteName() . '.versions')) {
     $itemHeader->setSubtitle(getSubtitleForItem($item));
-}
-
-if(method_exists($item, 'isPublished')) {
-    $icon = $item->isPublished() ? 'globe' : 'pencil-square';
-    $itemHeader->setIcon($icon);
 }
 
 $blockClasses = ['Block'];

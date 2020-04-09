@@ -18,7 +18,7 @@ use Oxygen\Core\Html\Form\EditableField;use Oxygen\Core\Html\Form\Footer;use Oxy
         if(!$field->editable) {
             continue;
         }
-        $field = new EditableField($field, app('request'));
+        $field = new EditableField($field);
         $label = new Label($field->getMeta());
         $row = new Row([$label, $field]);
         $form->addContent($row);
@@ -31,8 +31,8 @@ use Oxygen\Core\Html\Form\EditableField;use Oxygen\Core\Html\Form\Footer;use Oxy
     }
 
     $footer = new Row([
-            new ButtonToolbarItem(Lang::get('oxygen/crud::ui.close'), method_exists($item, 'isDeleted') && $item->isDeleted() ? $blueprint->getAction('getTrash') : $blueprint->getAction('getList')),
-            new SubmitToolbarItem(Lang::get('oxygen/crud::ui.create'))
+            new ButtonToolbarItem(__('oxygen/crud::ui.close'), method_exists($item, 'isDeleted') && $item->isDeleted() ? $blueprint->getAction('getTrash') : $blueprint->getAction('getList')),
+            new SubmitToolbarItem(__('oxygen/crud::ui.create'))
     ]);
     $footer->isFooter = true;
     $form->addContent($footer);

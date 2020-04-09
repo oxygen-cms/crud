@@ -75,7 +75,7 @@ class BasicCrudTrait implements BlueprintTraitInterface {
                 'action' => 'getTrash',
                 'label' => 'Trash',
                 'icon' => 'trash-o',
-                'color' => 'grey'
+                'color' => 'dark-grey'
             ]);
         }
 

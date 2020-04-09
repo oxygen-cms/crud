@@ -2,8 +2,7 @@
 
 namespace Oxygen\Crud\Controller;
 
-use Input;
-use Lang;
+use Illuminate\View\View;
 
 /**
  * The Previewable trait extends a Versionable resource,
@@ -17,7 +16,7 @@ trait Previewable {
      * Preview the page.
      *
      * @param mixed $item
-     * @return Response
+     * @return View
      */
     public function getPreview($item) {
         $item = $this->getItem($item);
@@ -30,12 +29,12 @@ trait Previewable {
      * Renders custom content as HTML.
      *
      * @param $item
-     * @return Response
+     * @return View
      */
     public function postContent() {
         $path = view()->pathFromModel('unkown', 0, $this->crudFields->getContentFieldName());
 
-        $content = Input::get('content', '');
+        $content = request()->get('content', '');
         return $this->decoratePreviewContent(view()->string($content, $path, 0));
     }
 
@@ -43,7 +42,7 @@ trait Previewable {
      * Renders this resource as HTML
      *
      * @param $item
-     * @return Response
+     * @return View
      */
     public function getContent($item) {
         $item = $this->getItem($item);

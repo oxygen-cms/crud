@@ -9,11 +9,11 @@ use Doctrine\Common\Collections\ArrayCollection;use Oxygen\Core\Html\Header\Head
     if(!function_exists('getSubtitleForItem')) {
         function getSubtitleForItem($version, $item = null) {
             if($version === $item) {
-                return Lang::get('oxygen/crud::ui.thisVersion');
+                return __('oxygen/crud::ui.thisVersion');
             } else if($version->isHead()) {
-                return Lang::get('oxygen/crud::ui.latestVersion');
+                return __('oxygen/crud::ui.latestVersion');
             } else {
-                return Lang::get('oxygen/crud::ui.fromDate', [
+                return __('oxygen/crud::ui.fromDate', [
                         'date' => $version->getUpdatedAt()->diffForHumans()
                 ]);
             }
@@ -22,8 +22,8 @@ use Doctrine\Common\Collections\ArrayCollection;use Oxygen\Core\Html\Header\Head
 
     $header = Header::fromBlueprint(
             $blueprint,
-            Lang::get('oxygen/crud::ui.versions'),
-            ['model' => $item],
+            __('oxygen/crud::ui.versions'),
+            ['model' => $item, 'statusIcon' => false],
             Header::TYPE_MAIN,
             'versionList'
     );

@@ -3,9 +3,9 @@
 @section('content')
 
     <?php
-    $title = Lang::get('oxygen/crud::ui.namedResource.update', ['name' => $item->getTitle()]);
+    $title = __('oxygen/crud::ui.namedResource.update', ['name' => $item->getTitle()]);
 
-    $sectionTitle = Lang::get('oxygen/crud::ui.resource.update', [
+    $sectionTitle = __('oxygen/crud::ui.resource.update', [
             'resource' => $blueprint->getDisplayName()
     ]);
     ?>
@@ -22,7 +22,7 @@
             'overwrite' => 'Overwrite Existing Version',
             'guess' => 'Create a New Version if Needed'
     ];
-    $versionField = new EditableField($versionFieldMeta, app('request'), 'guess');
+    $versionField = new EditableField($versionFieldMeta, 'guess');
     $versionRow = new Row([new Label($versionField->getMeta()), $versionField]);
 
     ?>

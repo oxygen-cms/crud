@@ -5,6 +5,7 @@
 <?php
 
 use Oxygen\Core\Blueprint\Blueprint;use Oxygen\Core\Html\Header\Header;
+use Oxygen\Data\Behaviour\StatusIconInterface;
 
 $title = Lang::get(
         $isTrash ? 'oxygen/crud::ui.resource.listTrash' : 'oxygen/crud::ui.resource.list',
@@ -45,11 +46,6 @@ if($isTrash) {
     <?php
     foreach($items as $item):
         $itemHeader = Header::fromBlueprint($blueprint, $crudFields, ['model' => $item], Header::TYPE_NORMAL, 'item');
-
-        if(method_exists($item, 'isPublished')) {
-            $icon = $item->isPublished() ? 'globe' : 'pencil-square';
-            $itemHeader->setIcon($icon);
-        }
 
         echo $itemHeader->render();
     endforeach;

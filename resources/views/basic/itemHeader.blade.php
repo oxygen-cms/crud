@@ -1,6 +1,7 @@
 <?php
 
 use Oxygen\Core\Html\Header\Header;
+use Oxygen\Data\Behaviour\StatusIconInterface;
 
 $sectionHeader = Header::fromBlueprint(
         $blueprint,

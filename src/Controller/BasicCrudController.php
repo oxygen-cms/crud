@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
 use Oxygen\Core\Blueprint\Blueprint;
 use Oxygen\Core\Blueprint\BlueprintManager as BlueprintManager;
-use Oxygen\Core\Contracts\Routing\ResponseFactory;
 use Oxygen\Core\Controller\ResourceController;
 use Oxygen\Core\Form\FieldSet;
 use Oxygen\Core\Http\Notification;
@@ -103,6 +102,7 @@ class BasicCrudController extends ResourceController {
      * Creates a new Resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function postCreate(Request $input) {
         try {
@@ -122,11 +122,12 @@ class BasicCrudController extends ResourceController {
     /**
      * Updates a Resource.
      *
-     * @param mixed $item the item
      * @param Request $request
+     * @param mixed $item the item
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function putUpdate($item, Request $request) {
+    public function putUpdate(Request $request, $item) {
         try {
             $item = $this->getItem($item);
             $item->fromArray($this->transformInput($request->except(['_method', '_token'])));
@@ -164,6 +165,7 @@ class BasicCrudController extends ResourceController {
      *
      * @param array $input
      * @return array
+     * @throws \Exception
      */
     public function transformInput($input) {
         foreach($input as $key => $value) {
