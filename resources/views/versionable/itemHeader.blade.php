@@ -1,7 +1,6 @@
 <?php
 
 use Oxygen\Core\Html\Header\Header;
-use Oxygen\Data\Behaviour\StatusIconInterface;
 
 if(!function_exists('getSubtitleForItem')) {
     function getSubtitleForItem($version, $item = null) {
@@ -37,19 +36,5 @@ if(Auth::user()->hasPermissions($blueprint->getRouteName() . '.versions')) {
     $itemHeader->setSubtitle(getSubtitleForItem($item));
 }
 
-$blockClasses = ['Block'];
-if(isset($seamless) && $seamless == true) {
-    $blockClasses[] = 'Block--noBorder';
-    $blockClasses[] = 'Block--noMargin';
-}
-
-?>
-
-        <!-- =====================
-            HEADER
-     ===================== -->
-
-<div class="{{{ implode(' ', $blockClasses) }}}">
-    {!! $sectionHeader->render() !!}
-    {!! $itemHeader->render() !!}
-</div>
+echo $sectionHeader->render();
+echo $itemHeader->render();

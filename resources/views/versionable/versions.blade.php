@@ -32,9 +32,6 @@ use Doctrine\Common\Collections\ArrayCollection;use Oxygen\Core\Html\Header\Head
 
     <div class="Block">
         {!! $header->render() !!}
-    </div>
-
-    <div class="Block">
 
         <?php
         $versions = $item->getVersions();

@@ -73,6 +73,7 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
                 'action' => 'deleteVersions',
                 'label' => 'Clear Versions',
                 'icon' => 'trash-o',
+                'color' => 'dark-grey',
                 'dialog' => new Dialog(Lang::get('oxygen/crud::dialogs.versionable.clearVersions')),
                 'shouldRenderCallback' => function (ActionToolbarItem $item, array $arguments) {
                     return

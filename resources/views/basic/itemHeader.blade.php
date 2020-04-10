@@ -16,19 +16,5 @@ $sectionHeader->setBackLink(URL::route(
 
 $itemHeader = Header::fromBlueprint($blueprint, $fields, ['model' => $item], Header::TYPE_NORMAL, 'item');
 
-$blockClasses = ['Block'];
-if(isset($seamless) && $seamless == true) {
-    $blockClasses[] = 'Block--noBorder';
-    $blockClasses[] = 'Block--noMargin';
-}
-
-?>
-
-        <!-- =====================
-            HEADER
-     ===================== -->
-
-<div class="{{{ implode(' ', $blockClasses) }}}">
-    {!! $sectionHeader->render() !!}
-    {!! $itemHeader->render() !!}
-</div>
+echo $sectionHeader->render();
+echo $itemHeader->render();

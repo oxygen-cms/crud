@@ -23,19 +23,16 @@ if($isTrash) {
 
 ?>
 
-        <!-- =====================
+<!-- =====================
             HEADER
      ===================== -->
 
 <div class="Block">
     {!! $sectionHeader->render() !!}
-</div>
 
-<!-- =====================
-             LIST
-     ===================== -->
-
-<div class="Block">
+    <!-- =====================
+                 LIST
+         ===================== -->
 
     @if($items->isEmpty())
         <h2 class="heading-gamma margin-large">

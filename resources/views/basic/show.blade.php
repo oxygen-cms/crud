@@ -16,21 +16,19 @@ $sectionTitle = Lang::get('oxygen/crud::ui.resource.show', [
 
 ?>
 
-@include('oxygen/crud::basic.itemHeader', ['blueprint' => $blueprint, 'fields' => $crudFields, 'item' => $item, 'title' => $sectionTitle])
-
-        <!-- =====================
-             INFO
-     ===================== -->
-
 <div class="Block">
+
+    @include('oxygen/crud::basic.itemHeader', ['blueprint' => $blueprint, 'fields' => $crudFields, 'item' => $item, 'title' => $sectionTitle])
+
     <?php
-    foreach($crudFields->getFields() as $field):
-        $field = StaticField::fromEntity($field, $item);
-        $label = new Label($field->getMeta());
-        $row = new Row([$label, $field]);
-        echo $row->render();
-    endforeach;
+        foreach($crudFields->getFields() as $field) {
+            $field = StaticField::fromEntity($field, $item);
+            $label = new Label($field->getMeta());
+            $row = new Row([$label, $field]);
+            echo $row->render();
+        }
     ?>
+
 </div>
 
 @stop

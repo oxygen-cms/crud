@@ -7,54 +7,42 @@ use Oxygen\Core\Html\Form\Row;
 use Oxygen\Core\Html\Toolbar\ButtonToolbarItem;
 use Oxygen\Core\Html\Toolbar\SubmitToolbarItem;
 
-?>
+$form = new Form($blueprint->getAction('putUpdate'));
+$form->setAsynchronous(true)->setWarnBeforeExit(true)->setSubmitOnShortcutKey(true);
+$form->setRouteParameterArguments(['model' => $item]);
 
-        <!-- =====================
-          UPDATE FORM
-     ===================== -->
-
-<div class="Block">
-
-    <?php
-    $form = new Form($blueprint->getAction('putUpdate'));
-    $form->setAsynchronous(true)->setWarnBeforeExit(true)->setSubmitOnShortcutKey(true);
-    $form->setRouteParameterArguments(['model' => $item]);
-
-    foreach($fields->getFields() as $field) {
-        if(!$field->editable) {
-            continue;
-        }
-
-        if(isset($field->options['fullWidth']) && $field->options['fullWidth'] == true) {
-            $editableField = EditableField::fromEntity($field, $item);
-            $row = new Row([$editableField]);
-            $row->addClass('Row--fullWidth');
-        } else {
-            $editableField = EditableField::fromEntity($field, $item);
-            $label = new Label($editableField->getMeta());
-            $row = new Row([$label, $editableField]);
-        }
-        $form->addContent($row);
+foreach($fields->getFields() as $field) {
+    if(!$field->editable) {
+        continue;
     }
+    
+    $editableField = EditableField::fromEntity($field, $item);
+    $label = new Label($editableField->getMeta());
 
-    if(isset($extraFields)) {
-        foreach($extraFields as $field) {
-            $form->addContent($field);
-        }
+    if(isset($field->options['fullWidth']) && $field->options['fullWidth'] == true) {
+        $row = new Row([$editableField]);
+        $row->addClass('Row--fullWidth');
+    } else {
+        $row = new Row([$label, $editableField]);
     }
+    $form->addContent($row);
+}
 
-    if(!isset($footer)) {
-        $footer = new Row([
-                new ButtonToolbarItem(Lang::get('oxygen/crud::ui.close'), method_exists($item, 'isDeleted') && $item->isDeleted() ? $blueprint->getAction('getTrash') : $blueprint->getAction('getList')),
-                new SubmitToolbarItem(Lang::get('oxygen/crud::ui.save'))
-        ]);
-        $footer->isFooter = true;
+if(isset($extraFields)) {
+    foreach($extraFields as $field) {
+        $form->addContent($field);
     }
+}
 
-    $form->addContent($footer);
+if(!isset($footer)) {
+    $footer = new Row([
+            new ButtonToolbarItem(Lang::get('oxygen/crud::ui.close'), method_exists($item, 'isDeleted') && $item->isDeleted() ? $blueprint->getAction('getTrash') : $blueprint->getAction('getList')),
+            new SubmitToolbarItem(Lang::get('oxygen/crud::ui.save'))
+    ]);
+    $footer->isFooter = true;
+}
 
-    echo $form->render();
-    ?>
+$form->addContent($footer);
 
-</div>
+echo $form->render();
 

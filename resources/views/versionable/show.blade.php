@@ -12,13 +12,10 @@ $sectionTitle = Lang::get('oxygen/crud::ui.resource.show', [
 ]);
 ?>
 
+<div class="Block">
+
 @include('oxygen/crud::versionable.itemHeader', ['blueprint' => $blueprint, 'fields' => $crudFields, 'item' => $item, 'title' => $sectionTitle])
 
-        <!-- =====================
-             INFO
-     ===================== -->
-
-<div class="Block">
     <?php
     use Oxygen\Core\Html\Form\Label;use Oxygen\Core\Html\Form\Row;use Oxygen\Core\Html\Form\StaticField;
     foreach($crudFields->getFields() as $field):

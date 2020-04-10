@@ -25,8 +25,9 @@ $header->setBackLink(URL::route($blueprint->getRouteName('getList')));
 
 <div class="Block">
     {!! $header->render() !!}
-</div>
 
-@include('oxygen/crud::basic.createForm', ['blueprint' => $blueprint, 'fields' => $crudFields, 'item' => $item])
+    @include('oxygen/crud::basic.createForm', ['blueprint' => $blueprint, 'fields' => $crudFields, 'item' => $item])
+
+</div>
 
 @stop
