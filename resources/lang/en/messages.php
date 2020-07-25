@@ -51,7 +51,7 @@ return [
         'madeVersion' => 'A New Version Was Created',
         'clearedVersions' => 'All Old Versions Were Cleared',
         'alreadyHead' => 'That :resource Is Already The Head Version',
-        'madeHead' => 'That :resource is Now The Head Version',
+        'madeHead' => 'Restored to that version',
     ],
 
     /*

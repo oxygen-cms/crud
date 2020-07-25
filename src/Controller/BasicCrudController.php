@@ -109,8 +109,8 @@ class BasicCrudController extends ResourceController {
             $item = $this->getItem($this->repository->make());
             $item->fromArray($this->transformInput($input->except(['_method', '_token'])));
             $this->repository->persist($item);
-
-            return notify(new Notification(Lang::get('oxygen/crud::messages.basic.created')), ['redirect' => $this->blueprint->getRouteName('getList')]);
+            
+            return notify(new Notification(trans('oxygen/crud::messages.basic.created')), ['redirect' => $this->blueprint->getRouteName('getList')]);
         } catch(InvalidEntityException $e) {
             return notify(
                 new Notification($e->getErrors()->first(), Notification::FAILED),
@@ -134,7 +134,7 @@ class BasicCrudController extends ResourceController {
             $this->repository->persist($item);
 
             return notify(
-                new Notification(Lang::get('oxygen/crud::messages.basic.updated'))
+                new Notification(trans('oxygen/crud::messages.basic.updated'))
             );
         } catch(InvalidEntityException $e) {
             return notify(
@@ -155,7 +155,7 @@ class BasicCrudController extends ResourceController {
         $this->repository->delete($item);
 
         return notify(
-            new Notification(Lang::get('oxygen/crud::messages.basic.deleted')),
+            new Notification(trans('oxygen/crud::messages.basic.deleted')),
             ['redirect' => $this->blueprint->getRouteName('getList')]
         );
     }
