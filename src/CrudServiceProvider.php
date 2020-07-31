@@ -3,7 +3,6 @@
 namespace Oxygen\Crud;
 
 use Illuminate\Support\ServiceProvider;
-use Oxygen\Crud\BladeTemplateValidator;
 
 class CrudServiceProvider extends ServiceProvider {
 
@@ -28,9 +27,6 @@ class CrudServiceProvider extends ServiceProvider {
 			__DIR__ . '/../resources/views' => base_path('resources/views/vendor/oxygen/crud'),
 			__DIR__ . '/../resources/lang' => base_path('resources/lang/vendor/oxygen/crud'),
 		]);
-
-		$this->app['validator']->extend('blade_template', BladeTemplateValidator::class . '@validate');
-		$this->app['validator']->replacer('blade_template', BladeTemplateValidator::class . '@replace');
 	}
 
 	/**
@@ -39,11 +35,7 @@ class CrudServiceProvider extends ServiceProvider {
 	 * @return void
 	 */
 
-	public function register() {
-		$this->app->singleton(BladeTemplateValidator::class, function($app) {
-			return new BladeTemplateValidator($app['view']);
-		});
-	}
+	public function register() {}
 
 	/**
 	 * Get the services provided by the provider.

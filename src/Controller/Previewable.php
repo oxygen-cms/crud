@@ -2,7 +2,10 @@
 
 namespace Oxygen\Crud\Controller;
 
+use Illuminate\Http\Response;
 use Illuminate\View\View;
+use Oxygen\Core\Templating\TwigTemplateCompiler;
+use Twig\Error\Error;
 
 /**
  * The Previewable trait extends a Versionable resource,
@@ -28,25 +31,34 @@ trait Previewable {
     /**
      * Renders custom content as HTML.
      *
-     * @param $item
-     * @return View
+     * @param TwigTemplateCompiler $templating
+     * @return Response|View
      */
-    public function postContent() {
-        $path = view()->pathFromModel('unkown', 0, $this->crudFields->getContentFieldName());
-
+    public function postContent(TwigTemplateCompiler $templating) {
         $content = request()->get('content', '');
-        return $this->decoratePreviewContent(view()->string($content, $path, 0));
+        if(!$content) {
+            $content = '';
+        }
+        try {
+            $rendered = $templating->renderString($content, 'content');
+            return $this->decoratePreviewContent($rendered);
+        } catch(Error $e) {
+            return response($e->getMessage());
+        }
     }
 
     /**
      * Renders this resource as HTML
      *
-     * @param $item
+     * @param object $item
+     * @param TwigTemplateCompiler $templating
      * @return View
      */
-    public function getContent($item) {
+    public function getContent($item, TwigTemplateCompiler $templating) {
         $item = $this->getItem($item);
-        $content = view()->model($item, $this->crudFields->getContentFieldName());
+
+        $content = $templating->render($item);
+
         if(method_exists($this, 'decorateContent')) {
             return $this->decorateContent($content, $item);
         } else {

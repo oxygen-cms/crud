@@ -13,7 +13,7 @@ class SoftDeleteCrudController extends BasicCrudController {
     /**
      * List all entities.
      *
-     * @param QueryParameters $queryParameters
+     * @param QueryParameters|null $queryParameters
      * @return View
      */
     public function getList($queryParameters = null) {
@@ -29,7 +29,7 @@ class SoftDeleteCrudController extends BasicCrudController {
     /**
      * List all deleted entities.
      *
-     * @param QueryParameters $queryParameters
+     * @param QueryParameters|null $queryParameters
      * @return View
      */
     public function getTrash($queryParameters = null) {
