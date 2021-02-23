@@ -3,7 +3,6 @@
 
 namespace Oxygen\Crud\Controller;
 
-
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -40,7 +39,7 @@ trait BasicCrudApi {
     protected function getListQueryParameters(Request $request) {
         $queryParameters = QueryParameters::make()
             ->orderBy('id', QueryParameters::DESCENDING);
-        
+
         return $queryParameters;
     }
 
