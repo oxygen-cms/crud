@@ -4,6 +4,7 @@ use Oxygen\Core\Html\Form\EditableField;
 use Oxygen\Core\Html\Form\Form;
 use Oxygen\Core\Html\Form\Label;
 use Oxygen\Core\Html\Form\Row;
+use Oxygen\Core\Html\Form\StaticField;
 use Oxygen\Core\Html\Toolbar\ButtonToolbarItem;
 use Oxygen\Core\Html\Toolbar\SubmitToolbarItem;
 
@@ -13,9 +14,17 @@ $form->setRouteParameterArguments(['model' => $item]);
 
 foreach($fields->getFields() as $field) {
     if(!$field->editable) {
+        if($field->name === 'id') {
+            // TODO: remove special-cased field name
+            continue;
+        }
+        $staticField = StaticField::fromEntity($field, $item);
+        $label = new Label($field);
+        $row = new Row([$label, $staticField]);
+        $form->addContent($row->render());
         continue;
     }
-    
+
     $editableField = EditableField::fromEntity($field, $item);
     $label = new Label($editableField->getMeta());
 

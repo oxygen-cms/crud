@@ -78,7 +78,7 @@ return [
     'upload' => [
         'noFiles' => 'Please Select a File First',
         'tooLarge' => 'Upload too Large',
-        'failed' => 'File Upload Failed',
+        'failed' => 'Failed to upload `:name`: :error',
         'success' => 'File Uploaded Successfully'
     ],
 
