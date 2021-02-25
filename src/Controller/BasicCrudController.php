@@ -2,9 +2,9 @@
 
 namespace Oxygen\Crud\Controller;
 
+use Illuminate\Translation\Translator;
 use Oxygen\Data\Exception\InvalidEntityException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Lang;
 use Oxygen\Core\Blueprint\Blueprint;
 use Oxygen\Core\Blueprint\BlueprintManager as BlueprintManager;
 use Oxygen\Core\Controller\ResourceController;
@@ -36,9 +36,9 @@ class BasicCrudController extends ResourceController {
         // automatically insert the crud fields to all views
         view()->share('crudFields', $this->crudFields);
 
-        app('lang')->when('oxygen/crud::messages', ['resource' => $this->blueprint->getDisplayName()]);
-        app('lang')->when('oxygen/crud::dialogs', ['resource' => $this->blueprint->getDisplayName()]);
-        app('lang')->when('oxygen/crud::ui', ['resource' => $this->blueprint->getDisplayName(), 'pluralResource' => $this->blueprint->getPluralDisplayName()]);
+        app(Translator::class)->when('oxygen/crud::messages', ['resource' => $this->blueprint->getDisplayName()]);
+        app(Translator::class)->when('oxygen/crud::dialogs', ['resource' => $this->blueprint->getDisplayName()]);
+        app(Translator::class)->when('oxygen/crud::ui', ['resource' => $this->blueprint->getDisplayName(), 'pluralResource' => $this->blueprint->getPluralDisplayName()]);
     }
 
     /**
