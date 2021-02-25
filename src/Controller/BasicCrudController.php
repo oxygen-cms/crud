@@ -36,9 +36,9 @@ class BasicCrudController extends ResourceController {
         // automatically insert the crud fields to all views
         view()->share('crudFields', $this->crudFields);
 
-        Lang::when('oxygen/crud::messages', ['resource' => $this->blueprint->getDisplayName()]);
-        Lang::when('oxygen/crud::dialogs', ['resource' => $this->blueprint->getDisplayName()]);
-        Lang::when('oxygen/crud::ui', ['resource' => $this->blueprint->getDisplayName(), 'pluralResource' => $this->blueprint->getPluralDisplayName()]);
+        app('lang')->when('oxygen/crud::messages', ['resource' => $this->blueprint->getDisplayName()]);
+        app('lang')->when('oxygen/crud::dialogs', ['resource' => $this->blueprint->getDisplayName()]);
+        app('lang')->when('oxygen/crud::ui', ['resource' => $this->blueprint->getDisplayName(), 'pluralResource' => $this->blueprint->getPluralDisplayName()]);
     }
 
     /**
@@ -53,7 +53,7 @@ class BasicCrudController extends ResourceController {
                 ->orderBy('id', QueryParameters::DESCENDING);
         }
         $items = $this->repository->paginate(25, $queryParameters, null, app('request')->input('q', null));
-        
+
         // render the list
         return view('oxygen/crud::basic.list')
             ->with([
@@ -109,7 +109,7 @@ class BasicCrudController extends ResourceController {
             $item = $this->getItem($this->repository->make());
             $item->fromArray($this->transformInput($input->except(['_method', '_token'])));
             $this->repository->persist($item);
-            
+
             return notify(new Notification(trans('oxygen/crud::messages.basic.created')), ['redirect' => $this->blueprint->getRouteName('getList')]);
         } catch(InvalidEntityException $e) {
             return notify(
