@@ -7,6 +7,7 @@ namespace Oxygen\Crud\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Router;
 use Oxygen\Core\Http\Notification;
 use Oxygen\Data\Repository\QueryParameters;
 
@@ -29,7 +30,9 @@ trait VersionableCrudApi {
         $queryParameters = $queryParameters
             ->excludeVersions()
             ->orderBy('id', QueryParameters::DESCENDING);
-        
+
+        $this->maybeAddSearchClause($queryParameters, $request);
+
         return $queryParameters;
     }
 
@@ -103,5 +106,22 @@ trait VersionableCrudApi {
             'content' => __('oxygen/crud::messages.versionable.clearedVersions'),
             'status' => Notification::SUCCESS
         ]);
+    }
+
+    /**
+     * Registers API routes.
+     *
+     * @param Router $router
+     * @param string $resourceName
+     */
+    public static function registerVersionableRoutes(Router $router, string $resourceName) {
+        $router->middleware(['web', 'oxygen.auth', '2fa.require'])->group(function() use ($router, $resourceName) {
+            $router->get("/oxygen/api/$resourceName/{id}/versions", static::class . "@listVersionsApi")
+                ->name("$resourceName.listVersionsApi")
+                ->middleware("oxygen.permissions:$resourceName.listVersions");
+            $router->post("/oxygen/api/$resourceName/{id}/make-head", static::class . "@postMakeHeadVersion")
+                ->name("$resourceName.postMakeHeadVersion")
+                ->middleware("oxygen.permissions:$resourceName.postMakeHeadVersion");
+        });
     }
 }

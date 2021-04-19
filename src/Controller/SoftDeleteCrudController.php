@@ -31,6 +31,7 @@ class SoftDeleteCrudController extends BasicCrudController {
      *
      * @param QueryParameters|null $queryParameters
      * @return View
+     * @throws \ReflectionException
      */
     public function getTrash($queryParameters = null) {
         if($queryParameters == null) {
@@ -38,7 +39,10 @@ class SoftDeleteCrudController extends BasicCrudController {
                 ->onlyTrashed()
                 ->orderBy('id', QueryParameters::DESCENDING);
         }
-        $items = $this->repository->paginate(25, $queryParameters, null, app('request')->input('q', null));
+
+        $this->maybeAddSearchClause($queryParameters);
+
+        $items = $this->repository->paginate(25, $queryParameters);
 
         return view('oxygen/crud::basic.list', [
             'items' => $items,

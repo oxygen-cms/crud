@@ -6,6 +6,7 @@ namespace Oxygen\Crud\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Router;
 use Illuminate\View\View;
 use Oxygen\Core\Http\Notification;
 use Oxygen\Data\Exception\InvalidEntityException;
@@ -29,6 +30,8 @@ trait SoftDeleteCrudApi {
 
         $queryParameters = $queryParameters
             ->orderBy('id', QueryParameters::DESCENDING);
+
+        $this->maybeAddSearchClause($queryParameters, $request);
 
         return $queryParameters;
     }
@@ -73,6 +76,14 @@ trait SoftDeleteCrudApi {
             'content' => __('oxygen/crud::messages.softDelete.restored'),
             'status' => Notification::SUCCESS
         ]);
+    }
+
+    public static function registerSoftDeleteRoutes(Router $router, string $resourceName) {
+        $router->middleware(['web', 'oxygen.auth', '2fa.require'])->group(function() use ($router, $resourceName) {
+            $router->post('/oxygen/api/' . $resourceName . '/{id}/restore', static::class . '@postRestoreApi')
+                ->name($resourceName . '.postRestore')
+                ->middleware("oxygen.permissions:$resourceName.postRestore");
+        });
     }
 
 }

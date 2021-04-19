@@ -2,7 +2,9 @@
 
 namespace Oxygen\Crud\Controller;
 
+use \ReflectionClass;
 use Illuminate\Translation\Translator;
+use Oxygen\Data\Behaviour\Searchable;
 use Oxygen\Data\Exception\InvalidEntityException;
 use Illuminate\Http\Request;
 use Oxygen\Core\Blueprint\Blueprint;
@@ -12,6 +14,7 @@ use Oxygen\Core\Form\FieldSet;
 use Oxygen\Core\Http\Notification;
 use Oxygen\Data\Repository\QueryParameters;
 use Oxygen\Data\Repository\RepositoryInterface;
+use Oxygen\Data\Repository\SearchMultipleFieldsClause;
 
 class BasicCrudController extends ResourceController {
 
@@ -46,13 +49,17 @@ class BasicCrudController extends ResourceController {
      *
      * @param QueryParameters $queryParameters
      * @return \Illuminate\View\View
+     * @throws \ReflectionException
      */
     public function getList($queryParameters = null) {
         if($queryParameters == null) {
             $queryParameters = QueryParameters::make()
                 ->orderBy('id', QueryParameters::DESCENDING);
         }
-        $items = $this->repository->paginate(25, $queryParameters, null, app('request')->input('q', null));
+
+        $this->maybeAddSearchClause($queryParameters);
+
+        $items = $this->repository->paginate(25, $queryParameters);
 
         // render the list
         return view('oxygen/crud::basic.list')
@@ -60,6 +67,21 @@ class BasicCrudController extends ResourceController {
                 'items' => $items,
                 'isTrash' => false
             ]);
+    }
+
+    /**
+     * @param QueryParameters $queryParameters
+     * @throws \ReflectionException
+     */
+    protected function maybeAddSearchClause(QueryParameters $queryParameters) {
+        $searchQuery = app('request')->input('q', null);
+        if($searchQuery !== null) {
+            $class = new ReflectionClass($this->repository->getEntityName());
+            if($class->implementsInterface(Searchable::class)) {
+                $searchableFields = $class->getMethod('getSearchableFields')->invoke(null);
+                $queryParameters->addClause(new SearchMultipleFieldsClause($searchableFields, $searchQuery));
+            }
+        }
     }
 
     /**
