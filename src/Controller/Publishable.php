@@ -21,7 +21,7 @@ trait Publishable {
         try {
             $item = $this->getItem($item);
             $item->isPublished() ? $item->unpublish() : $item->publish();
-            $this->repository->persist($item, 'overwrite');
+            $this->repository->persist($item, true, 'overwrite');
 
             return notify(
                 new Notification(
