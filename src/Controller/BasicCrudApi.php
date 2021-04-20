@@ -78,7 +78,7 @@ trait BasicCrudApi {
      * @return JsonResponse
      */
     public function getInfoApi($item) {
-        $item = $this->repository->find($item);
+        $item = $this->repository->find((int) $item);
 
         return response()->json([
             'status' => Notification::SUCCESS,
@@ -121,7 +121,7 @@ trait BasicCrudApi {
      */
     public function putUpdateApi(Request $request, $item) {
         try {
-            $item = $this->repository->find($item);
+            $item = $this->repository->find((int) $item);
             $item->fromArray($request->except(['_token']));
             $this->repository->persist($item);
 
@@ -145,7 +145,7 @@ trait BasicCrudApi {
      * @return JsonResponse
      */
     public function deleteDeleteApi($item) {
-        $item = $this->repository->find($item);
+        $item = $this->repository->find((int) $item);
         $this->repository->delete($item);
 
         return response()->json([

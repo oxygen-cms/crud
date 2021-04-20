@@ -43,7 +43,7 @@ trait SoftDeleteCrudApi {
      * @return \Illuminate\Http\JsonResponse
      */
     public function deleteDeleteApi(Request $request, $item) {
-        $item = $this->repository->find($item);
+        $item = $this->repository->find((int) $item);
         if($request->has('force')) {
             $this->repository->delete($item);
             return response()->json([
@@ -68,7 +68,7 @@ trait SoftDeleteCrudApi {
      * @return \Illuminate\Http\JsonResponse
      */
     public function postRestoreApi($item) {
-        $item = $this->repository->find($item);
+        $item = $this->repository->find((int) $item);
         $item->restore();
         $this->repository->persist($item);
 
