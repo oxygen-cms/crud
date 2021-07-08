@@ -26,17 +26,11 @@
     },
     "minimum-stability": "stable",
     "extra": {
-        "title": "Oxygen CRUD",
-        "readme": "oxygen.md",
-        "changes": "changes.md",
-        "icon": "icon.png",
-        "providers": [
-            {
-                "name": "CRUD",
-                "class": "Oxygen\\Crud\\CrudServiceProvider",
-                "description": "Exposes CRUD Resources"
-            }
-        ]
+        "laravel": {
+            "providers": [
+                "Oxygen\\Crud\\CrudServiceProvider"
+            ]
+        }
     },
     "require-dev": {
         "phpstan/phpstan": "^0.12.18",

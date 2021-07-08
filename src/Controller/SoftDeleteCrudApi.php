@@ -4,6 +4,7 @@
 namespace Oxygen\Crud\Controller;
 
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Router;
@@ -40,7 +41,7 @@ trait SoftDeleteCrudApi {
      * Deletes an entity.
      *
      * @param mixed $item the item
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function deleteDeleteApi(Request $request, $item) {
         $item = $this->repository->find((int) $item);
@@ -56,7 +57,8 @@ trait SoftDeleteCrudApi {
 
             return response()->json([
                 'content' => __('oxygen/crud::messages.basic.deleted'),
-                'status' => Notification::SUCCESS
+                'status' => Notification::SUCCESS,
+                'item' => $item->toArray()
             ]);
         }
     }
@@ -65,7 +67,7 @@ trait SoftDeleteCrudApi {
      * Restores a deleted entity.
      *
      * @param mixed $item the item
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function postRestoreApi($item) {
         $item = $this->repository->find((int) $item);
@@ -74,7 +76,8 @@ trait SoftDeleteCrudApi {
 
         return response()->json([
             'content' => __('oxygen/crud::messages.softDelete.restored'),
-            'status' => Notification::SUCCESS
+            'status' => Notification::SUCCESS,
+            'item' => $item->toArray()
         ]);
     }
 

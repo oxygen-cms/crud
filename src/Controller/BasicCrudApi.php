@@ -93,22 +93,15 @@ trait BasicCrudApi {
      * @throws Exception
      */
     public function postCreateApi(Request $request) {
-        try {
-            $item = $this->repository->make();
-            $item->fromArray($request->except(['_token']));
-            $this->repository->persist($item);
+        $item = $this->repository->make();
+        $item->fromArray($request->except(['_token']));
+        $this->repository->persist($item);
 
-            return response()->json([
-                'status' => Notification::SUCCESS,
-                'content' => trans('oxygen/crud::messages.basic.created'),
-                'item' => $item->toArray()
-            ]);
-        } catch(InvalidEntityException $e) {
-            return response()->json([
-                'status' => Notification::FAILED,
-                'content' => $e->getErrors()->first()
-            ]);
-        }
+        return response()->json([
+            'status' => Notification::SUCCESS,
+            'content' => trans('oxygen/crud::messages.basic.created'),
+            'item' => $item->toArray()
+        ]);
     }
 
     /**
@@ -117,25 +110,17 @@ trait BasicCrudApi {
      * @param Request $request
      * @param mixed $item the item
      * @return JsonResponse
-     * @throws Exception
      */
     public function putUpdateApi(Request $request, $item) {
-        try {
-            $item = $this->repository->find((int) $item);
-            $item->fromArray($request->except(['_token']));
-            $this->repository->persist($item);
+        $item = $this->repository->find((int) $item);
+        $item->fromArray($request->except(['_token']));
+        $this->repository->persist($item);
 
-            return response()->json([
-                'content' => trans('oxygen/crud::messages.basic.updated'),
-                'status' => Notification::SUCCESS,
-                'item' => $item->toArray()
-            ]);
-        } catch(InvalidEntityException $e) {
-            return response()->json([
-                'content' => $e->getErrors()->first(),
-                'status' => Notification::FAILED
-            ]);
-        }
+        return response()->json([
+            'content' => trans('oxygen/crud::messages.basic.updated'),
+            'status' => Notification::SUCCESS,
+            'item' => $item->toArray()
+        ]);
     }
 
     /**

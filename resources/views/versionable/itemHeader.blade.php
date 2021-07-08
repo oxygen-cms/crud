@@ -1,5 +1,6 @@
 <?php
 
+use Oxygen\Auth\Permissions\Permissions;
 use Oxygen\Core\Html\Header\Header;
 
 if(!function_exists('getSubtitleForItem')) {
@@ -17,8 +18,8 @@ if(!function_exists('getSubtitleForItem')) {
 }
 
 $sectionHeader = Header::fromBlueprint(
-        $blueprint,
-        $title
+    $blueprint,
+    $title
 );
 
 if(!$item->isHead()) {
@@ -32,7 +33,7 @@ $sectionHeader->setBackLink($backLink);
 
 $itemHeader = Header::fromBlueprint($blueprint, $fields, ['model' => $item], Header::TYPE_NORMAL, 'item');
 
-if(Auth::user()->hasPermissions($blueprint->getRouteName() . '.versions')) {
+if(app(Permissions::class)->has($blueprint->getRouteName() . '.versions')) {
     $itemHeader->setSubtitle(getSubtitleForItem($item));
 }
 
