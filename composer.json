@@ -14,9 +14,9 @@
         }
     ],
     "require": {
-        "php": ">=7.2.0",
-        "oxygen/core": "~0.10.0",
-        "oxygen/data": "~0.10.0",
+        "php": ">=7.4.0",
+        "oxygen/core": "~0.11.0",
+        "oxygen/data": "~0.11.0",
         "illuminate/support": "~6.0"
     },
     "autoload": {
@@ -26,17 +26,11 @@
     },
     "minimum-stability": "stable",
     "extra": {
-        "title": "Oxygen CRUD",
-        "readme": "oxygen.md",
-        "changes": "changes.md",
-        "icon": "icon.png",
-        "providers": [
-            {
-                "name": "CRUD",
-                "class": "Oxygen\\Crud\\CrudServiceProvider",
-                "description": "Exposes CRUD Resources"
-            }
-        ]
+        "laravel": {
+            "providers": [
+                "Oxygen\\Crud\\CrudServiceProvider"
+            ]
+        }
     },
     "require-dev": {
         "phpstan/phpstan": "^0.12.18",

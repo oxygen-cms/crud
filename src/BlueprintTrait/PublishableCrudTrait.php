@@ -25,7 +25,15 @@ class PublishableCrudTrait implements BlueprintTraitInterface {
         $blueprint->makeToolbarItem([
             'action' => 'postPublish',
             'label' => 'Publish',
+            'color' => 'blue',
             'icon' => 'globe',
+            'shouldRenderCallback' => function(ActionToolbarItem $item, array $arguments) {
+                if($arguments['model']->isPublished()) {
+                    return false;
+
+                }
+                return $item->shouldRenderBasic($arguments);
+            }
         ])->addDynamicCallback(function (ActionToolbarItem $item, array $arguments) {
             if($arguments['model']->isPublished()) {
                 $item->label = 'Unpublish';

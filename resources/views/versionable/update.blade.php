@@ -16,16 +16,20 @@
 
     <?php
 
-        use Oxygen\Core\Form\FieldMetadata;use Oxygen\Core\Html\Form\EditableField;use Oxygen\Core\Html\Form\Label;use Oxygen\Core\Html\Form\Row;
+    use Oxygen\Core\Form\FieldMetadata;
+    use Oxygen\Core\Html\Form\EditableField;
+    use Oxygen\Core\Html\Form\Label;
+    use Oxygen\Core\Html\Form\Row;
+    use Oxygen\Data\Behaviour\Publishes;
 
-        $versionFieldMeta = new FieldMetadata('version', 'select', true);
-        $versionFieldMeta->options = [
-                'new' => 'Save as New Version',
-                'overwrite' => 'Overwrite Existing Version',
-                'guess' => 'Create a New Version if Needed'
-        ];
-        $versionField = new EditableField($versionFieldMeta, 'guess');
-        $versionRow = new Row([new Label($versionField->getMeta()), $versionField]);
+    $versionFieldMeta = new FieldMetadata('version', 'select', true);
+    $versionFieldMeta->options = [
+            'new' => 'Save as New Version',
+            'overwrite' => 'Overwrite Existing Version',
+            'guess' => 'Create a New Version if Needed'
+    ];
+    $versionField = new EditableField($versionFieldMeta, 'guess');
+    $versionRow = new Row([new Label($versionField->getMeta()), $versionField]);
 
     ?>
 

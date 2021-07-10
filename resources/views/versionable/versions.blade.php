@@ -1,8 +1,10 @@
 <?php
-use Doctrine\Common\Collections\ArrayCollection;use Oxygen\Core\Html\Header\Header;
+use Doctrine\Common\Collections\ArrayCollection;
+use Oxygen\Core\Html\Header\Header;
+use Oxygen\Auth\Permissions\Permissions;
 ?>
 
-@if(Auth::user()->hasPermissions($blueprint->getRouteName() . '.versions'))
+@if(app(Permissions::class)->has($blueprint->getRouteName() . '.versions'))
 
     <?php
 

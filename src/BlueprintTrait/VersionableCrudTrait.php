@@ -83,6 +83,15 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
             ]);
         }
 
+        if($noFilter || in_array('getUpdate', $this->options['only'])) {
+            $blueprint->getToolbarItem('getUpdate')
+                ->shouldRenderCallback = function (ActionToolbarItem $item, array $arguments) {
+                return
+                    $item->shouldRenderBasic($arguments) &&
+                    $arguments['model']->isHead();
+            };
+        }
+
     }
 
 }
