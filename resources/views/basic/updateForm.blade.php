@@ -7,6 +7,7 @@ use Oxygen\Core\Html\Form\Row;
 use Oxygen\Core\Html\Form\StaticField;
 use Oxygen\Core\Html\Toolbar\ButtonToolbarItem;
 use Oxygen\Core\Html\Toolbar\SubmitToolbarItem;
+use Oxygen\Data\Behaviour\Publishes;
 
 $form = new Form($blueprint->getAction('putUpdate'));
 $form->setAsynchronous(true)->setWarnBeforeExit(true)->setSubmitOnShortcutKey(true);

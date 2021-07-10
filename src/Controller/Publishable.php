@@ -2,12 +2,12 @@
 
 namespace Oxygen\Crud\Controller;
 
-use Oxygen\Core\Html\Dialog\Dialog;
-use Oxygen\Core\Html\Form\Form;
+use Exception;
+use Illuminate\Http\Request;
 use Oxygen\Core\Http\Notification;
+use Oxygen\Data\Behaviour\Versionable;
 use Oxygen\Data\Exception\InvalidEntityException;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Event;
 
 trait Publishable {
 
@@ -37,6 +37,51 @@ trait Publishable {
     }
 
     /**
+     * Updates an entity.
+     *
+     * @param Request $request
+     * @param mixed $item the item
+     * @return Response
+     */
+    public function putUpdate(Request $request, $item) {
+        try {
+            $item = $this->getItem($item);
+
+            $shouldRefresh = false;
+            $userInput = $request->except(['_method', '_token', 'version']);
+            $createNewVersion = $request->input('version', 'guess');
+            if($item->isPublished() && (int) $userInput['stage'] !== \Oxygen\Data\Behaviour\Publishable::STAGE_DRAFT) {
+                $this->repository->makeDraftOfVersion($item, false);
+                $userInput['stage'] = \Oxygen\Data\Behaviour\Publishable::STAGE_DRAFT;
+                $createNewVersion = Versionable::NO_NEW_VERSION; // we just created a new version!! don't want to make too many
+                $shouldRefresh = true;
+            }
+
+            $item->fromArray($this->transformInput($userInput));
+            if($this->repository->persist($item, true, $createNewVersion)) {
+                $shouldRefresh = true;
+            }
+
+            return notify(
+                new Notification(__('oxygen/crud::messages.basic.updated')),
+                ['refresh' => $shouldRefresh]
+            );
+        } catch(InvalidEntityException $e) {
+            return notify(
+                new Notification($e->getErrors()->first(), Notification::FAILED),
+                ['input' => true]
+            );
+        } catch(Exception $e) {
+            logger()->error($e);
+            logger()->error($e->getPrevious());
+            return notify(
+                new Notification('PHP Error in Page Content', Notification::FAILED),
+                ['input' => true]
+            );
+        }
+    }
+
+    /**
      * Make a new version of the entity, and then change it to a draft.
      *
      * @param mixed $item the item
@@ -60,36 +105,6 @@ trait Publishable {
             ),
             ['refresh' => true]
         );
-    }
-
-    /**
-     * Shows the update form.
-     *
-     * @param mixed $item the item
-     * @return Response
-     */
-    public function getUpdate($item) {
-        $item = $this->getItem($item);
-
-        if($item->isPublished()) {
-            Event::listen('oxygen.layout.page.after', function () use ($item) {
-                $dialog = new Dialog(__('oxygen/crud::dialogs.publishable.makeDraft'));
-                $buttonAttributes = array_merge(
-                    ['type' => 'submit'],
-                    $dialog->render()
-                );
-                $form = new Form($this->blueprint->getAction('postMakeDraft'));
-                $form->setAsynchronous(true);
-                $form->addClass('Form--autoSubmit');
-                $form->addClass('Form--hidden');
-                $form->setRouteParameterArguments(['model' => $item]);
-
-                $form->addContent('<button ' . html_attributes($buttonAttributes) . '>Submit</button>');
-                echo $form->render();
-            });
-        }
-
-        return parent::getUpdate($item);
     }
 
 }

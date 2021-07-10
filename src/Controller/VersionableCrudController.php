@@ -76,6 +76,7 @@ class VersionableCrudController extends SoftDeleteCrudController {
      * @param Request $request
      * @param mixed $item the item
      * @return Response
+     * @throws \Exception
      */
     public function putUpdate(Request $request, $item) {
         try {
