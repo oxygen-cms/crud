@@ -67,16 +67,29 @@ trait Previewable {
             $item = $this->getItem($item);
         }
 
-        if($contentOverride !== null) {
-            $rendered = $templating->renderString($contentOverride, $item);
-        } else {
-            $rendered = $templating->render($item);
-        }
+        $rendered = $this->renderEntityContent($templating, $contentOverride, $item);
 
         if(method_exists($this, 'decorateContent') && $renderLayout) {
             return $this->decorateContent($rendered, $item);
         } else {
-            return $this->decoratePreviewContent($rendered);
+            return $this->decoratePreviewContent($rendered, $item);
+        }
+    }
+
+    /**
+     * @param TwigTemplateCompiler $templating
+     * @param string|null $contentOverride
+     * @param $item
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    protected function renderEntityContent(TwigTemplateCompiler $templating, ?string $contentOverride, $item) {
+        if($contentOverride !== null) {
+            return $templating->renderString($contentOverride, $item);
+        } else {
+            return $templating->render($item);
         }
     }
 }
