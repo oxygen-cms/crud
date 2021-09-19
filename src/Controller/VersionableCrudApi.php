@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Str;
 use Oxygen\Core\Http\Notification;
 use Oxygen\Data\Repository\QueryParameters;
 
@@ -114,14 +115,14 @@ trait VersionableCrudApi {
      * @param Router $router
      * @param string $resourceName
      */
-    public static function registerVersionableRoutes(Router $router, string $resourceName) {
-        $router->middleware(['web', 'oxygen.auth', '2fa.require'])->group(function() use ($router, $resourceName) {
-            $router->get("/oxygen/api/$resourceName/{id}/versions", static::class . "@listVersionsApi")
-                ->name("$resourceName.listVersionsApi")
-                ->middleware("oxygen.permissions:$resourceName.listVersions");
-            $router->post("/oxygen/api/$resourceName/{id}/make-head", static::class . "@postMakeHeadVersion")
-                ->name("$resourceName.postMakeHeadVersion")
-                ->middleware("oxygen.permissions:$resourceName.postMakeHeadVersion");
-        });
+    public static function registerVersionableRoutes(Router $router) {
+        $resourceName = explode('/', $router->getLastGroupPrefix());
+        $resourceName = Str::camel(last($resourceName));
+        $router->get("/{id}/versions", static::class . "@listVersionsApi")
+            ->name("$resourceName.listVersionsApi")
+            ->middleware("oxygen.permissions:$resourceName.listVersions");
+        $router->post("/{id}/make-head", static::class . "@postMakeHeadVersion")
+            ->name("$resourceName.postMakeHeadVersion")
+            ->middleware("oxygen.permissions:$resourceName.postMakeHeadVersion");
     }
 }
