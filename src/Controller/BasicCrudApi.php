@@ -14,6 +14,7 @@ use Oxygen\Data\Exception\InvalidEntityException;
 use Oxygen\Data\Repository\QueryParameters;
 use Oxygen\Data\Repository\SearchMultipleFieldsClause;
 use ReflectionClass;
+use Illuminate\Support\Str;
 
 trait BasicCrudApi {
 
@@ -139,24 +140,24 @@ trait BasicCrudApi {
         ]);
     }
 
-    public static function registerCrudRoutes(Router $router, string $resourceName) {
-        $router->middleware(['web', 'oxygen.auth', '2fa.require'])->group(function() use ($router, $resourceName) {
-            $router->get('/oxygen/api/' . $resourceName, static::class . '@getListApi')
-                ->name("$resourceName.getListApi")
-                ->middleware("oxygen.permissions:$resourceName.getList");
-            $router->post('/oxygen/api/' . $resourceName, static::class . '@postCreateApi')
-                ->name("$resourceName.postCreate")
-                ->middleware("oxygen.permissions:$resourceName.postCreate");
-            $router->put('/oxygen/api/' . $resourceName . '/{id}', static::class . '@putUpdateApi')
-                ->name("$resourceName.putUpdate")
-                ->middleware("oxygen.permissions:$resourceName.putUpdate");
-            $router->delete('/oxygen/api/' . $resourceName . '/{id}', static::class . '@deleteDeleteApi')
-                ->name("$resourceName.deleteDelete")
-                ->middleware("oxygen.permissions:$resourceName.deleteDelete");
-            $router->get("/oxygen/api/$resourceName/{id}", static::class . '@getInfoApi')
-                ->name("$resourceName.getInfoApi")
-                ->middleware("oxygen.permissions:$resourceName.getInfo");
-        });
+    public static function registerCrudRoutes(Router $router) {
+        $resourceName = explode('/', $router->getLastGroupPrefix());
+        $resourceName = Str::camel(last($resourceName));
+        $router->get('/', static::class . '@getListApi')
+            ->name("$resourceName.getListApi")
+            ->middleware("oxygen.permissions:$resourceName.getList");
+        $router->post('/', static::class . '@postCreateApi')
+            ->name("$resourceName.postCreate")
+            ->middleware("oxygen.permissions:$resourceName.postCreate");
+        $router->put('/{id}', static::class . '@putUpdateApi')
+            ->name("$resourceName.putUpdate")
+            ->middleware("oxygen.permissions:$resourceName.putUpdate");
+        $router->delete('/{id}', static::class . '@deleteDeleteApi')
+            ->name("$resourceName.deleteDelete")
+            ->middleware("oxygen.permissions:$resourceName.deleteDelete");
+        $router->get("/{id}", static::class . '@getInfoApi')
+            ->name("$resourceName.getInfoApi")
+            ->middleware("oxygen.permissions:$resourceName.getInfo");
     }
 
     public static function setupLangMappings(array $mappings) {

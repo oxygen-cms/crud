@@ -3,6 +3,7 @@
 namespace Oxygen\Crud\BlueprintTrait;
 
 use Illuminate\Support\Facades\Lang;
+use Oxygen\Auth\Permissions\Permissions;
 use Oxygen\Core\Blueprint\Blueprint;
 use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Html\Dialog\Dialog;
@@ -92,6 +93,8 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
             };
         }
 
+        // this permission is referenced in `versions.blade.php`
+        app(Permissions::class)->registerPermission($blueprint->getRouteName('versions'));
     }
 
 }

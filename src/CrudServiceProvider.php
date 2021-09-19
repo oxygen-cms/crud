@@ -3,6 +3,7 @@
 namespace Oxygen\Crud;
 
 use Illuminate\Support\ServiceProvider;
+use Oxygen\Auth\Permissions\Permissions;
 
 class CrudServiceProvider extends ServiceProvider {
 
