@@ -15,7 +15,7 @@ trait Publishable {
      * Publish or unpublish an entity.
      *
      * @param mixed $item the item
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function postPublish($item) {
         try {
@@ -49,10 +49,12 @@ trait Publishable {
 
             $shouldRefresh = false;
             $userInput = $request->except(['_method', '_token', 'version']);
+            $stage = isset($userInput['stage']) ? (int) $userInput['stage'] : $item->getStage();
             $createNewVersion = $request->input('version', 'guess');
-            if($item->isPublished() && (int) $userInput['stage'] !== \Oxygen\Data\Behaviour\Publishable::STAGE_DRAFT) {
+            if($item->isPublished() && $stage !== \Oxygen\Data\Behaviour\Publishable::STAGE_DRAFT) {
                 $this->repository->makeDraftOfVersion($item, false);
-                $userInput['stage'] = \Oxygen\Data\Behaviour\Publishable::STAGE_DRAFT;
+                unset($userInput['stage']);
+                $item->setStage(\Oxygen\Data\Behaviour\Publishable::STAGE_DRAFT);
                 $createNewVersion = Versionable::NO_NEW_VERSION; // we just created a new version!! don't want to make too many
                 $shouldRefresh = true;
             }
@@ -72,6 +74,7 @@ trait Publishable {
                 ['input' => true]
             );
         } catch(Exception $e) {
+            report($e);
             logger()->error($e);
             logger()->error($e->getPrevious());
             return notify(
