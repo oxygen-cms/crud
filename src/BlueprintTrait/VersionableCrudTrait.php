@@ -93,8 +93,10 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
             };
         }
 
-        // this permission is referenced in `versions.blade.php`
-        app(Permissions::class)->registerPermission($blueprint->getRouteName('versions'));
+        if(class_exists(Permissions::class)) {
+            // this permission is referenced in `versions.blade.php`, so we make the app aware of it here...
+            app(Permissions::class)->registerPermission($blueprint->getRouteName('versions'));
+        }
     }
 
 }
