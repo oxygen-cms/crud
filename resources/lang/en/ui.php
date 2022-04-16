@@ -23,6 +23,7 @@ return [
     'thisVersion' => '(this version)',
     'latestVersion' => '(latest version)',
     'fromDate' => 'from :date',
+    'modifiedBy' => 'by :name',
 
     'resource' => [
         'list' => ':pluralResource',
