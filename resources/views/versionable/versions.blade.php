@@ -8,19 +8,21 @@ use Oxygen\Auth\Permissions\Permissions;
 
     <?php
 
-    if(!function_exists('getSubtitleForItem')) {
-        function getSubtitleForItem($version, $item = null) {
-            if($version === $item) {
-                return __('oxygen/crud::ui.thisVersion');
-            } else if($version->isHead()) {
-                return __('oxygen/crud::ui.latestVersion');
-            } else {
-                return __('oxygen/crud::ui.fromDate', [
-                        'date' => $version->getUpdatedAt()->diffForHumans()
-                ]);
-            }
+    $getSubtitleForItem = function($version, $item = null) {
+        if($version === $item) {
+            return __('oxygen/crud::ui.thisVersion');
+        } else if($version->isHead()) {
+            $str = __('oxygen/crud::ui.latestVersion');
+        } else {
+            $str = __('oxygen/crud::ui.fromDate', [
+                    'date' => $version->getUpdatedAt()->diffForHumans()
+            ]);
         }
-    }
+        if($version->getUpdatedBy() !== null) {
+            $str = __('oxygen/crud::ui.modifiedBy', ['name' => $version->getUpdatedBy()->getFullName()]) . ' ' . $str;
+        }
+        return $str;
+    };
 
     $header = Header::fromBlueprint(
             $blueprint,
@@ -59,7 +61,7 @@ use Oxygen\Auth\Permissions\Permissions;
                     'item'
             );
 
-            $itemHeader->setSubtitle(getSubtitleForItem($version, $item));
+            $itemHeader->setSubtitle($getSubtitleForItem($version, $item));
 
             if(method_exists($version, 'isPublished')) {
                 $icon = $version->isPublished() ? 'globe' : 'pencil-square';
