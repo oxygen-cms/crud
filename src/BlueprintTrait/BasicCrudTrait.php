@@ -99,18 +99,6 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             ]);
         }
 
-        if($noFilter || in_array('getInfo', $this->options['only'])) {
-            $blueprint->makeAction([
-                'name' => 'getInfo',
-                'pattern' => '{id}'
-            ]);
-            $blueprint->makeToolbarItem([
-                'action' => 'getInfo',
-                'label' => 'Show Info',
-                'icon' => 'search'
-            ]);
-        }
-
         if($noFilter || in_array('deleteDelete', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'deleteDelete',

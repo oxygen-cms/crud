@@ -9,6 +9,7 @@ use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Html\Dialog\Dialog;
 use Oxygen\Core\Html\Toolbar\ActionToolbarItem;
 use Oxygen\Core\Http\Method;
+use Webmozart\Assert\Assert;
 
 class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTraitInterface {
 
@@ -85,8 +86,9 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
         }
 
         if($noFilter || in_array('getUpdate', $this->options['only'])) {
-            $blueprint->getToolbarItem('getUpdate')
-                ->shouldRenderCallback = function (ActionToolbarItem $item, array $arguments) {
+            $tb = $blueprint->getToolbarItem('getUpdate');
+            Assert::isInstanceOf($tb, ActionToolbarItem::class);
+            $tb->shouldRenderCallback = function (ActionToolbarItem $item, array $arguments) {
                 return
                     $item->shouldRenderBasic($arguments) &&
                     $arguments['model']->isHead();
