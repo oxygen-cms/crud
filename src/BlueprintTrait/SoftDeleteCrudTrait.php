@@ -8,6 +8,7 @@ use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Html\Dialog\Dialog;
 use Oxygen\Core\Html\Toolbar\ActionToolbarItem;
 use Oxygen\Core\Http\Method;
+use Webmozart\Assert\Assert;
 
 class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterface {
 
@@ -33,8 +34,9 @@ class SoftDeleteCrudTrait extends BasicCrudTrait implements BlueprintTraitInterf
         $noFilter = !isset($this->options['only']);
 
         if($noFilter || in_array('deleteDelete', $this->options['only'])) {
-            $blueprint->getToolbarItem('deleteDelete')
-                ->shouldRenderCallback = function (ActionToolbarItem $item, array $arguments) {
+            $tb = $blueprint->getToolbarItem('deleteDelete');
+            Assert::isInstanceOf($tb, ActionToolbarItem::class);
+            $tb->shouldRenderCallback = function (ActionToolbarItem $item, array $arguments) {
                 return
                     $item->shouldRenderBasic($arguments) &&
                     !$arguments['model']->isDeleted();

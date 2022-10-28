@@ -85,19 +85,6 @@ class BasicCrudController extends ResourceController {
     }
 
     /**
-     * Shows info about a Resource.
-     *
-     * @param mixed $item the item
-     * @return \Illuminate\View\View
-     */
-    public function getInfo($item) {
-        $item = $this->getItem($item);
-
-        return view('oxygen/crud::basic.show')
-            ->with('item', $item);
-    }
-
-    /**
      * Shows the create form.
      *
      * @return \Illuminate\View\View

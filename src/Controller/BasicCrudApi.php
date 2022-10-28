@@ -111,6 +111,7 @@ trait BasicCrudApi {
      * @param Request $request
      * @param mixed $item the item
      * @return JsonResponse
+     * @throws InvalidEntityException
      */
     public function putUpdateApi(Request $request, $item) {
         $item = $this->repository->find((int) $item);

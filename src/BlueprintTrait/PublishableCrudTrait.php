@@ -5,7 +5,9 @@ namespace Oxygen\Crud\BlueprintTrait;
 use Oxygen\Core\Blueprint\Blueprint;
 use Oxygen\Core\Blueprint\BlueprintTraitInterface;
 use Oxygen\Core\Html\Toolbar\ActionToolbarItem;
+use Oxygen\Core\Html\Toolbar\ButtonToolbarItem;
 use Oxygen\Core\Http\Method;
+use Webmozart\Assert\Assert;
 
 class PublishableCrudTrait implements BlueprintTraitInterface {
 
@@ -22,7 +24,7 @@ class PublishableCrudTrait implements BlueprintTraitInterface {
             'pattern' => '{id}/publish',
             'method' => Method::POST
         ]);
-        $blueprint->makeToolbarItem([
+        $toolbarItem = $blueprint->makeToolbarItem([
             'action' => 'postPublish',
             'label' => 'Publish',
             'color' => 'blue',
@@ -34,7 +36,9 @@ class PublishableCrudTrait implements BlueprintTraitInterface {
                 }
                 return $item->shouldRenderBasic($arguments);
             }
-        ])->addDynamicCallback(function (ActionToolbarItem $item, array $arguments) {
+        ]);
+        Assert::isInstanceOf($toolbarItem, ButtonToolbarItem::class);
+        $toolbarItem->addDynamicCallback(function (ButtonToolbarItem $item, array $arguments) {
             if($arguments['model']->isPublished()) {
                 $item->label = 'Unpublish';
                 $item->icon = 'archive';

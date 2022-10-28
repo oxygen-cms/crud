@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Oxygen\Core\Http\Notification;
 use Oxygen\Data\Exception\InvalidEntityException;
+use Oxygen\Data\Repository\Doctrine\Versions;
 use Oxygen\Data\Repository\QueryParameters;
+use Webmozart\Assert\Assert;
 
 class VersionableCrudController extends SoftDeleteCrudController {
 
@@ -42,19 +44,6 @@ class VersionableCrudController extends SoftDeleteCrudController {
         }
 
         return parent::getTrash($queryParameters);
-    }
-
-    /**
-     * Shows info about an entity.
-     *
-     * @param mixed $item the item
-     * @return \Illuminate\View\View
-     */
-    public function getInfo($item) {
-        $item = $this->getItem($item);
-
-        return view('oxygen/crud::versionable.show')
-            ->with('item', $item);
     }
 
     /**
