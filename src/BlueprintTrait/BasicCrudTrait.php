@@ -31,19 +31,16 @@ class BasicCrudTrait implements BlueprintTraitInterface {
     public function applyTrait(Blueprint $blueprint) {
         $noFilter = !isset($this->options['only']);
 
-        if($noFilter || in_array('getList', $this->options['only'])) {
-            $blueprint->makeAction([
-                'name' => 'getList',
-                'pattern' => '/'
-            ]);
-            $blueprint->makeToolbarItem([
-                'action' => 'getList',
-                'label' => $blueprint->getPluralDisplayName(),
-                'icon' => $blueprint->getIcon(),
-                'color' => 'green'
-            ]);
-            $blueprint->setPrimaryToolbarItem('getList');
-        }
+        $blueprint->makeAction([
+            'name' => 'getList',
+            'pattern' => '/'
+        ]);
+        $blueprint->makeToolbarItem([
+            'action' => 'getList',
+            'label' => $blueprint->getPluralDisplayName(),
+            'icon' => $blueprint->getIcon(),
+            'color' => 'white'
+        ]);
 
         if($noFilter || in_array('getCreate', $this->options['only'])) {
             $blueprint->makeAction([
@@ -63,19 +60,6 @@ class BasicCrudTrait implements BlueprintTraitInterface {
                 'name' => 'postCreate',
                 'pattern' => '/',
                 'method' => Method::POST
-            ]);
-        }
-
-        if($noFilter || in_array('getTrash', $this->options['only'])) {
-            $blueprint->makeAction([
-                'name' => 'getTrash',
-                'pattern' => 'trash'
-            ]);
-            $blueprint->makeToolbarItem([
-                'action' => 'getTrash',
-                'label' => 'Trash',
-                'icon' => 'trash-o',
-                'color' => 'dark-grey'
             ]);
         }
 

@@ -3,7 +3,10 @@
 namespace Oxygen\Crud\Controller;
 
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Str;
 use Oxygen\Core\Http\Notification;
 use Oxygen\Data\Behaviour\Versionable;
 use Oxygen\Data\Exception\InvalidEntityException;
@@ -11,6 +14,7 @@ use Illuminate\Http\Response;
 
 trait Publishable {
 
+    // TODO: delete this
     /**
      * Publish or unpublish an entity.
      *
@@ -36,6 +40,22 @@ trait Publishable {
         }
     }
 
+    /**
+     * Publish or unpublish an entity.
+     *
+     * @param mixed $item the item
+     * @return JsonResponse
+     * @throws InvalidEntityException
+     */
+    public function publish($item): JsonResponse {
+        $item = $this->getItem($item);
+        $item->publish();
+        $this->repository->persist($item, true, 'overwrite');
+
+        return response()->json(['item' => $item->toArray(), 'status' => Notification::SUCCESS, 'content' => 'Successfully published']);
+    }
+
+    // TODO: make this work with putUpdateApi instead...
     /**
      * Updates an entity.
      *
@@ -108,6 +128,19 @@ trait Publishable {
             ),
             ['refresh' => true]
         );
+    }
+
+    /**
+     * Registers API routes.
+     *
+     * @param Router $router
+     */
+    public static function registerPublishableRoutes(Router $router) {
+        $resourceName = explode('/', $router->getLastGroupPrefix());
+        $resourceName = Str::camel(last($resourceName));
+        $router->post("/{id}/publish", static::class . "@publish")
+            ->name("$resourceName.postPublish")
+            ->middleware("oxygen.permissions:$resourceName.postPublish");
     }
 
 }

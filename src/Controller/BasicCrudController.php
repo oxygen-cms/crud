@@ -2,6 +2,8 @@
 
 namespace Oxygen\Crud\Controller;
 
+use Illuminate\Http\RedirectResponse;
+use Oxygen\Core\Support\Str;
 use \ReflectionClass;
 use Illuminate\Translation\Translator;
 use Oxygen\Data\Behaviour\Searchable;
@@ -42,46 +44,6 @@ class BasicCrudController extends ResourceController {
         app(Translator::class)->when('oxygen/crud::messages', ['resource' => $this->blueprint->getDisplayName()]);
         app(Translator::class)->when('oxygen/crud::dialogs', ['resource' => $this->blueprint->getDisplayName()]);
         app(Translator::class)->when('oxygen/crud::ui', ['resource' => $this->blueprint->getDisplayName(), 'pluralResource' => $this->blueprint->getPluralDisplayName()]);
-    }
-
-    /**
-     * List all items.
-     *
-     * @param QueryParameters $queryParameters
-     * @return \Illuminate\View\View
-     * @throws \ReflectionException
-     */
-    public function getList($queryParameters = null) {
-        if($queryParameters == null) {
-            $queryParameters = QueryParameters::make()
-                ->orderBy('id', QueryParameters::DESCENDING);
-        }
-
-        $this->maybeAddSearchClause($queryParameters);
-
-        $items = $this->repository->paginate(25, $queryParameters);
-
-        // render the list
-        return view('oxygen/crud::basic.list')
-            ->with([
-                'items' => $items,
-                'isTrash' => false
-            ]);
-    }
-
-    /**
-     * @param QueryParameters $queryParameters
-     * @throws \ReflectionException
-     */
-    protected function maybeAddSearchClause(QueryParameters $queryParameters) {
-        $searchQuery = app('request')->input('q', null);
-        if($searchQuery !== null) {
-            $class = new ReflectionClass($this->repository->getEntityName());
-            if($class->implementsInterface(Searchable::class)) {
-                $searchableFields = $class->getMethod('getSearchableFields')->invoke(null);
-                $queryParameters->addClause(new SearchMultipleFieldsClause($searchableFields, $searchQuery));
-            }
-        }
     }
 
     /**
@@ -185,6 +147,16 @@ class BasicCrudController extends ResourceController {
         }
 
         return $input;
+    }
+
+    /**
+     * Redirects to the new Vue.js UI
+     * @return RedirectResponse
+     */
+    public function getList()
+    {
+        $slug = Str::slug(Str::camelToWords($this->blueprint->getPluralName()));
+        return redirect()->away('/oxygen/' . $slug);
     }
 
 }

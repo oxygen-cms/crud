@@ -10,7 +10,7 @@ $sectionHeader = Header::fromBlueprint(
 
 $sectionHeader->setBackLink(URL::route(
         $item->isDeleted()
-                ? $blueprint->getRouteName('getTrash')
+                ? $blueprint->getRouteName('getTash')
                 : $blueprint->getRouteName('getList')
 ));
 

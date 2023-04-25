@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": ">=7.4.0",
-        "oxygen/core": "~0.13.0",
+        "oxygen/core": "~0.14.0",
         "oxygen/data": "~0.11.0",
         "illuminate/support": "~6.0",
         "webmozart/assert": "^1.11"
@@ -34,7 +34,7 @@
         }
     },
     "require-dev": {
-        "phpstan/phpstan": "^1.6.4",
+        "phpstan/phpstan": "^1.8",
         "phpspec/phpspec": "^6.1",
         "phpstan/extension-installer": "^1.2",
         "phpstan/phpstan-webmozart-assert": "^1.2"

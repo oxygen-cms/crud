@@ -13,40 +13,6 @@ use Webmozart\Assert\Assert;
 class VersionableCrudController extends SoftDeleteCrudController {
 
     /**
-     * List all entities.
-     *
-     * @param QueryParameters $queryParameters
-     * @return \Illuminate\View\View
-     */
-    public function getList($queryParameters = null) {
-        if($queryParameters == null) {
-            $queryParameters = QueryParameters::make()
-                ->excludeTrashed()
-                ->excludeVersions()
-                ->orderBy('id', QueryParameters::DESCENDING);
-        }
-
-        return parent::getList($queryParameters);
-    }
-
-    /**
-     * List all deleted entities.
-     *
-     * @param QueryParameters $queryParameters
-     * @return \Illuminate\View\View
-     */
-    public function getTrash($queryParameters = null) {
-        if($queryParameters == null) {
-            $queryParameters = QueryParameters::make()
-                ->onlyTrashed()
-                ->excludeVersions()
-                ->orderBy('id', QueryParameters::DESCENDING);
-        }
-
-        return parent::getTrash($queryParameters);
-    }
-
-    /**
      * Shows the update form.
      *
      * @param mixed $item the item
