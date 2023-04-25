@@ -6,7 +6,6 @@ namespace Oxygen\Crud\Controller;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Str;
 use Oxygen\Core\Http\Notification;
@@ -19,8 +18,9 @@ trait VersionableCrudApi {
      *
      * @param Request $request
      * @return QueryParameters
+     * @throws \ReflectionException
      */
-    protected function getListQueryParameters(Request $request) {
+    protected function getListQueryParameters(Request $request): QueryParameters {
         $queryParameters = QueryParameters::make();
         if($request->get('trash') == 'true') {
             $queryParameters = $queryParameters->onlyTrashed();
@@ -33,6 +33,11 @@ trait VersionableCrudApi {
             ->orderBy('id', QueryParameters::DESCENDING);
 
         $this->maybeAddSearchClause($queryParameters, $request);
+
+        if($request->has('sortField') && in_array($request->get('sortField'), static::ALLOWED_SORT_FIELDS) &&
+            in_array($request->get('sortOrder'), ['asc', 'desc'])) {
+            $queryParameters = $queryParameters->orderBy($request->get('sortField'), strtoupper($request->get('sortOrder')));
+        }
 
         return $queryParameters;
     }

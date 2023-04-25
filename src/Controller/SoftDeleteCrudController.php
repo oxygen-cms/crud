@@ -11,46 +11,6 @@ use Oxygen\Data\Repository\QueryParameters;
 class SoftDeleteCrudController extends BasicCrudController {
 
     /**
-     * List all entities.
-     *
-     * @param QueryParameters|null $queryParameters
-     * @return View
-     */
-    public function getList($queryParameters = null) {
-        if($queryParameters == null) {
-            $queryParameters = QueryParameters::make()
-                ->excludeTrashed()
-                ->orderBy('id', QueryParameters::DESCENDING);
-        }
-
-        return parent::getList($queryParameters);
-    }
-
-    /**
-     * List all deleted entities.
-     *
-     * @param QueryParameters|null $queryParameters
-     * @return View
-     * @throws \ReflectionException
-     */
-    public function getTrash($queryParameters = null) {
-        if($queryParameters == null) {
-            $queryParameters = QueryParameters::make()
-                ->onlyTrashed()
-                ->orderBy('id', QueryParameters::DESCENDING);
-        }
-
-        $this->maybeAddSearchClause($queryParameters);
-
-        $items = $this->repository->paginate(25, $queryParameters);
-
-        return view('oxygen/crud::basic.list', [
-            'items' => $items,
-            'isTrash' => true
-        ]);
-    }
-
-    /**
      * Deletes an entity.
      *
      * @param mixed $item the item

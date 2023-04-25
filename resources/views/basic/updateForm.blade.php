@@ -46,7 +46,7 @@ if(isset($extraFields)) {
 
 if(!isset($footer)) {
     $footer = new Row([
-            new ButtonToolbarItem(Lang::get('oxygen/crud::ui.close'), method_exists($item, 'isDeleted') && $item->isDeleted() ? $blueprint->getAction('getTrash') : $blueprint->getAction('getList')),
+//    new ButtonToolbarItem(Lang::get('oxygen/crud::ui.close'), method_exists($item, 'isDeleted') && $item->isDeleted() ? $blueprint->getAction('getTrash') : $blueprint->getAction('getList')),
             new SubmitToolbarItem(Lang::get('oxygen/crud::ui.save'))
     ]);
     $footer->isFooter = true;

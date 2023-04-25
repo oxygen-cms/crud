@@ -10,6 +10,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Lang;
 use Oxygen\Core\Http\Notification;
 use Oxygen\Data\Behaviour\Searchable;
+use Oxygen\Data\Behaviour\Versionable;
 use Oxygen\Data\Exception\InvalidEntityException;
 use Oxygen\Data\Repository\QueryParameters;
 use Oxygen\Data\Repository\SearchMultipleFieldsClause;
@@ -115,8 +116,26 @@ trait BasicCrudApi {
      */
     public function putUpdateApi(Request $request, $item) {
         $item = $this->repository->find((int) $item);
-        $item->fromArray($request->except(['_token']));
-        $this->repository->persist($item);
+        $userInput = $request->except(['_token', 'version', 'stage']);
+        if($item instanceof \Oxygen\Data\Behaviour\Publishable)
+        {
+            $stage = (int) $request->input('stage', $item->getStage());
+            $createNewVersion = $request->input('version', Versionable::GUESS_IF_NEW_VERSION_REQUIRED);
+            if($item->isPublished() && $stage != \Oxygen\Data\Behaviour\Publishable::STAGE_DRAFT)
+            {
+                $this->repository->makeDraftOfVersion($item, false);
+                $item->setStage(\Oxygen\Data\Behaviour\Publishable::STAGE_DRAFT);
+                $createNewVersion = Versionable::NO_NEW_VERSION;
+            }
+            else {
+                $userInput['stage'] = $stage;
+            }
+            $item->fromArray($userInput);
+            $this->repository->persist($item, true, $createNewVersion);
+        } else {
+            $item->fromArray($userInput);
+            $this->repository->persist($item);
+        }
 
         return response()->json([
             'content' => trans('oxygen/crud::messages.basic.updated'),
