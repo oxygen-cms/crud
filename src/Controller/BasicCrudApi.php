@@ -16,6 +16,7 @@ use Oxygen\Data\Repository\QueryParameters;
 use Oxygen\Data\Repository\SearchMultipleFieldsClause;
 use ReflectionClass;
 use Illuminate\Support\Str;
+use Webmozart\Assert\Assert;
 
 trait BasicCrudApi {
 
@@ -116,25 +117,32 @@ trait BasicCrudApi {
      */
     public function putUpdateApi(Request $request, $item) {
         $item = $this->repository->find((int) $item);
-        $userInput = $request->except(['_token', 'version', 'stage']);
-        if($item instanceof \Oxygen\Data\Behaviour\Publishable)
+        $userInput = $request->except(['_token', 'version', 'updateStage', 'autoConvertToDraft']);
+        $createNewVersion = $request->input('version', Versionable::GUESS_IF_NEW_VERSION_REQUIRED);
+        if($createNewVersion === 'false')
+        {
+            $createNewVersion = false;
+        }
+
+        if($item instanceof \Oxygen\Data\Behaviour\Publishable && $request->input('autoConvertToDraft', 'yes') !== 'no')
         {
             $stage = (int) $request->input('stage', $item->getStage());
-            $createNewVersion = $request->input('version', Versionable::GUESS_IF_NEW_VERSION_REQUIRED);
             if($item->isPublished() && $stage != \Oxygen\Data\Behaviour\Publishable::STAGE_DRAFT)
             {
+                logger()->info(auth()->user()->getAuthIdentifier() . ' updated ' . get_class($item) . ' id=' . $item->getId() . ' - making draft version');
                 $this->repository->makeDraftOfVersion($item, false);
                 $item->setStage(\Oxygen\Data\Behaviour\Publishable::STAGE_DRAFT);
                 $createNewVersion = Versionable::NO_NEW_VERSION;
+                unset($userInput['stage']);
             }
-            else {
-                $userInput['stage'] = $stage;
-            }
-            $item->fromArray($userInput);
+        }
+
+        $item->fromArray($userInput);
+        if($item instanceof Versionable)
+        {
             $this->repository->persist($item, true, $createNewVersion);
         } else {
-            $item->fromArray($userInput);
-            $this->repository->persist($item);
+            $this->repository->persist($item, true);
         }
 
         return response()->json([
