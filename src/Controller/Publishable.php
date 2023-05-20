@@ -14,9 +14,9 @@ use Illuminate\Http\Response;
 
 trait Publishable {
 
-    // TODO: delete this
+    // TODO: delete this once we get rid of old blade-template-based UI
     /**
-     * Publish or unpublish an entity.
+     * Publish an entity.
      *
      * @param mixed $item the item
      * @return Response
@@ -24,16 +24,42 @@ trait Publishable {
     public function postPublish($item) {
         try {
             $item = $this->getItem($item);
-            $item->isPublished() ? $item->unpublish() : $item->publish();
+            $item->publish();
             $this->repository->persist($item, true, 'overwrite');
 
             return notify(
                 new Notification(
-                    __($item->isPublished() ? 'oxygen/crud::messages.publishable.published' : 'oxygen/crud::messages.publishable.unpublished')
+                    __('oxygen/crud::messages.publishable.published')
                 ),
                 ['refresh' => true]
             );
         } catch(InvalidEntityException $e) {
+            return notify(
+                new Notification($e->getErrors()->first(), Notification::FAILED)
+            );
+        }
+    }
+
+    // TODO: delete this once we get rid of old blade-template-based UI
+    /**
+     * Unpublish an entity.
+     *
+     * @param mixed $item the item
+     * @return Response
+     */
+    public function postUnpublish($item) {
+        try {
+            $item = $this->getItem($item);
+            $item->unpublish();
+            $this->repository->persist($item, true, 'overwrite');
+
+            return notify(
+                new Notification(
+                    __('oxygen/crud::messages.publishable.unpublished')
+                ),
+                ['refresh' => true]
+            );
+        } catch (InvalidEntityException $e) {
             return notify(
                 new Notification($e->getErrors()->first(), Notification::FAILED)
             );
