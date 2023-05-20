@@ -24,7 +24,7 @@ class PublishableCrudTrait implements BlueprintTraitInterface {
             'pattern' => '{id}/publish',
             'method' => Method::POST
         ]);
-        $toolbarItem = $blueprint->makeToolbarItem([
+        $blueprint->makeToolbarItem([
             'action' => 'postPublish',
             'label' => 'Publish',
             'color' => 'blue',
@@ -32,18 +32,27 @@ class PublishableCrudTrait implements BlueprintTraitInterface {
             'shouldRenderCallback' => function(ActionToolbarItem $item, array $arguments) {
                 if($arguments['model']->isPublished()) {
                     return false;
-
                 }
                 return $item->shouldRenderBasic($arguments);
             }
         ]);
-        Assert::isInstanceOf($toolbarItem, ButtonToolbarItem::class);
-        $toolbarItem->addDynamicCallback(function (ButtonToolbarItem $item, array $arguments) {
-            if($arguments['model']->isPublished()) {
-                $item->label = 'Unpublish';
-                $item->icon = 'archive';
+        $blueprint->makeAction([
+            'name' => 'postUnpublish',
+            'pattern' => '{id}/unpublish',
+            'method' => Method::POST
+        ]);
+        $blueprint->makeToolbarItem([
+            'action' => 'postUnpublish',
+            'label' => 'Unpublish',
+            'color' => 'white',
+            'icon' => 'archive',
+            'shouldRenderCallback' => function(ActionToolbarItem $item, array $arguments) {
+                if(!$arguments['model']->isPublished()) {
+                    return false;
+                }
+                return $item->shouldRenderBasic($arguments);
             }
-        });
+        ]);
 
         $blueprint->makeAction([
             'name' => 'postMakeDraft',
