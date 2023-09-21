@@ -89,9 +89,7 @@ class VersionableCrudTrait extends SoftDeleteCrudTrait implements BlueprintTrait
             $tb = $blueprint->getToolbarItem('getUpdate');
             Assert::isInstanceOf($tb, ActionToolbarItem::class);
             $tb->shouldRenderCallback = function (ActionToolbarItem $item, array $arguments) {
-                return
-                    $item->shouldRenderBasic($arguments) &&
-                    $arguments['model']->isHead();
+                return $item->shouldRenderBasic($arguments);
             };
         }
 

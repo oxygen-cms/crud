@@ -20,16 +20,6 @@ use Twig\Error\SyntaxError;
 trait Previewable {
 
     /**
-     * Preview the item.
-     *
-     * @param mixed $item
-     * @return View
-     */
-    public function getPreview($item) {
-        return redirect()->to(route($this->blueprint->getRouteName() . '.getUpdate', ['id' => $item]) . '?mode=preview');
-    }
-
-    /**
      * Renders custom content as HTML.
      *
      * @param TwigTemplateCompiler $templating
