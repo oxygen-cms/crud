@@ -18,7 +18,7 @@ class PreviewableCrudTrait implements BlueprintTraitInterface {
     public function applyTrait(Blueprint $blueprint) {
         $blueprint->makeAction([
             'name' => 'getPreview',
-            'pattern' => '{id}/preview'
+            'pattern' => '{id}/edit?mode=preview'
         ]);
         $blueprint->makeToolbarItem([
             'action' => 'getPreview',
