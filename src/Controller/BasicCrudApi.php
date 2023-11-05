@@ -175,13 +175,13 @@ trait BasicCrudApi {
             ->name("$resourceName.getListApi")
             ->middleware("oxygen.permissions:$resourceName.getList");
         $router->post('/', static::class . '@postCreateApi')
-            ->name("$resourceName.postCreate")
+            ->name("$resourceName.postCreateApi")
             ->middleware("oxygen.permissions:$resourceName.postCreate");
         $router->put('/{id}', static::class . '@putUpdateApi')
-            ->name("$resourceName.putUpdate")
+            ->name("$resourceName.putUpdateApi")
             ->middleware("oxygen.permissions:$resourceName.putUpdate");
         $router->delete('/{id}', static::class . '@deleteDeleteApi')
-            ->name("$resourceName.deleteDelete")
+            ->name("$resourceName.deleteDeleteApi")
             ->middleware("oxygen.permissions:$resourceName.deleteDelete");
         $router->get("/{id}", static::class . '@getInfoApi')
             ->name("$resourceName.getInfoApi")

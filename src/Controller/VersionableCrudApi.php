@@ -127,7 +127,7 @@ trait VersionableCrudApi {
             ->name("$resourceName.listVersionsApi")
             ->middleware("oxygen.permissions:$resourceName.listVersions");
         $router->post("/{id}/make-head", static::class . "@postMakeHeadVersion")
-            ->name("$resourceName.postMakeHeadVersion")
+            ->name("$resourceName.postMakeHeadVersionApi")
             ->middleware("oxygen.permissions:$resourceName.postMakeHeadVersion");
     }
 }

@@ -165,7 +165,7 @@ trait Publishable {
         $resourceName = explode('/', $router->getLastGroupPrefix());
         $resourceName = Str::camel(last($resourceName));
         $router->post("/{id}/publish", static::class . "@publish")
-            ->name("$resourceName.postPublish")
+            ->name("$resourceName.postPublishApi")
             ->middleware("oxygen.permissions:$resourceName.postPublish");
     }
 
