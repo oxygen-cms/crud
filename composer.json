@@ -14,10 +14,10 @@
         }
     ],
     "require": {
-        "php": ">=7.4.0",
-        "oxygen/core": "~0.14.0",
-        "oxygen/data": "~0.11.0",
-        "illuminate/support": "~6.0",
+        "php": "^8.1",
+        "oxygen/core": "dev-laravel10",
+        "oxygen/data": "dev-laravel10",
+        "illuminate/support": "^10.0",
         "webmozart/assert": "^1.11"
     },
     "autoload": {
@@ -35,13 +35,23 @@
     },
     "require-dev": {
         "phpstan/phpstan": "^1.8",
-        "phpspec/phpspec": "^6.1",
+        "phpspec/phpspec": "^7.0",
         "phpstan/extension-installer": "^1.2",
         "phpstan/phpstan-webmozart-assert": "^1.2"
     },
     "scripts": {
         "test": "vendor/bin/phpspec run && vendor/bin/phpstan analyze src --level 1"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/oxygen-cms/data.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/oxygen-cms/core.git"
+        }
+    ],
     "config": {
         "allow-plugins": {
             "phpstan/extension-installer": true
