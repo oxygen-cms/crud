@@ -26,7 +26,7 @@ class CrudServiceProvider extends ServiceProvider {
 
 		$this->publishes([
 			__DIR__ . '/../resources/views' => base_path('resources/views/vendor/oxygen/crud'),
-			__DIR__ . '/../resources/lang' => base_path('resources/lang/vendor/oxygen/crud'),
+			__DIR__ . '/../resources/lang' => $this->app->langPath('vendor/oxygen/crud'),
 		]);
 	}
 

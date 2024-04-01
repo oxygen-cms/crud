@@ -86,7 +86,7 @@ trait SoftDeleteCrudApi {
         $resourceName = explode('/', $router->getLastGroupPrefix());
         $resourceName = Str::camel(last($resourceName));
         $router->post('/{id}/restore', static::class . '@postRestoreApi')
-            ->name($resourceName . '.postRestore')
+            ->name($resourceName . '.postRestoreApi')
             ->middleware("oxygen.permissions:$resourceName.postRestore");
     }
 
