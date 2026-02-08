@@ -42,19 +42,6 @@ class BasicCrudTrait implements BlueprintTraitInterface {
             'color' => 'white'
         ]);
 
-        if($noFilter || in_array('getCreate', $this->options['only'])) {
-            $blueprint->makeAction([
-                'name' => 'getCreate',
-                'pattern' => 'create'
-            ]);
-            $blueprint->makeToolbarItem([
-                'action' => 'getCreate',
-                'label' => 'Create ' . $blueprint->getDisplayName(),
-                'icon' => 'edit',
-                'color' => 'green'
-            ]);
-        }
-
         if($noFilter || in_array('postCreate', $this->options['only'])) {
             $blueprint->makeAction([
                 'name' => 'postCreate',

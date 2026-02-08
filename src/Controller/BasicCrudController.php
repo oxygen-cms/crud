@@ -47,16 +47,6 @@ class BasicCrudController extends ResourceController {
     }
 
     /**
-     * Shows the create form.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function getCreate() {
-        return view('oxygen/crud::basic.create')
-            ->with('item', $this->repository->make());
-    }
-
-    /**
      * Shows the update form.
      *
      * @param mixed $item the item
