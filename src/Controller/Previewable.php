@@ -20,6 +20,18 @@ use Twig\Error\SyntaxError;
 trait Previewable {
 
     /**
+     * Registers routes for previewable content.
+     *
+     * @param \Illuminate\Routing\Router $router
+     */
+    public static function registerPreviewableRoutes($router) {
+        $resourceName = explode('/', $router->getLastGroupPrefix());
+        $resourceName = \Illuminate\Support\Str::camel(last($resourceName));
+        $router->post('content/{id}', [static::class, 'postContent'])
+            ->name("$resourceName.postContentApi");
+    }
+
+    /**
      * Renders custom content as HTML.
      *
      * @param TwigTemplateCompiler $templating
@@ -34,7 +46,13 @@ trait Previewable {
                 $content = '';
             }
 
-            return $this->getContent($templating, $content, $request->get('renderLayout', 'true') === 'true', $item);
+            $renderLayout = $request->get('renderLayout', true);
+            // Handle both boolean and string values
+            if (is_string($renderLayout)) {
+                $renderLayout = $renderLayout === 'true';
+            }
+
+            return $this->getContent($templating, $content, $renderLayout, $item);
         } catch(Error $e) {
             return response($e->getMessage());
         }
