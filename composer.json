@@ -1,6 +1,5 @@
 {
   "name": "oxygen/crud",
-  "version": "0.13.1",
   "description": "Create, Read, Update and Delete Scaffolding for Oxygen",
   "license": "MIT",
   "keywords": [
