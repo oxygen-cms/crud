@@ -1,50 +1,51 @@
 {
-    "name": "oxygen/crud",
-    "description": "Create, Read, Update and Delete Scaffolding for Oxygen",
-    "license": "MIT",
-    "keywords": [
-        "cms",
-        "framework",
-        "OxygenExtension"
-    ],
-    "authors": [
-        {
-            "name": "Chris Chamberlain",
-            "email": "chris@chamberlain.id.au"
-        }
-    ],
-    "require": {
-        "php": "^8.1",
-        "oxygen/core": "~0.15.0",
-        "oxygen/data": "~0.12.0",
-        "illuminate/support": "^10.0",
-        "webmozart/assert": "^1.11"
-    },
-    "autoload": {
-        "psr-4": {
-            "Oxygen\\Crud\\": "src/"
-        }
-    },
-    "minimum-stability": "stable",
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Oxygen\\Crud\\CrudServiceProvider"
-            ]
-        }
-    },
-    "require-dev": {
-        "phpstan/phpstan": "^1.8",
-        "phpspec/phpspec": "^7.0",
-        "phpstan/extension-installer": "^1.2",
-        "phpstan/phpstan-webmozart-assert": "^1.2"
-    },
-    "scripts": {
-        "test": "vendor/bin/phpspec run && vendor/bin/phpstan analyze src --level 1"
-    },
-    "config": {
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        }
+  "name": "oxygen/crud",
+  "version": "0.13.1",
+  "description": "Create, Read, Update and Delete Scaffolding for Oxygen",
+  "license": "MIT",
+  "keywords": [
+    "cms",
+    "framework",
+    "OxygenExtension"
+  ],
+  "authors": [
+    {
+      "name": "Chris Chamberlain",
+      "email": "chris@chamberlain.id.au"
     }
+  ],
+  "require": {
+    "php": "^8.1",
+    "oxygen/core": "~0.15.0",
+    "oxygen/data": "~0.12.0",
+    "illuminate/support": "^10.0",
+    "webmozart/assert": "^1.11"
+  },
+  "autoload": {
+    "psr-4": {
+      "Oxygen\\Crud\\": "src/"
+    }
+  },
+  "minimum-stability": "stable",
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Oxygen\\Crud\\CrudServiceProvider"
+      ]
+    }
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^1.8",
+    "phpspec/phpspec": "^7.0",
+    "phpstan/extension-installer": "^1.2",
+    "phpstan/phpstan-webmozart-assert": "^1.2"
+  },
+  "scripts": {
+    "test": "vendor/bin/phpspec run && vendor/bin/phpstan analyze src --level 1"
+  },
+  "config": {
+    "allow-plugins": {
+      "phpstan/extension-installer": true
+    }
+  }
 }
